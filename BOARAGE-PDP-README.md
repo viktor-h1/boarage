@@ -20,6 +20,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | `locales/en.default.schema.json`, `locales/de.schema.json` | Shrine's files + the `boarage` namespace (English / German editor labels) |
 | `locales/en.default.json` | Lint-only snapshot of the live storefront strings, never pushed |
 | `dev/` | Sources, locale string table, merge scripts and the local verification harness (not pushed) |
+| `dev/preview/` | What the preview theme carries instead of the blank files: a template filled with the copy of the current product page and a `settings_data.json` snapshot with the guarantee text |
 
 ## Deploy
 
