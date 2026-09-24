@@ -1,0 +1,17 @@
+{%- comment -%}
+  Guarantee box (shield, title, text). Text comes from Theme settings › Boarage PDP › Guarantee so it is
+  typed once and shown in several sections. Params: title, text (overrides), class.
+{%- endcomment -%}
+{%- liquid
+  assign g_title = title | default: settings.boarage_guarantee_title
+  assign g_text = text | default: settings.boarage_guarantee_text
+-%}
+{%- if g_title != blank or g_text != blank -%}
+  <div class="bpdp-guarantee{% if class != blank %} {{ class }}{% endif %}">
+    {%- render 'boarage-icon', name: 'shield', size: 26 -%}
+    {%- if g_title != blank -%}<p class="bpdp-guarantee__title">{{ g_title }}</p>{%- endif -%}
+    {%- if g_text != blank -%}<div class="bpdp-rte">{{ g_text }}</div>{%- endif -%}
+  </div>
+{%- elsif request.design_mode -%}
+  {%- render 'boarage-placeholder', label: 'Guarantee box: fill in Theme settings › Boarage PDP › Guarantee', kind: 'block' -%}
+{%- endif -%}

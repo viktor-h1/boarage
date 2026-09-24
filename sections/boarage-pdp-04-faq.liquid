@@ -1,0 +1,76 @@
+{%- comment -%}
+  Boarage PDP 04 · FAQ: eyebrow, headline, accordion cards (two columns on desktop) + FAQPage JSON-LD
+  built only from questions that have both a question and an answer.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign qa_blocks = section.blocks | where: 'type', 'qa'
+  assign filled = 0
+  assign faq_items = ''
+  for block in qa_blocks
+    if block.settings.question != blank and block.settings.answer != blank
+      assign filled = filled | plus: 1
+      capture item
+        echo '{"@type":"Question","name":'
+        echo block.settings.question | json
+        echo ',"acceptedAnswer":{"@type":"Answer","text":'
+        echo block.settings.answer | strip_html | json
+        echo '}}'
+      endcapture
+      if faq_items == ''
+        assign faq_items = item
+      else
+        assign faq_items = faq_items | append: ',' | append: item
+      endif
+    endif
+  endfor
+  assign has_content = false
+  if filled > 0 or s.heading != blank
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap bpdp-stack">
+      {%- render 'boarage-section-head', eyebrow: s.eyebrow, heading: s.heading, eyebrow_label: 'FAQ eyebrow', heading_label: '04 · FAQ headline', align: 'center' -%}
+      {%- if filled > 0 or request.design_mode -%}
+        <div class="bpdp-accs bpdp-faq__grid">
+          {%- for block in qa_blocks -%}
+            {%- assign acc_id = 'bpdp-faq-' | append: block.id -%}
+            {%- render 'boarage-accordion', title: block.settings.question, content: block.settings.answer, open: false, id: acc_id, attrs: block.shopify_attributes, title_label: 'Question', content_label: 'Answer' -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if faq_items != '' -%}
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ faq_items }}]}</script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s04.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s04.settings.paragraph" },
+    { "type": "text", "id": "eyebrow", "label": "t:boarage.common.eyebrow.label" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "t:boarage.s04.blocks.qa.name",
+      "limit": 12,
+      "settings": [
+        { "type": "text", "id": "question", "label": "t:boarage.s04.blocks.qa.settings.question.label" },
+        { "type": "richtext", "id": "answer", "label": "t:boarage.s04.blocks.qa.settings.answer.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s04.name", "blocks": [{ "type": "qa" }, { "type": "qa" }, { "type": "qa" }, { "type": "qa" }, { "type": "qa" }, { "type": "qa" }] }]
+}
+{% endschema %}

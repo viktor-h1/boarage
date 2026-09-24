@@ -1,0 +1,78 @@
+{%- comment -%}
+  Boarage PDP 03 · Reviews carousel: dark green panel, headline, rating line, swipeable review cards
+  with progress bar and arrows. Also takes review-app blocks. Renders nothing while empty.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign review_blocks = section.blocks | where: 'type', 'review'
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign filled = 0
+  for block in review_blocks
+    if block.settings.text != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if filled > 0 or app_blocks.size > 0 or s.heading != blank
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec bpdp-sec--tight">
+    <div class="bpdp-wrap">
+      <div class="bpdp-revs bpdp-on-dark" data-bpdp-carousel>
+        {%- render 'boarage-section-head', heading: s.heading, heading_label: '03 · Reviews carousel headline', align: 'center' -%}
+        {%- if s.show_rating -%}{%- render 'boarage-rating-line', prefix: s.rating_prefix, word: s.rating_word, center: true -%}{%- endif -%}
+        {%- if filled > 0 or request.design_mode -%}
+          <ul class="bpdp-track bpdp-track--bleed" data-bpdp-track>
+            {%- for block in review_blocks -%}
+              {%- render 'boarage-review-card', title: block.settings.title, text: block.settings.text, name: block.settings.name, meta: block.settings.meta, date: block.settings.date, rating: block.settings.rating, image: block.settings.image, image_alt: block.settings.image_alt, attrs: block.shopify_attributes -%}
+            {%- endfor -%}
+          </ul>
+          <div class="bpdp-bar" data-bpdp-bar aria-hidden="true"><i></i></div>
+          <div class="bpdp-nav">
+            <button type="button" class="bpdp-nav__btn bpdp-press" data-bpdp-prev aria-label="{{ 'general.slider.previous_slide' | t }}">{% render 'boarage-icon', name: 'chevron-left', size: 20 %}</button>
+            <button type="button" class="bpdp-nav__btn bpdp-press" data-bpdp-next aria-label="{{ 'general.slider.next_slide' | t }}">{% render 'boarage-icon', name: 'chevron-right', size: 20 %}</button>
+          </div>
+        {%- endif -%}
+        {%- for block in app_blocks -%}{% render block %}{%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s03.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s03.settings.paragraph" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
+    { "type": "checkbox", "id": "show_rating", "label": "t:boarage.common.show_rating.label", "info": "t:boarage.common.show_rating.info", "default": true },
+    { "type": "text", "id": "rating_prefix", "label": "t:boarage.common.rating_prefix.label", "info": "t:boarage.common.rating_prefix.info" },
+    { "type": "text", "id": "rating_word", "label": "t:boarage.common.rating_word.label", "info": "t:boarage.common.rating_word.info" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "review",
+      "name": "t:boarage.common.review.name",
+      "limit": 12,
+      "settings": [
+        { "type": "text", "id": "title", "label": "t:boarage.common.review.title.label" },
+        { "type": "textarea", "id": "text", "label": "t:boarage.common.review.text.label" },
+        { "type": "range", "id": "rating", "label": "t:boarage.common.review.rating.label", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "name", "label": "t:boarage.common.review.name_field.label" },
+        { "type": "text", "id": "meta", "label": "t:boarage.common.review.meta.label", "info": "t:boarage.common.review.meta.info" },
+        { "type": "text", "id": "date", "label": "t:boarage.common.review.date.label" },
+        { "type": "image_picker", "id": "image", "label": "t:boarage.common.review.image.label" },
+        { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s03.name", "blocks": [{ "type": "review" }, { "type": "review" }, { "type": "review" }, { "type": "review" }] }]
+}
+{% endschema %}

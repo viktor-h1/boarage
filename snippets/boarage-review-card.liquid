@@ -1,21 +1,21 @@
 {%- comment -%}
-  Manual review card (list item). Params: name, location, text, image (image object), image_alt, attrs (block.shopify_attributes).
-  Storefront: renders only when the text is filled. Editor: always, with placeholders.
+  One manual review card (<li>). Params: title, text, name, meta, date, rating (1-5), image, image_alt,
+  attrs (block.shopify_attributes), hidden (boolean, for "load more"), labels for the editor placeholders.
+  Storefront: renders only when text is filled. Editor: always renders, with placeholders.
 {%- endcomment -%}
 {%- if text != blank or request.design_mode -%}
-  <li class="bpdp-review" {{ attrs }}>
-    {%- if image != blank -%}
-      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 800', sizes: '(min-width: 820px) 33vw, 100vw', class: 'bpdp-review__img', alt: image_alt }}
-    {%- endif -%}
-    {%- if text != blank -%}
-      <p class="bpdp-review__text">{{ text | escape | newline_to_br }}</p>
-    {%- else -%}
-      {% render 'boarage-placeholder', label: 'Review text', kind: 'block' %}
-    {%- endif -%}
-    {%- if name != blank or location != blank -%}
-      <p class="bpdp-review__meta">{% if name != blank %}<b>{{ name | escape }}</b>{% endif %}{% if name != blank and location != blank %}, {% endif %}{% if location != blank %}{{ location | escape }}{% endif %}</p>
-    {%- elsif request.design_mode -%}
-      <p class="bpdp-review__meta">{% render 'boarage-placeholder', label: 'Name, location' %}</p>
+  <li class="bpdp-rev" {{ attrs }}{% if hidden %} hidden data-bpdp-hidden{% endif %}>
+    {%- if title != blank -%}<h3 class="bpdp-rev__title">{{ title | escape }}</h3>{%- endif -%}
+    {%- capture star_label -%}{{ 'accessibility.star_reviews_info' | t: rating_value: rating, rating_max: 5 }}{%- endcapture -%}
+    <p class="bpdp-rating">{% render 'boarage-stars', rating: rating, size: 'sm', label: star_label %}<b>{{ rating | default: 5 }}/5</b></p>
+    <div class="bpdp-rev__text">{% if text != blank %}{{ text | escape | newline_to_br }}{% else %}{% render 'boarage-placeholder', label: 'Review text' %}{% endif %}</div>
+    {%- if name != blank or meta != blank or date != blank or request.design_mode -%}
+      <div class="bpdp-rev__foot">
+        {%- if image != blank -%}{{ image | image_url: width: 88 | image_tag: loading: 'lazy', alt: image_alt, width: 44, height: 44 }}{%- endif -%}
+        <span class="bpdp-rev__name">{% if name != blank %}{{ name | escape }}{% elsif request.design_mode %}{% render 'boarage-placeholder', label: 'Name' %}{% endif %}</span>
+        {%- if meta != blank -%}<span class="bpdp-rev__meta">{{ meta | escape }}</span>{%- endif -%}
+        {%- if date != blank -%}<span class="bpdp-rev__date">{{ date | escape }}</span>{%- endif -%}
+      </div>
     {%- endif -%}
   </li>
 {%- endif -%}

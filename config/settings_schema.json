@@ -2476,26 +2476,26 @@
         "id": "boarage_use_theme_fonts",
         "label": "t:boarage.settings.use_theme_fonts.label",
         "info": "t:boarage.settings.use_theme_fonts.info",
-        "default": true
+        "default": false
       },
       {
         "type": "font_picker",
         "id": "boarage_font_heading",
         "label": "t:boarage.settings.font_heading.label",
-        "default": "assistant_n4"
+        "default": "outfit_n7"
       },
       {
         "type": "font_picker",
         "id": "boarage_font_body",
         "label": "t:boarage.settings.font_body.label",
-        "default": "assistant_n4"
+        "default": "work_sans_n4"
       },
       {
         "type": "range",
         "id": "boarage_base_size",
         "label": "t:boarage.settings.base_size.label",
         "info": "t:boarage.settings.base_size.info",
-        "min": 18,
+        "min": 16,
         "max": 22,
         "step": 1,
         "unit": "px",
@@ -2507,39 +2507,55 @@
       },
       {
         "type": "color",
-        "id": "boarage_color_accent",
-        "label": "t:boarage.settings.color_accent.label",
-        "default": "#1F4A3D"
+        "id": "boarage_color_primary",
+        "label": "t:boarage.settings.color_primary.label",
+        "info": "t:boarage.settings.color_primary.info",
+        "default": "#1D4D36"
       },
       {
         "type": "color",
-        "id": "boarage_color_accent_ink",
-        "label": "t:boarage.settings.color_accent_ink.label",
+        "id": "boarage_color_primary_ink",
+        "label": "t:boarage.settings.color_primary_ink.label",
         "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "boarage_color_cta",
+        "label": "t:boarage.settings.color_cta.label",
+        "info": "t:boarage.settings.color_cta.info",
+        "default": "#1EA339"
+      },
+      {
+        "type": "color",
+        "id": "boarage_color_cta_ink",
+        "label": "t:boarage.settings.color_cta_ink.label",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "boarage_color_mint",
+        "label": "t:boarage.settings.color_mint.label",
+        "info": "t:boarage.settings.color_mint.info",
+        "default": "#5EF09A"
+      },
+      {
+        "type": "color",
+        "id": "boarage_color_soft",
+        "label": "t:boarage.settings.color_soft.label",
+        "info": "t:boarage.settings.color_soft.info",
+        "default": "#EEF7F1"
+      },
+      {
+        "type": "color",
+        "id": "boarage_color_line",
+        "label": "t:boarage.settings.color_line.label",
+        "default": "#E2E7E4"
       },
       {
         "type": "color",
         "id": "boarage_color_surface",
         "label": "t:boarage.settings.color_surface.label",
         "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "boarage_color_line",
-        "label": "t:boarage.settings.color_line.label",
-        "default": "#D0DBD4"
-      },
-      {
-        "type": "color",
-        "id": "boarage_color_cool",
-        "label": "t:boarage.settings.color_cool.label",
-        "default": "#D6EBE1"
-      },
-      {
-        "type": "color",
-        "id": "boarage_color_warm",
-        "label": "t:boarage.settings.color_warm.label",
-        "default": "#F6E5CB"
       },
       {
         "type": "color",
@@ -2552,14 +2568,10 @@
         "id": "boarage_radius",
         "label": "t:boarage.settings.radius.label",
         "min": 0,
-        "max": 24,
-        "step": 2,
+        "max": 20,
+        "step": 1,
         "unit": "px",
-        "default": 14
-      },
-      {
-        "type": "header",
-        "content": "t:boarage.settings.mode_header"
+        "default": 8
       },
       {
         "type": "select",
@@ -2581,6 +2593,24 @@
           }
         ],
         "default": "light"
+      },
+      {
+        "type": "header",
+        "content": "t:boarage.settings.guarantee_header"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:boarage.settings.guarantee_paragraph"
+      },
+      {
+        "type": "text",
+        "id": "boarage_guarantee_title",
+        "label": "t:boarage.settings.guarantee_title.label"
+      },
+      {
+        "type": "richtext",
+        "id": "boarage_guarantee_text",
+        "label": "t:boarage.settings.guarantee_text.label"
       }
     ]
   }

@@ -1,65 +1,34 @@
-{%- comment -%} Boarage PDP 14 · Legal footer strip: Impressum / Widerruf / Datenschutz links, full INCI, product category line. {%- endcomment -%}
+{%- comment -%}
+  Boarage PDP 14 · Legal strip: category line, disclaimer notes, INCI list and the German mandatory
+  links (Impressum, Widerruf, Datenschutz) on the dark footer background.
+{%- endcomment -%}
 {%- liquid
   assign s = section.settings
-  assign links = 0
-  if s.impressum_label != blank and s.impressum_link != blank
-    assign links = links | plus: 1
-  endif
-  if s.widerruf_label != blank and s.widerruf_link != blank
-    assign links = links | plus: 1
-  endif
-  if s.datenschutz_label != blank and s.datenschutz_link != blank
-    assign links = links | plus: 1
-  endif
   assign has_content = false
-  if links > 0 or s.inci != blank or s.inci_heading != blank or s.category_line != blank
+  if s.category_line != blank or s.note_1 != blank or s.note_2 != blank or s.note_3 != blank or s.inci != blank or s.impressum_label != blank or s.widerruf_label != blank or s.datenschutz_label != blank
     assign has_content = true
   endif
 -%}
 {%- if has_content or request.design_mode -%}
   {%- render 'boarage-tokens' -%}
-  <div class="bpdp bpdp-s14 bpdp-legal">
-    <div class="bpdp-wrap">
-      {%- if has_content == false -%}{% render 'boarage-placeholder', label: '14 · Legal strip: links, INCI list and product category line', kind: 'block' %}{%- endif -%}
+  <div class="bpdp bpdp-sec bpdp-sec--dark">
+    <div class="bpdp-wrap bpdp-legal">
       <div class="bpdp-legal__cols">
-        <div>
-          {%- if s.category_line != blank -%}
-            <p>{{ s.category_line | escape }}</p>
-          {%- elsif request.design_mode -%}
-            <p>{% render 'boarage-placeholder', label: 'Product category line' %}</p>
-          {%- endif -%}
+        <div class="bpdp-stack">
+          {%- if s.category_line != blank -%}<p><b>{{ s.category_line | escape }}</b></p>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: '14 · Product category line' %}</p>{%- endif -%}
+          {%- if s.note_1 != blank -%}<div class="bpdp-rte">{{ s.note_1 }}</div>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Note 1 (e.g. health claims disclaimer)' %}</p>{%- endif -%}
+          {%- if s.note_2 != blank -%}<div class="bpdp-rte">{{ s.note_2 }}</div>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Note 2 (e.g. individual results)' %}</p>{%- endif -%}
+          {%- if s.note_3 != blank -%}<div class="bpdp-rte">{{ s.note_3 }}</div>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Note 3 (e.g. consult a doctor)' %}</p>{%- endif -%}
         </div>
-        <div>
-          {%- if s.inci_heading != blank -%}
-            <p class="bpdp-legal__heading">{{ s.inci_heading | escape }}</p>
-          {%- elsif request.design_mode -%}
-            <p class="bpdp-legal__heading">{% render 'boarage-placeholder', label: 'INCI heading' %}</p>
-          {%- endif -%}
-          {%- if s.inci != blank -%}
-            <div class="bpdp-rte">{{ s.inci }}</div>
-          {%- elsif request.design_mode -%}
-            {% render 'boarage-placeholder', label: 'Full INCI list (rich text)', kind: 'block' %}
-          {%- endif -%}
-        </div>
-        <div>
-          {%- if links > 0 or request.design_mode -%}
-            <ul class="bpdp-legal__links">
-              {%- if s.impressum_label != blank and s.impressum_link != blank -%}
-                <li><a href="{{ s.impressum_link }}">{{ s.impressum_label | escape }}</a></li>
-              {%- elsif request.design_mode -%}
-                <li>{% render 'boarage-placeholder', label: 'Impressum: label + link' %}</li>
-              {%- endif -%}
-              {%- if s.widerruf_label != blank and s.widerruf_link != blank -%}
-                <li><a href="{{ s.widerruf_link }}">{{ s.widerruf_label | escape }}</a></li>
-              {%- elsif request.design_mode -%}
-                <li>{% render 'boarage-placeholder', label: 'Widerruf: label + link' %}</li>
-              {%- endif -%}
-              {%- if s.datenschutz_label != blank and s.datenschutz_link != blank -%}
-                <li><a href="{{ s.datenschutz_link }}">{{ s.datenschutz_label | escape }}</a></li>
-              {%- elsif request.design_mode -%}
-                <li>{% render 'boarage-placeholder', label: 'Datenschutz: label + link' %}</li>
-              {%- endif -%}
-            </ul>
+        <div class="bpdp-stack">
+          {%- if s.inci_heading != blank -%}<p><b>{{ s.inci_heading | escape }}</b></p>{%- endif -%}
+          {%- if s.inci != blank -%}<div class="bpdp-rte">{{ s.inci }}</div>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'INCI / ingredients list' %}</p>{%- endif -%}
+          {%- if s.impressum_label != blank or s.widerruf_label != blank or s.datenschutz_label != blank or request.design_mode -%}
+            <p class="bpdp-legal__links">
+              {%- if s.impressum_label != blank -%}<a href="{{ s.impressum_link | default: '#' }}">{{ s.impressum_label | escape }}</a>{%- elsif request.design_mode -%}{% render 'boarage-placeholder', label: 'Impressum link' %}{%- endif -%}
+              {%- if s.widerruf_label != blank -%}<a href="{{ s.widerruf_link | default: '#' }}">{{ s.widerruf_label | escape }}</a>{%- elsif request.design_mode -%}{% render 'boarage-placeholder', label: 'Widerruf link' %}{%- endif -%}
+              {%- if s.datenschutz_label != blank -%}<a href="{{ s.datenschutz_link | default: '#' }}">{{ s.datenschutz_label | escape }}</a>{%- elsif request.design_mode -%}{% render 'boarage-placeholder', label: 'Datenschutz link' %}{%- endif -%}
+            </p>
           {%- endif -%}
         </div>
       </div>
@@ -71,12 +40,14 @@
 {
   "name": "t:boarage.s14.name",
   "tag": "section",
-  "class": "bpdp-section",
+  "class": "bpdp-section bpdp-section--dark",
   "enabled_on": { "templates": ["*"] },
   "settings": [
     { "type": "paragraph", "content": "t:boarage.s14.settings.paragraph" },
     { "type": "text", "id": "category_line", "label": "t:boarage.s14.settings.category_line.label", "info": "t:boarage.s14.settings.category_line.info" },
-    { "type": "header", "content": "t:boarage.s14.settings.inci_header" },
+    { "type": "richtext", "id": "note_1", "label": "t:boarage.s14.settings.note_1.label" },
+    { "type": "richtext", "id": "note_2", "label": "t:boarage.s14.settings.note_2.label" },
+    { "type": "richtext", "id": "note_3", "label": "t:boarage.s14.settings.note_3.label" },
     { "type": "text", "id": "inci_heading", "label": "t:boarage.s14.settings.inci_heading.label" },
     { "type": "richtext", "id": "inci", "label": "t:boarage.s14.settings.inci.label" },
     { "type": "header", "content": "t:boarage.s14.settings.links_header" },
@@ -87,6 +58,6 @@
     { "type": "text", "id": "datenschutz_label", "label": "t:boarage.s14.settings.datenschutz_label.label" },
     { "type": "url", "id": "datenschutz_link", "label": "t:boarage.s14.settings.datenschutz_link.label" }
   ],
-  "presets": [ { "name": "t:boarage.s14.name" } ]
+  "presets": [{ "name": "t:boarage.s14.name" }]
 }
 {% endschema %}

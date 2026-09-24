@@ -1,0 +1,108 @@
+{%- comment -%}
+  Boarage PDP 12 · Results card: dark green card with a photo, headline, sub-line, big statistics
+  (typed by the merchant), a product image and the extended guarantee block.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign stats = section.blocks | where: 'type', 'stat'
+  assign filled = 0
+  for block in stats
+    if block.settings.value != blank or block.settings.label != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign g_filled = false
+  if s.guarantee_big != blank or s.guarantee_title != blank or s.guarantee_text != blank or s.guarantee_points != blank
+    assign g_filled = true
+  endif
+  assign has_content = false
+  if s.heading != blank or s.subtitle != blank or s.image != blank or s.image_product != blank or filled > 0 or g_filled
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap">
+      <div class="bpdp-res bpdp-on-dark" style="--bpdp-shield-ink: var(--bpdp-dark-2);">
+        {%- if s.image != blank -%}
+          <div class="bpdp-res__photo">{{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 45vw, 100vw', alt: s.image_alt }}</div>
+        {%- elsif request.design_mode -%}
+          <div class="bpdp-res__photo">{% render 'boarage-placeholder', label: 'Photo', kind: 'block' %}</div>
+        {%- endif -%}
+        <div class="bpdp-res__head bpdp-stack">
+          {%- render 'boarage-section-head', heading: s.heading, heading_label: '12 · Results headline' -%}
+          {%- if s.subtitle != blank -%}<p class="bpdp-res__sub">{{ s.subtitle | escape }}</p>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Sub-line' %}</p>{%- endif -%}
+        </div>
+        {%- if filled > 0 or request.design_mode -%}
+          <ul class="bpdp-res__stats bpdp-stats" data-bpdp-reveal>
+            {%- for block in stats -%}
+              {%- if block.settings.value != blank or block.settings.label != blank or request.design_mode -%}
+                <li class="bpdp-stat" data-bpdp-reveal-item {{ block.shopify_attributes }}>
+                  {%- if block.settings.value != blank -%}<span class="bpdp-stat__value">{{ block.settings.value | escape }}</span>{%- elsif request.design_mode -%}<span>{% render 'boarage-placeholder', label: 'Value' %}</span>{%- endif -%}
+                  {%- if block.settings.label != blank -%}<span class="bpdp-stat__label">{{ block.settings.label | escape }}</span>{%- elsif request.design_mode -%}<span>{% render 'boarage-placeholder', label: 'Label' %}</span>{%- endif -%}
+                  {%- if block.settings.text != blank -%}<span class="bpdp-stat__text">{{ block.settings.text | escape }}</span>{%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if s.image_product != blank -%}
+          <div class="bpdp-res__prod">{{ s.image_product | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '(min-width: 900px) 40vw, 90vw', alt: s.image_product_alt }}</div>
+        {%- elsif request.design_mode -%}
+          <div class="bpdp-res__prod">{% render 'boarage-placeholder', label: 'Product image', kind: 'block' %}</div>
+        {%- endif -%}
+        {%- if g_filled or request.design_mode -%}
+          <div class="bpdp-res__g">
+            {%- render 'boarage-icon', name: 'shield', size: 64 -%}
+            {%- if s.guarantee_big != blank -%}<p class="bpdp-res__big">{{ s.guarantee_big | escape }}</p>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Big guarantee line (e.g. the number of days)' %}</p>{%- endif -%}
+            {%- if s.guarantee_title != blank -%}<h3 class="bpdp-res__title">{{ s.guarantee_title | escape }}</h3>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Guarantee title' %}</p>{%- endif -%}
+            {%- if s.guarantee_text != blank -%}<div class="bpdp-rte">{{ s.guarantee_text }}</div>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Guarantee text' %}</p>{%- endif -%}
+            {%- if s.guarantee_points != blank -%}
+              {%- assign pts = s.guarantee_points | strip | newline_to_br | split: '<br />' -%}
+              <ul class="bpdp-list bpdp-list--white">
+                {%- for p in pts -%}{%- assign pt = p | strip -%}{%- if pt != blank -%}<li>{% render 'boarage-icon', name: 'checksq', size: 22 %}<span>{{ pt | escape }}</span></li>{%- endif -%}{%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s12.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s12.settings.paragraph" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
+    { "type": "text", "id": "subtitle", "label": "t:boarage.s12.settings.subtitle.label" },
+    { "type": "image_picker", "id": "image", "label": "t:boarage.s12.settings.image.label" },
+    { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" },
+    { "type": "header", "content": "t:boarage.s12.settings.guarantee_header" },
+    { "type": "image_picker", "id": "image_product", "label": "t:boarage.s12.settings.image_product.label" },
+    { "type": "text", "id": "image_product_alt", "label": "t:boarage.common.image_alt.label" },
+    { "type": "text", "id": "guarantee_big", "label": "t:boarage.s12.settings.guarantee_big.label", "info": "t:boarage.s12.settings.guarantee_big.info" },
+    { "type": "text", "id": "guarantee_title", "label": "t:boarage.s12.settings.guarantee_title.label" },
+    { "type": "richtext", "id": "guarantee_text", "label": "t:boarage.s12.settings.guarantee_text.label" },
+    { "type": "textarea", "id": "guarantee_points", "label": "t:boarage.s12.settings.guarantee_points.label", "info": "t:boarage.s09.blocks.milestone.settings.points.info" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "t:boarage.s12.blocks.stat.name",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "value", "label": "t:boarage.s12.blocks.stat.settings.value.label", "info": "t:boarage.s12.blocks.stat.settings.value.info" },
+        { "type": "text", "id": "label", "label": "t:boarage.s12.blocks.stat.settings.label.label" },
+        { "type": "text", "id": "text", "label": "t:boarage.common.text.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s12.name", "blocks": [{ "type": "stat" }, { "type": "stat" }, { "type": "stat" }] }]
+}
+{% endschema %}

@@ -42,7 +42,8 @@ function sampleValue(setting, mode, n) {
   const tag = n == null ? id : `${id} ${n}`;
   switch (setting.type) {
     case 'richtext': return `<p>${tag} sample</p>`;
-    case 'inline_richtext': return `<b>${tag}</b> sample`;
+    case 'inline_richtext': return `${tag} <em>sample</em>`;
+    case 'textarea': return /points/.test(id) ? `${tag} line one\n${tag} line two` : `${tag} sample`;
     case 'url': return `#${id}`;
     case 'image_picker': return { ...FIXTURE_IMAGE };
     default: return `${tag} sample`;
@@ -115,14 +116,16 @@ engine.registerFilter('image_url', (img, ...args) => {
 engine.registerFilter('image_tag', (src, ...args) => {
   const o = kw(args);
   const dims = imageDims.get(src) || { width: 800, height: 800 };
-  const attrs = [`src="${src}"`, `width="${dims.width}"`, `height="${dims.height}"`, `alt="${String(o.alt ?? '').replace(/"/g, '&quot;')}"`];
+  const attrs = [`src="${src}"`, `width="${o.width || dims.width}"`, `height="${o.height || dims.height}"`, `alt="${String(o.alt ?? '').replace(/"/g, '&quot;')}"`];
   if (o.loading) attrs.push(`loading="${o.loading}"`);
+  if (o.fetchpriority) attrs.push(`fetchpriority="${o.fetchpriority}"`);
   if (o.class) attrs.push(`class="${o.class}"`);
   if (o.sizes) attrs.push(`sizes="${o.sizes}"`);
   if (o.widths) attrs.push(`srcset="${String(o.widths).split(',').map((w) => `${src} ${w.trim()}w`).join(', ')}"`);
   return `<img ${attrs.join(' ')}>`;
 });
 engine.registerFilter('asset_url', (name) => `/assets/${name}`);
+engine.registerFilter('payment_type_svg_tag', (type) => `<svg class="icon icon--full-color" viewBox="0 0 38 24" width="38" height="24" role="img" aria-labelledby="pi-${type}"><title id="pi-${type}">${type}</title><rect width="38" height="24" rx="3" fill="#dfe3e0"/></svg>`);
 engine.registerFilter('stylesheet_tag', (href) => `<link rel="stylesheet" href="${href}">`);
 engine.registerFilter('font_face', () => '');
 engine.registerFilter('t', (key, ...args) => {
@@ -180,7 +183,7 @@ async function renderPage({ name, mode, design, themeOverrides = {}, selectedVar
   const settings = themeSettings(themeOverrides);
   const request = { design_mode: design, locale: { iso_code: 'de' } };
   const routes = { cart_add_url: '/cart/add', cart_url: '/cart', root_url: '/' };
-  const shop = { name: 'Fixture shop', money_format: '{{amount_with_comma_separator}} €' };
+  const shop = { name: 'Fixture shop', money_format: '{{amount_with_comma_separator}} €', enabled_payment_types: ['visa', 'master', 'paypal', 'klarna'] };
   const prod = {
     ...product,
     selected_variant: selectedVariant ? product.variants.find((v) => v.id === selectedVariant) : null,
@@ -207,18 +210,22 @@ for (const f of fs.readdirSync(path.join(ROOT, 'assets'))) fs.copyFileSync(path.
 for (const m of product.media) fs.writeFileSync(path.join(OUT, 'img', `media-${m.id}.svg`), svgMedia(`Fixture media ${m.id}`));
 fs.writeFileSync(path.join(OUT, 'img', 'photo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600"><rect width="800" height="600" fill="#f6e5cb"/><circle cx="400" cy="300" r="120" fill="#1f4a3d"/></svg>`);
 
+const FILLED_THEME = { boarage_guarantee_title: 'Guarantee title sample', boarage_guarantee_text: '<p>Guarantee text sample</p>' };
 const pages = [
   { name: 'empty-storefront', mode: 'empty', design: false },
   { name: 'empty-editor', mode: 'empty', design: true },
-  { name: 'filled-storefront', mode: 'filled', design: false },
-  { name: 'filled-editor', mode: 'filled', design: true },
-  { name: 'filled-storefront-system', mode: 'filled', design: false, themeOverrides: { boarage_dark_mode: 'system' } },
-  { name: 'filled-storefront-perunit', mode: 'filled', design: false, selectedVariant: null, perUnit: true },
+  { name: 'filled-storefront', mode: 'filled', design: false, themeOverrides: FILLED_THEME },
+  { name: 'filled-editor', mode: 'filled', design: true, themeOverrides: FILLED_THEME },
+  { name: 'filled-storefront-system', mode: 'filled', design: false, themeOverrides: { ...FILLED_THEME, boarage_dark_mode: 'system' } },
+  { name: 'filled-storefront-perunit', mode: 'filled', design: false, selectedVariant: null, perUnit: true, themeOverrides: FILLED_THEME },
 ];
 for (const p of pages) {
   if (p.perUnit) template.sections.boarage_buy_box.settings = { ...(template.sections.boarage_buy_box.settings || {}), price_mode: 'per_unit' };
+  if (p.mode === 'filled') { template.sections.boarage_sale_bar.settings = { countdown_mode: 'daily' }; template.sections.boarage_reviews_list.settings = { initial_count: 2 }; }
   await renderPage(p);
   if (p.perUnit) delete template.sections.boarage_buy_box.settings.price_mode;
+  template.sections.boarage_sale_bar.settings = {};
+  template.sections.boarage_reviews_list.settings = {};
   console.log(`rendered dev/out/${p.name}.html`);
 }
 if (missingKeys.size) { console.error('missing translations:', [...missingKeys].join(', ')); process.exit(1); }

@@ -1,59 +1,41 @@
-{%- comment -%} Boarage PDP 08 · Science / explainer: headline, rich text, optional disclaimer, optional image or sensation panel. {%- endcomment -%}
+{%- comment -%}
+  Boarage PDP 08 · Science: eyebrow, headline, paragraph and an illustrative two-curve chart
+  (labels come from settings; the curves carry no numbers) or an image instead.
+{%- endcomment -%}
 {%- liquid
   assign s = section.settings
-  assign visual = s.visual | default: 'none'
-  assign panel_filled = false
-  if s.left_title != blank or s.left_text != blank or s.right_title != blank or s.right_text != blank or s.axis_start != blank or s.axis_end != blank
-    assign panel_filled = true
-  endif
-  assign has_visual = false
-  if visual == 'image' and s.image != blank
-    assign has_visual = true
-  elsif visual == 'panel' and panel_filled
-    assign has_visual = true
-  endif
   assign has_content = false
-  if s.heading != blank or s.text != blank or s.disclaimer != blank or has_visual
+  if s.heading != blank or s.text != blank or s.eyebrow != blank or s.image != blank
     assign has_content = true
   endif
+  assign visual = s.visual | default: 'chart'
 -%}
 {%- if has_content or request.design_mode -%}
   {%- render 'boarage-tokens' -%}
-  <div class="bpdp bpdp-s08">
-    <div class="bpdp-wrap">
-      {%- if has_content == false -%}{% render 'boarage-placeholder', label: '08 · Science / explainer: headline, text, disclaimer and an optional visual', kind: 'block' %}{%- endif -%}
-      <div class="bpdp-mech">
-        {%- if s.heading != blank or s.text != blank or s.disclaimer != blank or request.design_mode -%}
-          <div>
-            {%- if s.heading != blank -%}
-              <h2>{{ s.heading | escape }}</h2>
-            {%- elsif request.design_mode -%}
-              <p>{% render 'boarage-placeholder', label: 'Explainer headline' %}</p>
-            {%- endif -%}
-            {%- if s.text != blank -%}
-              <div class="bpdp-rte">{{ s.text }}</div>
-            {%- elsif request.design_mode -%}
-              {% render 'boarage-placeholder', label: 'Explainer text (rich text)', kind: 'block' %}
-            {%- endif -%}
-            {%- if s.disclaimer != blank -%}
-              <p class="bpdp-disclaimer">{{ s.disclaimer | escape | newline_to_br }}</p>
-            {%- elsif request.design_mode -%}
-              <p class="bpdp-disclaimer">{% render 'boarage-placeholder', label: 'Disclaimer (optional)' %}</p>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-        {%- if visual == 'image' -%}
-          {%- if s.image != blank -%}
-            <figure class="bpdp-figure">
-              {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 900px) 50vw, 100vw', alt: s.image_alt }}
-            </figure>
-          {%- elsif request.design_mode -%}
-            {% render 'boarage-placeholder', label: 'Explainer image + alt text', kind: 'block' %}
-          {%- endif -%}
-        {%- elsif visual == 'panel' -%}
-          {% render 'boarage-sensation-panel', left_title: s.left_title, left_text: s.left_text, right_title: s.right_title, right_text: s.right_text, axis_start: s.axis_start, axis_end: s.axis_end %}
-        {%- endif -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap bpdp-sci">
+      <div class="bpdp-stack">
+        {%- render 'boarage-section-head', eyebrow: s.eyebrow, caps: true, heading: s.heading, intro: s.text, eyebrow_label: 'Eyebrow', heading_label: '08 · Science headline', intro_label: 'Paragraph' -%}
       </div>
+      {%- if visual == 'chart' -%}
+        <figure class="bpdp-chart-wrap">
+          <svg class="bpdp-chart" viewBox="0 0 400 300" role="img"{% if s.chart_alt != blank %} aria-label="{{ s.chart_alt | escape }}"{% else %} aria-hidden="true"{% endif %}>
+            <path class="f1" d="M48 60C130 140 210 190 372 198L372 252L48 252Z"/>
+            <path d="M48 20V252H372" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+            <path class="c1" d="M48 60C130 140 210 190 372 198" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+            <path class="c2" d="M48 60C120 175 220 236 372 250" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+            {%- if s.line_1 != blank -%}<rect x="210" y="34" width="9" height="9" rx="1.5" fill="var(--bpdp-cta)"/><text x="226" y="43">{{ s.line_1 | escape }}</text>{%- endif -%}
+            {%- if s.line_2 != blank -%}<rect x="210" y="56" width="9" height="9" rx="1.5" fill="var(--bpdp-red)"/><text x="226" y="65">{{ s.line_2 | escape }}</text>{%- endif -%}
+            {%- if s.axis_y != blank -%}<text x="22" y="140" transform="rotate(-90 22 140)" text-anchor="middle">{{ s.axis_y | escape }}</text>{%- endif -%}
+            {%- if s.axis_x != blank -%}<text x="210" y="284" text-anchor="middle">{{ s.axis_x | escape }}</text>{%- endif -%}
+          </svg>
+          {%- if request.design_mode and s.line_1 == blank and s.line_2 == blank -%}<figcaption>{% render 'boarage-placeholder', label: 'Chart legend labels' %}</figcaption>{%- endif -%}
+        </figure>
+      {%- elsif s.image != blank -%}
+        <div class="bpdp-sci__img">{{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 50vw, 100vw', alt: s.image_alt }}</div>
+      {%- elsif request.design_mode -%}
+        <div>{% render 'boarage-placeholder', label: 'Image', kind: 'block' %}</div>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
@@ -65,33 +47,28 @@
   "class": "bpdp-section",
   "enabled_on": { "templates": ["*"] },
   "settings": [
-    { "type": "paragraph", "content": "t:boarage.common.empty_info" },
-    { "type": "text", "id": "heading", "label": "t:boarage.common.heading.label", "info": "t:boarage.common.heading.info" },
+    { "type": "paragraph", "content": "t:boarage.s08.settings.paragraph" },
+    { "type": "text", "id": "eyebrow", "label": "t:boarage.common.eyebrow.label" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
     { "type": "richtext", "id": "text", "label": "t:boarage.common.text.label" },
-    { "type": "textarea", "id": "disclaimer", "label": "t:boarage.s08.settings.disclaimer.label", "info": "t:boarage.s08.settings.disclaimer.info" },
-    { "type": "header", "content": "t:boarage.s08.settings.visual_header" },
     {
       "type": "select",
       "id": "visual",
       "label": "t:boarage.s08.settings.visual.label",
       "options": [
-        { "value": "none", "label": "t:boarage.s08.settings.visual.options.none" },
-        { "value": "image", "label": "t:boarage.s08.settings.visual.options.image" },
-        { "value": "panel", "label": "t:boarage.s08.settings.visual.options.panel" }
+        { "value": "chart", "label": "t:boarage.s08.settings.visual.options.chart" },
+        { "value": "image", "label": "t:boarage.s08.settings.visual.options.image" }
       ],
-      "default": "none"
+      "default": "chart"
     },
+    { "type": "text", "id": "line_1", "label": "t:boarage.s08.settings.line_1.label", "info": "t:boarage.s08.settings.line_1.info" },
+    { "type": "text", "id": "line_2", "label": "t:boarage.s08.settings.line_2.label", "info": "t:boarage.s08.settings.line_2.info" },
+    { "type": "text", "id": "axis_y", "label": "t:boarage.s08.settings.axis_y.label" },
+    { "type": "text", "id": "axis_x", "label": "t:boarage.s08.settings.axis_x.label" },
+    { "type": "text", "id": "chart_alt", "label": "t:boarage.s08.settings.chart_alt.label", "info": "t:boarage.s08.settings.chart_alt.info" },
     { "type": "image_picker", "id": "image", "label": "t:boarage.common.image.label" },
-    { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label", "info": "t:boarage.common.image_alt.info" },
-    { "type": "header", "content": "t:boarage.panel.header" },
-    { "type": "paragraph", "content": "t:boarage.panel.paragraph" },
-    { "type": "text", "id": "left_title", "label": "t:boarage.panel.left_title" },
-    { "type": "textarea", "id": "left_text", "label": "t:boarage.panel.left_text" },
-    { "type": "text", "id": "right_title", "label": "t:boarage.panel.right_title" },
-    { "type": "textarea", "id": "right_text", "label": "t:boarage.panel.right_text" },
-    { "type": "text", "id": "axis_start", "label": "t:boarage.panel.axis_start" },
-    { "type": "text", "id": "axis_end", "label": "t:boarage.panel.axis_end" }
+    { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" }
   ],
-  "presets": [ { "name": "t:boarage.s08.name" } ]
+  "presets": [{ "name": "t:boarage.s08.name" }]
 }
 {% endschema %}

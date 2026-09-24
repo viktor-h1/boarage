@@ -1,74 +1,86 @@
 {
   "settings": {
     "name": "Boarage PDP",
-    "paragraph": "Design tokens for the Boarage product page sections. Every value has a sensible default; the sections also work when this group is missing.",
-    "fonts_header": "Fonts",
+    "paragraph": "Design tokens for the Boarage product page sections (boarage-pdp-01 … 14).",
+    "fonts_header": "Typography",
     "use_theme_fonts": {
-      "label": "Use the theme's fonts",
-      "info": "When enabled, the Boarage sections inherit the theme's heading and body fonts. Disable it to pick separate fonts below."
+      "label": "Use the theme fonts",
+      "info": "Off: the two fonts below are used (Outfit for headings, Work Sans for text, like the reference page)."
     },
     "font_heading": {
-      "label": "Heading font (also buttons and labels)"
+      "label": "Heading font"
     },
     "font_body": {
       "label": "Body font"
     },
     "base_size": {
-      "label": "Base font size",
-      "info": "Body text size on all devices. 18 px is the minimum for a 60+ audience."
+      "label": "Base text size",
+      "info": "18 px is the minimum for the 60+ audience. Headings and spacing scale with it."
     },
     "colors_header": "Colours",
-    "color_accent": {
-      "label": "Accent (buttons, links, highlights)"
+    "color_primary": {
+      "label": "Primary green",
+      "info": "Headings, selected bundle border, seals, guarantee icon."
     },
-    "color_accent_ink": {
-      "label": "Text on accent"
+    "color_primary_ink": {
+      "label": "Text on primary green"
     },
-    "color_surface": {
-      "label": "Surface (cards, bands)"
+    "color_cta": {
+      "label": "Button green",
+      "info": "Add-to-cart button, stars, check marks. Keep it dark enough for white text."
+    },
+    "color_cta_ink": {
+      "label": "Text on buttons"
+    },
+    "color_mint": {
+      "label": "Highlight on dark backgrounds",
+      "info": "Italic words in headlines on dark sections and eyebrow lines."
+    },
+    "color_soft": {
+      "label": "Light green tint",
+      "info": "Benefits box, guarantee box, stage cards, gallery background."
     },
     "color_line": {
-      "label": "Lines and borders"
+      "label": "Lines and card borders"
     },
-    "color_cool": {
-      "label": "Cool tint (left half of the sensation panel, icon circles)"
-    },
-    "color_warm": {
-      "label": "Warm tint (right half of the sensation panel)"
+    "color_surface": {
+      "label": "Card background"
     },
     "color_bg": {
       "label": "Page background",
-      "info": "Leave empty to keep the theme's background colour."
+      "info": "Leave empty to keep the theme background."
     },
     "radius": {
       "label": "Corner radius"
     },
-    "mode_header": "Dark mode",
     "dark_mode": {
-      "label": "Colour scheme for the Boarage sections",
-      "info": "The theme's header and footer have no dark mode, so 'Off' is the safe default.",
+      "label": "Dark mode",
+      "info": "\"Follow system\" honours the visitor's device setting. The theme header and footer have no dark mode.",
       "options": {
         "light": "Off (always light)",
-        "system": "Follow the visitor's system setting",
+        "system": "Follow system",
         "dark": "Always dark"
       }
+    },
+    "guarantee_header": "Guarantee box",
+    "guarantee_paragraph": "Typed once, shown in the buy box and the timeline section (each has an on/off switch).",
+    "guarantee_title": {
+      "label": "Guarantee title"
+    },
+    "guarantee_text": {
+      "label": "Guarantee text"
     }
   },
   "common": {
-    "empty_info": "Empty settings render nothing on the storefront. In the editor they show a dashed placeholder with the setting's name.",
     "heading": {
       "label": "Headline",
-      "info": "Leave empty to hide the headline."
+      "info": "Italic words are shown in green."
     },
-    "intro": {
-      "label": "Intro text (rich text)"
+    "eyebrow": {
+      "label": "Eyebrow line (above the headline)"
     },
     "text": {
-      "label": "Text (rich text)"
-    },
-    "link": {
-      "label": "Link (optional)",
-      "info": "Leave empty for plain text."
+      "label": "Text"
     },
     "icon": {
       "label": "Icon"
@@ -77,241 +89,317 @@
       "label": "Image"
     },
     "image_alt": {
-      "label": "Image alt text",
-      "info": "Describe the image for screen readers and search engines."
+      "label": "Image description (alt text)"
     },
-    "cta_label": {
-      "label": "Button text"
+    "yes": "Yes",
+    "no": "No",
+    "show_rating": {
+      "label": "Show the star rating line",
+      "info": "Uses the reviews.rating metafield filled by the reviews app. Nothing shows until it exists."
     },
-    "cta_link": {
-      "label": "Button link (optional)",
-      "info": "Leave empty to scroll to the buy box on the product page."
+    "rating_prefix": {
+      "label": "Text before the rating",
+      "info": "Example: “Rated”. Leave empty to show the number only."
+    },
+    "rating_word": {
+      "label": "Word after the rating",
+      "info": "Shown in quotes, e.g. “Excellent”."
+    },
+    "show_guarantee": {
+      "label": "Show the guarantee box",
+      "info": "Text comes from Theme settings › Boarage PDP › Guarantee box."
+    },
+    "accordion_title": {
+      "label": "Accordion title"
+    },
+    "accordion_content": {
+      "label": "Accordion content"
+    },
+    "review": {
+      "name": "Review",
+      "title": {
+        "label": "Review headline"
+      },
+      "text": {
+        "label": "Review text"
+      },
+      "rating": {
+        "label": "Stars"
+      },
+      "name_field": {
+        "label": "Customer name"
+      },
+      "meta": {
+        "label": "Line under the name",
+        "info": "Example: “Verified customer”."
+      },
+      "date": {
+        "label": "Date"
+      },
+      "image": {
+        "label": "Customer photo"
+      }
     }
   },
   "icons": {
-    "none": "No icon",
-    "shield": "Shield",
+    "bolt": "Energy (bolt)",
+    "bone": "Joint (bone)",
     "box": "Parcel",
-    "truck": "Truck",
-    "chat": "Speech bubble",
-    "invoice": "Invoice",
-    "lock": "Lock",
-    "leaf": "Leaf",
+    "cell": "Cell",
+    "chat": "Support chat",
+    "check": "Check mark",
+    "clock": "Clock",
     "drop": "Drop",
-    "snowflake": "Snowflake (cool)",
-    "flame": "Flame (warm)",
-    "wave": "Wave",
+    "flame": "Warmth (flame)",
     "hand": "Hand",
     "heart": "Heart",
+    "info": "Info",
+    "invoice": "Invoice",
     "jar": "Jar",
-    "clock": "Clock",
-    "star": "Star",
-    "check": "Check mark"
-  },
-  "panel": {
-    "header": "Sensation panel",
-    "paragraph": "Two labelled halves (cool | warm) with a title and a short text each, plus a start and an end label on the axis underneath.",
-    "left_title": "Left half: title",
-    "left_text": "Left half: text",
-    "right_title": "Right half: title",
-    "right_text": "Right half: text",
-    "axis_start": "Axis: start label",
-    "axis_end": "Axis: end label"
+    "leaf": "Leaf",
+    "lock": "Lock",
+    "moon": "Sleep (moon)",
+    "muscle": "Muscle",
+    "plant": "Plant (garden)",
+    "refresh": "Refresh (subscription)",
+    "shield": "Shield",
+    "shoe": "Shoe (walking)",
+    "snowflake": "Cooling (snowflake)",
+    "sun": "Sun",
+    "truck": "Delivery truck",
+    "user": "Person",
+    "wave": "Wave"
   },
   "s01": {
-    "name": "Boarage 01 Announcement",
+    "name": "Boarage 01 Sale bar",
     "settings": {
-      "style": {
-        "label": "Style",
+      "paragraph": "Dark green bar with a bold headline, a sub-line and an optional countdown. Hidden while empty.",
+      "title": {
+        "label": "Headline (e.g. the sale name)"
+      },
+      "subtitle": {
+        "label": "Sub-line"
+      },
+      "align": {
+        "label": "Alignment",
         "options": {
-          "accent": "Accent background",
-          "surface": "Light surface with a bottom line"
+          "left": "Text left, countdown right",
+          "center": "Centred"
         }
-      }
-    },
-    "blocks": {
-      "item": {
-        "name": "Strip item",
-        "settings": {
-          "text": {
-            "label": "Item text",
-            "info": "One short phrase, e.g. a guarantee, support or payment note."
-          }
+      },
+      "countdown_header": "Countdown",
+      "countdown_mode": {
+        "label": "Countdown",
+        "info": "“Daily” restarts at the visitor's midnight. “Until a date” uses the end below and hides itself afterwards.",
+        "options": {
+          "off": "Off",
+          "daily": "Daily (resets at midnight)",
+          "date": "Until a date"
         }
+      },
+      "countdown_end": {
+        "label": "End (YYYY-MM-DD HH:MM)",
+        "info": "Interpreted in the visitor's local time."
+      },
+      "label_hours": {
+        "label": "Label under the hours"
+      },
+      "label_minutes": {
+        "label": "Label under the minutes"
+      },
+      "label_seconds": {
+        "label": "Label under the seconds"
       }
     }
   },
   "s02": {
     "name": "Boarage 02 Buy box",
     "settings": {
-      "paragraph": "Product title, images, prices and variants come from the product in the Shopify admin. Everything else is a setting below. Only one buy box per page.",
+      "paragraph": "Gallery with benefit tiles, rating, title, description, benefits, bundle cards, add-to-cart, trust box, guarantee and accordions. Product-only.",
       "gallery_header": "Gallery",
       "gallery_aspect": {
-        "label": "Image frame ratio",
+        "label": "Image frame",
         "options": {
-          "square": "Square (1:1)",
-          "portrait": "Portrait (4:5)",
-          "tall": "Tall (3:4)"
+          "portrait": "Portrait 4:5",
+          "square": "Square 1:1",
+          "tall": "Portrait 3:4",
+          "taller": "Portrait 2:3"
         }
       },
       "media_fit": {
         "label": "Image fit",
         "options": {
-          "cover": "Fill the frame (cover)",
-          "contain": "Show the whole image (contain)"
+          "contain": "Show the whole image",
+          "cover": "Fill the frame (crop)"
         }
       },
       "sticky_gallery": {
-        "label": "Keep the gallery in view on desktop"
+        "label": "Gallery sticks while scrolling (desktop)"
       },
       "show_thumbnails": {
-        "label": "Show thumbnails"
+        "label": "Show thumbnails (desktop)"
       },
-      "text_header": "Text",
+      "seal_1": {
+        "label": "Round seal 1 on the first image",
+        "info": "Two to four short words, e.g. “Made in Germany”."
+      },
+      "seal_2": {
+        "label": "Round seal 2"
+      },
+      "text_header": "Rating and text",
       "show_rating": {
-        "label": "Show the star rating",
-        "info": "Renders only when a reviews app has filled the reviews.rating metafield. If an app block is added to this section, the app block is shown instead."
+        "label": "Show the star rating line",
+        "info": "Uses the reviews.rating metafield. A reviews app block added to this section replaces it."
       },
-      "subtitle": {
-        "label": "Subtitle under the product title",
-        "info": "One or two sentences. Line breaks are kept."
+      "description": {
+        "label": "Description under the title",
+        "info": "Two or three plain sentences."
       },
-      "bundle_header": "Bundle selector",
-      "bundle_legend": {
-        "label": "Bundle selector legend",
-        "info": "Short label above the variant cards."
+      "bundle_header": "Bundles and price",
+      "offer_label": {
+        "label": "Divider line above the bundles",
+        "info": "Example: “Limited time offer”."
       },
       "price_mode": {
-        "label": "Price model",
-        "info": "Bundle total: the variant price is the price of the whole bundle; the per-unit price is price ÷ the variant metafield custom.units_per_variant. Per unit: the variant price is the price per unit; the total is price × units and the cart receives that many units.",
+        "label": "Variant prices are",
+        "info": "Bundle total: the variant price is the total. Per unit: the total is price × units (custom.units_per_variant) and that quantity goes into the cart.",
         "options": {
-          "bundle_total": "Variant price is the bundle total",
-          "per_unit": "Variant price is per unit"
+          "bundle_total": "Bundle totals",
+          "per_unit": "Per unit"
         }
       },
       "per_unit_label": {
         "label": "Per-unit label",
-        "info": "Shown after the computed unit price, e.g. the word for 'per jar'. The unit line is hidden until the variant metafield custom.units_per_variant is filled."
+        "info": "Example: “per jar”. Shown only when custom.units_per_variant is set on the variant."
+      },
+      "stock_text": {
+        "label": "Stock / delivery line (green dot)",
+        "info": "Hidden for sold-out variants."
       },
       "buttons_header": "Buttons",
       "cta_label": {
-        "label": "Add-to-cart button text",
-        "info": "Leave empty to use the theme's default add-to-cart text. Bundle blocks can override it per variant."
+        "label": "Add-to-cart button label",
+        "info": "Empty: the theme's “Add to cart” text."
+      },
+      "cta_show_price": {
+        "label": "Show the price inside the button"
       },
       "after_add": {
-        "label": "After adding to cart",
+        "label": "After adding to the cart",
         "options": {
-          "drawer": "Open the theme's cart drawer or notification (falls back to the cart page)",
-          "cart": "Always go to the cart page"
+          "drawer": "Open the theme cart drawer",
+          "cart": "Go to the cart page"
         }
       },
+      "show_payment_icons": {
+        "label": "Show payment icons",
+        "info": "The payment methods enabled in the Shopify admin."
+      },
       "sticky_bar": {
-        "label": "Show the mobile sticky buy bar"
+        "label": "Mobile sticky buy bar"
       },
       "sticky_cta_label": {
-        "label": "Sticky bar button text",
-        "info": "Leave empty to reuse the add-to-cart button text."
+        "label": "Sticky bar button label",
+        "info": "Empty: same as the main button."
       }
     },
     "blocks": {
-      "benefit": {
-        "name": "Benefit line",
+      "tile": {
+        "name": "Gallery tile",
+        "paragraph": "Dark green tile next to the first image (max. 3).",
         "settings": {
+          "text": {
+            "label": "Tile text (2–4 words)"
+          }
+        }
+      },
+      "benefit": {
+        "name": "Benefit",
+        "settings": {
+          "lead": {
+            "label": "Bold lead word",
+            "info": "Shown bold before the text, e.g. “Muscles”."
+          },
           "text": {
             "label": "Benefit text"
           }
         }
       },
       "bundle": {
-        "name": "Bundle card text",
-        "paragraph": "Decorates one variant card. Matched by variant title, or by position when the title field is empty (first block = first variant).",
+        "name": "Bundle card",
+        "paragraph": "One card per product variant, in variant order. Prices come from the variants.",
         "settings": {
           "match": {
-            "label": "Variant title to match (optional)",
-            "info": "Exact variant title as in the Shopify admin. Leave empty to match by position."
+            "label": "Variant title to match",
+            "info": "Example: “3 Dosen”. Empty: the card follows the block position."
           },
           "name": {
             "label": "Card name",
-            "info": "Leave empty to show the variant title."
+            "info": "Empty: the variant title."
           },
           "subline": {
             "label": "Sub-line"
           },
+          "highlight": {
+            "label": "Green word after the sub-line",
+            "info": "Example: “FREE”."
+          },
           "badge": {
-            "label": "Badge text",
-            "info": "Small pill on the card's corner. Leave empty for no badge."
+            "label": "Tab above the card",
+            "info": "Example: “Most popular”."
+          },
+          "badge_style": {
+            "label": "Tab style",
+            "options": {
+              "light": "Light green",
+              "dark": "Dark green"
+            }
+          },
+          "image": {
+            "label": "Card image",
+            "info": "Empty: the variant image, else the product image."
           },
           "cta_label": {
-            "label": "Add-to-cart text for this variant",
-            "info": "Leave empty to use the section's button text."
+            "label": "Button label for this bundle",
+            "info": "Empty: the section's button label."
           },
           "preselect": {
-            "label": "Preselect this variant",
-            "info": "Applies when the page is opened without a variant in the URL."
+            "label": "Preselected",
+            "info": "Selected on page load unless the URL names a variant."
+          }
+        }
+      },
+      "note": {
+        "name": "Note under the button",
+        "settings": {
+          "text": {
+            "label": "Note text"
           }
         }
       },
       "trust": {
-        "name": "Trust line under the button",
+        "name": "Trust line",
         "settings": {
           "text": {
-            "label": "Trust line text"
+            "label": "Trust text"
           }
         }
+      },
+      "accordion": {
+        "name": "Accordion"
       }
     }
   },
   "s03": {
-    "name": "Boarage 03 Accordions",
+    "name": "Boarage 03 Reviews slider",
     "settings": {
-      "first_open": {
-        "label": "Open the first item by default"
-      }
-    },
-    "blocks": {
-      "item": {
-        "name": "Accordion item",
-        "settings": {
-          "title": {
-            "label": "Title"
-          },
-          "content": {
-            "label": "Text (rich text)"
-          }
-        }
-      }
+      "paragraph": "Dark green panel with swipeable review cards. Add the reviews app block or manual reviews."
     }
   },
   "s04": {
-    "name": "Boarage 04 Reviews",
+    "name": "Boarage 04 FAQ",
     "settings": {
-      "paragraph": "Add your reviews app as an app block, or fill the manual review blocks. The section renders nothing on the storefront while both are empty."
-    },
-    "blocks": {
-      "review": {
-        "name": "Manual review",
-        "settings": {
-          "text": {
-            "label": "Review text",
-            "info": "Only reviews with permission from the customer."
-          },
-          "name": {
-            "label": "Name"
-          },
-          "location": {
-            "label": "Location"
-          },
-          "image": {
-            "label": "Photo (optional)"
-          }
-        }
-      }
-    }
-  },
-  "s05": {
-    "name": "Boarage 05 FAQ",
-    "settings": {
-      "paragraph": "Entries with both a question and an answer are shown and added to the FAQPage structured data."
+      "paragraph": "Questions render as accordion cards and as FAQ structured data for Google."
     },
     "blocks": {
       "qa": {
@@ -321,43 +409,62 @@
             "label": "Question"
           },
           "answer": {
-            "label": "Answer (rich text)"
+            "label": "Answer"
+          }
+        }
+      }
+    }
+  },
+  "s05": {
+    "name": "Boarage 05 Problem",
+    "settings": {
+      "paragraph": "Dark section: photo, headline, paragraph and a red-marked symptom list."
+    },
+    "blocks": {
+      "point": {
+        "name": "Symptom",
+        "settings": {
+          "text": {
+            "label": "Symptom text"
           }
         }
       }
     }
   },
   "s06": {
-    "name": "Boarage 06 Problem",
+    "name": "Boarage 06 Mechanism",
+    "settings": {
+      "paragraph": "Green card: eyebrow, headline, paragraph, up to four icon items and a product image.",
+      "image": {
+        "label": "Product image"
+      }
+    },
     "blocks": {
-      "stage": {
-        "name": "Stage",
+      "item": {
+        "name": "Icon item",
         "settings": {
           "label": {
-            "label": "Stage label",
-            "info": "Small label above the title, e.g. a step name."
-          },
-          "title": {
-            "label": "Stage title"
-          },
-          "text": {
-            "label": "Stage text"
+            "label": "Label (2–3 words)"
           }
         }
       }
     }
   },
   "s07": {
-    "name": "Boarage 07 Mechanism",
+    "name": "Boarage 07 Stages",
+    "settings": {
+      "paragraph": "Headline and up to four cards (photo left, text right) describing how the problem progresses."
+    },
     "blocks": {
-      "ingredient": {
-        "name": "Ingredient",
+      "stage": {
+        "name": "Stage",
         "settings": {
-          "name": {
-            "label": "Ingredient name"
+          "label": {
+            "label": "Small label",
+            "info": "Example: “Stage 1”."
           },
-          "role": {
-            "label": "What it does"
+          "title": {
+            "label": "Stage title"
           }
         }
       }
@@ -366,181 +473,210 @@
   "s08": {
     "name": "Boarage 08 Science",
     "settings": {
-      "disclaimer": {
-        "label": "Disclaimer (optional)",
-        "info": "Small muted text under the explainer."
-      },
-      "visual_header": "Visual",
+      "paragraph": "Eyebrow, headline, paragraph and a schematic two-curve chart (no numbers) or an image.",
       "visual": {
-        "label": "Visual beside the text",
+        "label": "Visual",
         "options": {
-          "none": "None",
-          "image": "Image",
-          "panel": "Sensation panel"
+          "chart": "Chart",
+          "image": "Image"
         }
+      },
+      "line_1": {
+        "label": "Legend: green curve",
+        "info": "The curve that stays high."
+      },
+      "line_2": {
+        "label": "Legend: red curve",
+        "info": "The curve that drops."
+      },
+      "axis_y": {
+        "label": "Vertical axis label"
+      },
+      "axis_x": {
+        "label": "Horizontal axis label"
+      },
+      "chart_alt": {
+        "label": "Chart description for screen readers",
+        "info": "One sentence saying what the two curves show."
       }
     }
   },
   "s09": {
-    "name": "Boarage 09 Journey",
+    "name": "Boarage 09 Timeline",
     "settings": {
-      "card_header": "Card beside the timeline",
-      "card_paragraph": "A purely visual card that mirrors a printed card shipped with the product: title, hint, two labelled 1–10 scales and two free-text lines.",
-      "card_enabled": {
-        "label": "Show the card"
-      },
-      "card_title": {
-        "label": "Card title"
-      },
-      "card_hint": {
-        "label": "Card hint"
-      },
-      "scale_1_label": {
-        "label": "First scale label"
-      },
-      "scale_2_label": {
-        "label": "Second scale label"
-      },
-      "line_1": {
-        "label": "Free-text line 1"
-      },
-      "line_2": {
-        "label": "Free-text line 2"
-      }
+      "paragraph": "Green section: headline, milestones on a rail with checklists, guarantee box."
     },
     "blocks": {
       "milestone": {
         "name": "Milestone",
         "settings": {
           "when": {
-            "label": "When",
-            "info": "Short label for the moment, e.g. a day or week."
+            "label": "Time label (green)",
+            "info": "Example: “Week 1–2:”."
           },
           "title": {
             "label": "Milestone title"
           },
-          "text": {
-            "label": "Milestone text"
+          "points": {
+            "label": "Checklist",
+            "info": "One item per line."
           }
         }
       }
     }
   },
   "s10": {
-    "name": "Boarage 10 Comparison",
+    "name": "Boarage 10 Photo strip",
     "settings": {
-      "paragraph": "Column blocks are the table headers (the first one is you). Row blocks hold one value per column. 'yes', 'no' and 'varies' (or ja / nein / teils) get styled icons.",
-      "note": {
-        "label": "Footnote under the table (optional)"
-      }
-    },
-    "blocks": {
-      "column": {
-        "name": "Column",
-        "paragraph": "The first column block is highlighted as your product.",
-        "settings": {
-          "label": {
-            "label": "Column header"
-          }
-        }
-      },
-      "row": {
-        "name": "Row",
-        "paragraph": "Values in column order. Type yes, no or varies for a styled icon, or any short text.",
-        "settings": {
-          "label": {
-            "label": "Row label"
-          },
-          "value_1": {
-            "label": "Column 1 (you)"
-          },
-          "value_2": {
-            "label": "Column 2"
-          },
-          "value_3": {
-            "label": "Column 3"
-          },
-          "value_4": {
-            "label": "Column 4"
-          },
-          "value_5": {
-            "label": "Column 5"
-          }
-        }
-      }
-    }
-  },
-  "s11": {
-    "name": "Boarage 11 Guarantee",
-    "settings": {
-      "badge_number": {
-        "label": "Badge number",
-        "info": "Large text in the round seal, e.g. a number of days."
-      },
-      "badge_word": {
-        "label": "Badge word"
-      }
-    }
-  },
-  "s12": {
-    "name": "Boarage 12 Photo wall",
-    "settings": {
-      "columns": {
-        "label": "Columns on desktop"
+      "paragraph": "Five stars, headline and a swipeable strip of customer photos.",
+      "show_stars": {
+        "label": "Show five stars above the headline"
       }
     },
     "blocks": {
       "photo": {
-        "name": "Photo",
+        "name": "Photo"
+      }
+    }
+  },
+  "s11": {
+    "name": "Boarage 11 Comparison",
+    "settings": {
+      "paragraph": "Three columns: us (green, checks), feature, others (grey, crosses).",
+      "image_us": {
+        "label": "Our product image"
+      },
+      "label_us": {
+        "label": "Our column label"
+      },
+      "image_them": {
+        "label": "Other product image"
+      },
+      "label_them": {
+        "label": "Other column label"
+      },
+      "sr_yes": {
+        "label": "Screen-reader word for a check",
+        "info": "Read aloud instead of the icon, e.g. “yes”."
+      },
+      "sr_no": {
+        "label": "Screen-reader word for a cross"
+      }
+    },
+    "blocks": {
+      "row": {
+        "name": "Row",
         "settings": {
-          "caption": {
-            "label": "Caption (optional)"
+          "label": {
+            "label": "Feature"
+          },
+          "us": {
+            "label": "Us"
+          },
+          "them": {
+            "label": "Others"
+          }
+        }
+      }
+    }
+  },
+  "s12": {
+    "name": "Boarage 12 Results",
+    "settings": {
+      "paragraph": "Dark card: photo, headline, statistics you enter yourself, product image and the extended guarantee.",
+      "subtitle": {
+        "label": "Sub-line under the headline"
+      },
+      "image": {
+        "label": "Photo"
+      },
+      "guarantee_header": "Guarantee",
+      "image_product": {
+        "label": "Product image"
+      },
+      "guarantee_big": {
+        "label": "Big line",
+        "info": "Example: “60 days”."
+      },
+      "guarantee_title": {
+        "label": "Guarantee title"
+      },
+      "guarantee_text": {
+        "label": "Guarantee text"
+      },
+      "guarantee_points": {
+        "label": "Checklist"
+      }
+    },
+    "blocks": {
+      "stat": {
+        "name": "Statistic",
+        "settings": {
+          "value": {
+            "label": "Value",
+            "info": "Example: “94 %”. Use only figures you can back up."
+          },
+          "label": {
+            "label": "Label"
           }
         }
       }
     }
   },
   "s13": {
-    "name": "Boarage 13 Closing CTA",
+    "name": "Boarage 13 Reviews list",
     "settings": {
-      "guarantee_line": {
-        "label": "Guarantee line above the button"
+      "paragraph": "Eyebrow, headline, rating line and a list of reviews with a “load more” link; app blocks render below.",
+      "initial_count": {
+        "label": "Reviews shown before “load more”"
+      },
+      "more_label": {
+        "label": "“Load more” link text",
+        "info": "Empty: all reviews show at once."
       }
     }
   },
   "s14": {
-    "name": "Boarage 14 Legal strip",
+    "name": "Boarage 14 Legal",
     "settings": {
-      "paragraph": "Legal links, the full INCI list and the product category line. Links need both a label and a link to show.",
+      "paragraph": "Dark footer strip: category line, disclaimer notes, ingredients and the mandatory links.",
       "category_line": {
         "label": "Product category line",
-        "info": "Short sentence, e.g. that it is a cosmetic product for external use."
+        "info": "Example: “Cosmetic product, for external use”."
       },
-      "inci_header": "INCI",
+      "note_1": {
+        "label": "Note 1"
+      },
+      "note_2": {
+        "label": "Note 2"
+      },
+      "note_3": {
+        "label": "Note 3"
+      },
       "inci_heading": {
-        "label": "INCI heading"
+        "label": "Ingredients heading"
       },
       "inci": {
-        "label": "Full INCI list (rich text)"
+        "label": "Ingredients (INCI)"
       },
       "links_header": "Links",
       "impressum_label": {
-        "label": "Impressum: label"
+        "label": "Impressum label"
       },
       "impressum_link": {
-        "label": "Impressum: link"
+        "label": "Impressum link"
       },
       "widerruf_label": {
-        "label": "Widerruf: label"
+        "label": "Widerruf label"
       },
       "widerruf_link": {
-        "label": "Widerruf: link"
+        "label": "Widerruf link"
       },
       "datenschutz_label": {
-        "label": "Datenschutz: label"
+        "label": "Datenschutz label"
       },
       "datenschutz_link": {
-        "label": "Datenschutz: link"
+        "label": "Datenschutz link"
       }
     }
   }

@@ -5,7 +5,8 @@
   "description": "Boarage product page template (Shopify OS 2.0 sections) for boarage.de, blank-content skeleton",
   "type": "module",
   "scripts": {
-    "check": "shopify theme check",
+    "build": "node dev/build.mjs",
+    "check": "npm run build && shopify theme check",
     "dev:render": "node dev/render.mjs",
     "dev:test": "node dev/test.mjs",
     "dev:lighthouse": "node dev/lighthouse.mjs",
@@ -13,8 +14,10 @@
   },
   "devDependencies": {
     "@shopify/cli": "^4.8.2",
+    "csso": "^5.0.5",
     "lighthouse": "^13.5.0",
     "liquidjs": "^10.29.0",
-    "playwright": "1.56.1"
+    "playwright": "1.56.1",
+    "terser": "^5.51.2"
   }
 }

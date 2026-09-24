@@ -1,0 +1,18 @@
+{%- comment -%}
+  Product rating line from the standard reviews.rating / reviews.rating_count metafields (filled by review apps).
+  Params: prefix (text before the number), word (quoted word after it, e.g. "Ausgezeichnet"), center (boolean).
+  Renders nothing on the storefront without a rating; the editor shows a placeholder.
+{%- endcomment -%}
+{%- liquid
+  assign r = product.metafields.reviews.rating.value
+  assign n = product.metafields.reviews.rating_count.value | plus: 0
+-%}
+{%- if r != blank -%}
+  <p class="bpdp-rating{% if center %} bpdp-rating--center{% endif %}">
+    {%- capture star_label -%}{{ 'accessibility.star_reviews_info' | t: rating_value: r.rating, rating_max: r.scale_max }}{%- endcapture -%}
+    {%- render 'boarage-stars', rating: r.rating, label: star_label -%}
+    <span>{% if prefix != blank %}{{ prefix | escape }} {% endif %}<b>{{ r.rating }} / {{ r.scale_max }}</b>{% if word != blank %} | <b>‘{{ word | escape }}’</b>{% endif %}{% if n > 0 %} <span class="bpdp-muted">({{ n }})</span>{% endif %}</span>
+  </p>
+{%- elsif request.design_mode -%}
+  <p class="bpdp-rating{% if center %} bpdp-rating--center{% endif %}">{% render 'boarage-placeholder', label: 'Rating line: appears once a reviews app fills the reviews.rating metafield' %}</p>
+{%- endif -%}

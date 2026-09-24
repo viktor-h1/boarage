@@ -1,31 +1,32 @@
 {%- comment -%}
-  Loads the Boarage PDP assets and maps Theme settings > Boarage PDP onto CSS custom properties.
-  Rendered by every Boarage section, so it may appear more than once on a page: the asset tags
-  resolve to the same cached URLs, the script guards itself, and the style block is idempotent.
-  Works without the settings group too (every value falls back to the defaults in boarage-pdp.css).
+  Loads the Boarage PDP assets and maps Theme settings › Boarage PDP onto CSS custom properties.
+  Rendered by every Boarage section (the asset tags resolve to the same cached URLs; the style block is idempotent).
+  Works without the settings group too: every value falls back to the defaults in boarage-pdp.css.
 {%- endcomment -%}
 {{ 'boarage-pdp.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'boarage-pdp.js' | asset_url }}" defer="defer"></script>
 {%- style -%}
   :root {
-    {%- if settings.boarage_color_accent != blank %} --bpdp-c-accent: {{ settings.boarage_color_accent }};{% endif %}
-    {%- if settings.boarage_color_accent_ink != blank %} --bpdp-c-accent-ink: {{ settings.boarage_color_accent_ink }};{% endif %}
-    {%- if settings.boarage_color_surface != blank %} --bpdp-c-surface: {{ settings.boarage_color_surface }};{% endif %}
+    {%- if settings.boarage_color_primary != blank %} --bpdp-c-primary: {{ settings.boarage_color_primary }};{% endif %}
+    {%- if settings.boarage_color_primary_ink != blank %} --bpdp-c-primary-ink: {{ settings.boarage_color_primary_ink }};{% endif %}
+    {%- if settings.boarage_color_cta != blank %} --bpdp-c-cta: {{ settings.boarage_color_cta }};{% endif %}
+    {%- if settings.boarage_color_cta_ink != blank %} --bpdp-c-cta-ink: {{ settings.boarage_color_cta_ink }};{% endif %}
+    {%- if settings.boarage_color_mint != blank %} --bpdp-c-mint: {{ settings.boarage_color_mint }};{% endif %}
+    {%- if settings.boarage_color_soft != blank %} --bpdp-c-soft: {{ settings.boarage_color_soft }};{% endif %}
     {%- if settings.boarage_color_line != blank %} --bpdp-c-line: {{ settings.boarage_color_line }};{% endif %}
-    {%- if settings.boarage_color_cool != blank %} --bpdp-c-cool: {{ settings.boarage_color_cool }};{% endif %}
-    {%- if settings.boarage_color_warm != blank %} --bpdp-c-warm: {{ settings.boarage_color_warm }};{% endif %}
+    {%- if settings.boarage_color_surface != blank %} --bpdp-c-surface: {{ settings.boarage_color_surface }};{% endif %}
     {%- if settings.boarage_color_bg != blank %} --bpdp-c-bg: {{ settings.boarage_color_bg }};{% endif %}
     {%- if settings.boarage_base_size != blank %} --bpdp-c-base: {{ settings.boarage_base_size }}px;{% endif %}
     {%- if settings.boarage_radius != blank %} --bpdp-c-radius: {{ settings.boarage_radius }}px;{% endif %}
-    {%- if settings.boarage_use_theme_fonts == false %}
+    {%- unless settings.boarage_use_theme_fonts %}
       {%- if settings.boarage_font_heading != blank %} --bpdp-c-font-heading: {{ settings.boarage_font_heading.family }}, {{ settings.boarage_font_heading.fallback_families }};{% endif %}
       {%- if settings.boarage_font_body != blank %} --bpdp-c-font-body: {{ settings.boarage_font_body.family }}, {{ settings.boarage_font_body.fallback_families }};{% endif %}
-    {%- endif %}
+    {%- endunless %}
   }
-  {%- if settings.boarage_use_theme_fonts == false %}
+  {%- unless settings.boarage_use_theme_fonts %}
     {%- if settings.boarage_font_heading != blank %}{{ settings.boarage_font_heading | font_face: font_display: 'swap' }}{% endif %}
     {%- if settings.boarage_font_body != blank %}{{ settings.boarage_font_body | font_face: font_display: 'swap' }}{% endif %}
-  {%- endif %}
+  {%- endunless %}
 {%- endstyle -%}
 {%- liquid
   assign bpdp_mode = settings.boarage_dark_mode | default: 'light'

@@ -1,0 +1,4 @@
+{%- comment -%}
+  Five square stars with a partial fill. Params: rating (number, 0-5), size ('sm' or blank), label (aria-label).
+{%- endcomment -%}
+<span class="bpdp-stars{% if size != blank %} bpdp-stars--{{ size }}{% endif %}" style="--rating: {{ rating | default: 5 }};" role="img"{% if label != blank %} aria-label="{{ label | escape }}"{% else %} aria-hidden="true"{% endif %}><i></i><i></i><i></i><i></i><i></i></span>

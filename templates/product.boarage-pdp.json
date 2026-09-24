@@ -1,412 +1,98 @@
 {
   "sections": {
-    "boarage_announcement": {
-      "type": "boarage-pdp-01-announcement",
-      "blocks": {
-        "item_1": {
-          "type": "item",
-          "settings": {}
-        },
-        "item_2": {
-          "type": "item",
-          "settings": {}
-        },
-        "item_3": {
-          "type": "item",
-          "settings": {}
-        },
-        "item_4": {
-          "type": "item",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "item_1",
-        "item_2",
-        "item_3",
-        "item_4"
-      ],
-      "settings": {}
-    },
+    "boarage_sale_bar": { "type": "boarage-pdp-01-sale-bar", "settings": {} },
     "boarage_buy_box": {
       "type": "boarage-pdp-02-buy-box",
       "blocks": {
-        "rating_app": {
-          "type": "shopify://apps/lai-product-reviews/blocks/star_rating_product/cad3c6c6-329e-4416-ba74-b79359b5b6e1",
-          "settings": {
-            "lai_product": ""
-          }
-        },
-        "benefit_1": {
-          "type": "benefit",
-          "settings": {}
-        },
-        "benefit_2": {
-          "type": "benefit",
-          "settings": {}
-        },
-        "benefit_3": {
-          "type": "benefit",
-          "settings": {}
-        },
-        "benefit_4": {
-          "type": "benefit",
-          "settings": {}
-        },
-        "bundle_1": {
-          "type": "bundle",
-          "settings": {}
-        },
-        "bundle_2": {
-          "type": "bundle",
-          "settings": {}
-        },
-        "bundle_3": {
-          "type": "bundle",
-          "settings": {}
-        },
-        "trust_1": {
-          "type": "trust",
-          "settings": {}
-        },
-        "trust_2": {
-          "type": "trust",
-          "settings": {}
-        },
-        "trust_3": {
-          "type": "trust",
-          "settings": {}
-        }
+        "star_rating": { "type": "shopify://apps/lai-product-reviews/blocks/star_rating_product/cad3c6c6-329e-4416-ba74-b79359b5b6e1", "settings": { "lai_product": "" } },
+        "tile_1": { "type": "tile", "settings": {} },
+        "tile_2": { "type": "tile", "settings": {} },
+        "tile_3": { "type": "tile", "settings": {} },
+        "benefit_1": { "type": "benefit", "settings": {} },
+        "benefit_2": { "type": "benefit", "settings": {} },
+        "benefit_3": { "type": "benefit", "settings": {} },
+        "benefit_4": { "type": "benefit", "settings": {} },
+        "bundle_1": { "type": "bundle", "settings": {} },
+        "bundle_2": { "type": "bundle", "settings": {} },
+        "bundle_3": { "type": "bundle", "settings": {} },
+        "note_1": { "type": "note", "settings": {} },
+        "note_2": { "type": "note", "settings": {} },
+        "trust_1": { "type": "trust", "settings": {} },
+        "trust_2": { "type": "trust", "settings": {} },
+        "accordion_1": { "type": "accordion", "settings": {} },
+        "accordion_2": { "type": "accordion", "settings": {} },
+        "accordion_3": { "type": "accordion", "settings": {} },
+        "accordion_4": { "type": "accordion", "settings": {} }
       },
-      "block_order": [
-        "rating_app",
-        "benefit_1",
-        "benefit_2",
-        "benefit_3",
-        "benefit_4",
-        "bundle_1",
-        "bundle_2",
-        "bundle_3",
-        "trust_1",
-        "trust_2",
-        "trust_3"
-      ],
-      "settings": {}
-    },
-    "boarage_accordions": {
-      "type": "boarage-pdp-03-accordions",
-      "blocks": {
-        "acc_1": {
-          "type": "item",
-          "settings": {}
-        },
-        "acc_2": {
-          "type": "item",
-          "settings": {}
-        },
-        "acc_3": {
-          "type": "item",
-          "settings": {}
-        },
-        "acc_4": {
-          "type": "item",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "acc_1",
-        "acc_2",
-        "acc_3",
-        "acc_4"
-      ],
+      "block_order": ["star_rating", "tile_1", "tile_2", "tile_3", "benefit_1", "benefit_2", "benefit_3", "benefit_4", "bundle_1", "bundle_2", "bundle_3", "note_1", "note_2", "trust_1", "trust_2", "accordion_1", "accordion_2", "accordion_3", "accordion_4"],
       "settings": {}
     },
     "boarage_reviews": {
-      "type": "boarage-pdp-04-reviews",
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {}
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {}
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "review_1",
-        "review_2",
-        "review_3"
-      ],
+      "type": "boarage-pdp-03-reviews",
+      "blocks": { "review_1": { "type": "review", "settings": {} }, "review_2": { "type": "review", "settings": {} }, "review_3": { "type": "review", "settings": {} }, "review_4": { "type": "review", "settings": {} } },
+      "block_order": ["review_1", "review_2", "review_3", "review_4"],
       "settings": {}
     },
     "boarage_faq": {
-      "type": "boarage-pdp-05-faq",
-      "blocks": {
-        "qa_1": {
-          "type": "qa",
-          "settings": {}
-        },
-        "qa_2": {
-          "type": "qa",
-          "settings": {}
-        },
-        "qa_3": {
-          "type": "qa",
-          "settings": {}
-        },
-        "qa_4": {
-          "type": "qa",
-          "settings": {}
-        },
-        "qa_5": {
-          "type": "qa",
-          "settings": {}
-        },
-        "qa_6": {
-          "type": "qa",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "qa_1",
-        "qa_2",
-        "qa_3",
-        "qa_4",
-        "qa_5",
-        "qa_6"
-      ],
+      "type": "boarage-pdp-04-faq",
+      "blocks": { "qa_1": { "type": "qa", "settings": {} }, "qa_2": { "type": "qa", "settings": {} }, "qa_3": { "type": "qa", "settings": {} }, "qa_4": { "type": "qa", "settings": {} }, "qa_5": { "type": "qa", "settings": {} }, "qa_6": { "type": "qa", "settings": {} } },
+      "block_order": ["qa_1", "qa_2", "qa_3", "qa_4", "qa_5", "qa_6"],
       "settings": {}
     },
     "boarage_problem": {
-      "type": "boarage-pdp-06-problem",
-      "blocks": {
-        "stage_1": {
-          "type": "stage",
-          "settings": {}
-        },
-        "stage_2": {
-          "type": "stage",
-          "settings": {}
-        },
-        "stage_3": {
-          "type": "stage",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "stage_1",
-        "stage_2",
-        "stage_3"
-      ],
+      "type": "boarage-pdp-05-problem",
+      "blocks": { "point_1": { "type": "point", "settings": {} }, "point_2": { "type": "point", "settings": {} }, "point_3": { "type": "point", "settings": {} }, "point_4": { "type": "point", "settings": {} } },
+      "block_order": ["point_1", "point_2", "point_3", "point_4"],
       "settings": {}
     },
     "boarage_mechanism": {
-      "type": "boarage-pdp-07-mechanism",
-      "blocks": {
-        "ingredient_1": {
-          "type": "ingredient",
-          "settings": {}
-        },
-        "ingredient_2": {
-          "type": "ingredient",
-          "settings": {}
-        },
-        "ingredient_3": {
-          "type": "ingredient",
-          "settings": {}
-        },
-        "ingredient_4": {
-          "type": "ingredient",
-          "settings": {}
-        },
-        "ingredient_5": {
-          "type": "ingredient",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "ingredient_1",
-        "ingredient_2",
-        "ingredient_3",
-        "ingredient_4",
-        "ingredient_5"
-      ],
+      "type": "boarage-pdp-06-mechanism",
+      "blocks": { "item_1": { "type": "item", "settings": {} }, "item_2": { "type": "item", "settings": {} }, "item_3": { "type": "item", "settings": {} }, "item_4": { "type": "item", "settings": {} } },
+      "block_order": ["item_1", "item_2", "item_3", "item_4"],
       "settings": {}
     },
-    "boarage_science": {
-      "type": "boarage-pdp-08-science",
+    "boarage_stages": {
+      "type": "boarage-pdp-07-stages",
+      "blocks": { "stage_1": { "type": "stage", "settings": {} }, "stage_2": { "type": "stage", "settings": {} }, "stage_3": { "type": "stage", "settings": {} } },
+      "block_order": ["stage_1", "stage_2", "stage_3"],
       "settings": {}
     },
-    "boarage_journey": {
-      "type": "boarage-pdp-09-journey",
-      "blocks": {
-        "milestone_1": {
-          "type": "milestone",
-          "settings": {}
-        },
-        "milestone_2": {
-          "type": "milestone",
-          "settings": {}
-        },
-        "milestone_3": {
-          "type": "milestone",
-          "settings": {}
-        },
-        "milestone_4": {
-          "type": "milestone",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "milestone_1",
-        "milestone_2",
-        "milestone_3",
-        "milestone_4"
-      ],
+    "boarage_science": { "type": "boarage-pdp-08-science", "settings": {} },
+    "boarage_timeline": {
+      "type": "boarage-pdp-09-timeline",
+      "blocks": { "milestone_1": { "type": "milestone", "settings": {} }, "milestone_2": { "type": "milestone", "settings": {} }, "milestone_3": { "type": "milestone", "settings": {} }, "milestone_4": { "type": "milestone", "settings": {} } },
+      "block_order": ["milestone_1", "milestone_2", "milestone_3", "milestone_4"],
+      "settings": {}
+    },
+    "boarage_photo_strip": {
+      "type": "boarage-pdp-10-photo-strip",
+      "blocks": { "photo_1": { "type": "photo", "settings": {} }, "photo_2": { "type": "photo", "settings": {} }, "photo_3": { "type": "photo", "settings": {} }, "photo_4": { "type": "photo", "settings": {} }, "photo_5": { "type": "photo", "settings": {} }, "photo_6": { "type": "photo", "settings": {} } },
+      "block_order": ["photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "photo_6"],
       "settings": {}
     },
     "boarage_comparison": {
-      "type": "boarage-pdp-10-comparison",
-      "blocks": {
-        "column_1": {
-          "type": "column",
-          "settings": {}
-        },
-        "column_2": {
-          "type": "column",
-          "settings": {}
-        },
-        "column_3": {
-          "type": "column",
-          "settings": {}
-        },
-        "column_4": {
-          "type": "column",
-          "settings": {}
-        },
-        "row_1": {
-          "type": "row",
-          "settings": {}
-        },
-        "row_2": {
-          "type": "row",
-          "settings": {}
-        },
-        "row_3": {
-          "type": "row",
-          "settings": {}
-        },
-        "row_4": {
-          "type": "row",
-          "settings": {}
-        },
-        "row_5": {
-          "type": "row",
-          "settings": {}
-        },
-        "row_6": {
-          "type": "row",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "column_1",
-        "column_2",
-        "column_3",
-        "column_4",
-        "row_1",
-        "row_2",
-        "row_3",
-        "row_4",
-        "row_5",
-        "row_6"
-      ],
+      "type": "boarage-pdp-11-comparison",
+      "blocks": { "row_1": { "type": "row", "settings": {} }, "row_2": { "type": "row", "settings": {} }, "row_3": { "type": "row", "settings": {} }, "row_4": { "type": "row", "settings": {} }, "row_5": { "type": "row", "settings": {} } },
+      "block_order": ["row_1", "row_2", "row_3", "row_4", "row_5"],
       "settings": {}
     },
-    "boarage_guarantee": {
-      "type": "boarage-pdp-11-guarantee",
+    "boarage_results": {
+      "type": "boarage-pdp-12-results",
+      "blocks": { "stat_1": { "type": "stat", "settings": {} }, "stat_2": { "type": "stat", "settings": {} }, "stat_3": { "type": "stat", "settings": {} } },
+      "block_order": ["stat_1", "stat_2", "stat_3"],
       "settings": {}
     },
-    "boarage_photo_wall": {
-      "type": "boarage-pdp-12-photo-wall",
-      "blocks": {
-        "photo_1": {
-          "type": "photo",
-          "settings": {}
-        },
-        "photo_2": {
-          "type": "photo",
-          "settings": {}
-        },
-        "photo_3": {
-          "type": "photo",
-          "settings": {}
-        },
-        "photo_4": {
-          "type": "photo",
-          "settings": {}
-        },
-        "photo_5": {
-          "type": "photo",
-          "settings": {}
-        },
-        "photo_6": {
-          "type": "photo",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "photo_1",
-        "photo_2",
-        "photo_3",
-        "photo_4",
-        "photo_5",
-        "photo_6"
-      ],
+    "boarage_reviews_list": {
+      "type": "boarage-pdp-13-reviews-list",
+      "blocks": { "review_1": { "type": "review", "settings": {} }, "review_2": { "type": "review", "settings": {} }, "review_3": { "type": "review", "settings": {} } },
+      "block_order": ["review_1", "review_2", "review_3"],
       "settings": {}
     },
-    "boarage_closing": {
-      "type": "boarage-pdp-13-closing",
-      "blocks": {
-        "closing_review_1": {
-          "type": "review",
-          "settings": {}
-        },
-        "closing_review_2": {
-          "type": "review",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "closing_review_1",
-        "closing_review_2"
-      ],
-      "settings": {}
-    },
-    "boarage_legal": {
-      "type": "boarage-pdp-14-legal",
-      "settings": {}
-    }
+    "boarage_legal": { "type": "boarage-pdp-14-legal", "settings": {} }
   },
   "order": [
-    "boarage_announcement",
-    "boarage_buy_box",
-    "boarage_accordions",
-    "boarage_reviews",
-    "boarage_faq",
-    "boarage_problem",
-    "boarage_mechanism",
-    "boarage_science",
-    "boarage_journey",
-    "boarage_comparison",
-    "boarage_guarantee",
-    "boarage_photo_wall",
-    "boarage_closing",
-    "boarage_legal"
+    "boarage_sale_bar", "boarage_buy_box", "boarage_reviews", "boarage_faq", "boarage_problem", "boarage_mechanism",
+    "boarage_stages", "boarage_science", "boarage_timeline", "boarage_photo_strip", "boarage_comparison",
+    "boarage_results", "boarage_reviews_list", "boarage_legal"
   ]
 }

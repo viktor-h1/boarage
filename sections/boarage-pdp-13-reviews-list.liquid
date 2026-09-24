@@ -1,0 +1,86 @@
+{%- comment -%}
+  Boarage PDP 13 · Reviews list: eyebrow, headline, rating line and a list of reviews with a
+  "load more" link; review-app blocks render underneath.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign review_blocks = section.blocks | where: 'type', 'review'
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign initial = s.initial_count | default: 3
+  assign filled = 0
+  for block in review_blocks
+    if block.settings.text != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if filled > 0 or app_blocks.size > 0 or s.heading != blank
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap">
+      {%- render 'boarage-section-head', eyebrow: s.eyebrow, heading: s.heading, eyebrow_label: 'Eyebrow', heading_label: '13 · Reviews list headline', align: 'center' -%}
+      {%- if s.show_rating -%}{%- render 'boarage-rating-line', prefix: s.rating_prefix, word: s.rating_word, center: true -%}{%- endif -%}
+      {%- if filled > 0 or request.design_mode -%}
+        <ul class="bpdp-revlist__grid" data-bpdp-more-target>
+          {%- assign shown = 0 -%}
+          {%- for block in review_blocks -%}
+            {%- if block.settings.text != blank or request.design_mode -%}
+              {%- assign shown = shown | plus: 1 -%}
+              {%- assign hide = false -%}
+              {%- if shown > initial and request.design_mode == false -%}{%- assign hide = true -%}{%- endif -%}
+              {%- render 'boarage-review-card', title: block.settings.title, text: block.settings.text, name: block.settings.name, meta: block.settings.meta, date: block.settings.date, rating: block.settings.rating, image: block.settings.image, image_alt: block.settings.image_alt, attrs: block.shopify_attributes, hidden: hide -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        {%- if filled > initial and s.more_label != blank -%}
+          <p class="bpdp-revlist__more"><button type="button" class="bpdp-linkbtn bpdp-press" data-bpdp-more>{{ s.more_label | escape }}</button></p>
+        {%- endif -%}
+      {%- endif -%}
+      {%- if app_blocks.size > 0 -%}
+        <div class="bpdp-revlist__apps">{%- for block in app_blocks -%}{% render block %}{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s13.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s13.settings.paragraph" },
+    { "type": "text", "id": "eyebrow", "label": "t:boarage.common.eyebrow.label" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
+    { "type": "checkbox", "id": "show_rating", "label": "t:boarage.common.show_rating.label", "info": "t:boarage.common.show_rating.info", "default": true },
+    { "type": "text", "id": "rating_prefix", "label": "t:boarage.common.rating_prefix.label", "info": "t:boarage.common.rating_prefix.info" },
+    { "type": "text", "id": "rating_word", "label": "t:boarage.common.rating_word.label", "info": "t:boarage.common.rating_word.info" },
+    { "type": "range", "id": "initial_count", "label": "t:boarage.s13.settings.initial_count.label", "min": 1, "max": 12, "step": 1, "default": 3 },
+    { "type": "text", "id": "more_label", "label": "t:boarage.s13.settings.more_label.label", "info": "t:boarage.s13.settings.more_label.info" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "review",
+      "name": "t:boarage.common.review.name",
+      "limit": 24,
+      "settings": [
+        { "type": "text", "id": "title", "label": "t:boarage.common.review.title.label" },
+        { "type": "textarea", "id": "text", "label": "t:boarage.common.review.text.label" },
+        { "type": "range", "id": "rating", "label": "t:boarage.common.review.rating.label", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "name", "label": "t:boarage.common.review.name_field.label" },
+        { "type": "text", "id": "meta", "label": "t:boarage.common.review.meta.label", "info": "t:boarage.common.review.meta.info" },
+        { "type": "text", "id": "date", "label": "t:boarage.common.review.date.label" },
+        { "type": "image_picker", "id": "image", "label": "t:boarage.common.review.image.label" },
+        { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s13.name", "blocks": [{ "type": "review" }, { "type": "review" }, { "type": "review" }] }]
+}
+{% endschema %}

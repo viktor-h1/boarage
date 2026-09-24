@@ -1,6 +1,8 @@
 {%- comment -%}
-  Boarage PDP 02 · Buy box (main product): gallery, rating slot, title, subtitle, benefit blocks,
-  variant-driven bundle selector, add-to-cart, trust lines and the mobile sticky buy bar.
+  Boarage PDP 02 · Buy box (main product). Mobile order, top to bottom:
+  gallery carousel (first slide = image + up to 3 benefit tiles, optional round seals) → rating line → title →
+  description → benefits box → offer divider → bundle cards (one per variant) → stock line → add-to-cart →
+  note line → trust box with payment icons → guarantee box → accordion cards → mobile sticky bar.
   Price modes: bundle_total (variant price is the bundle total; per-unit = price ÷ custom.units_per_variant)
   or per_unit (variant price is per unit; total = price × units, cart quantity = units).
 {%- endcomment -%}
@@ -21,12 +23,21 @@
   endif
   assign bundle_blocks = section.blocks | where: 'type', 'bundle'
   assign benefit_blocks = section.blocks | where: 'type', 'benefit'
+  assign tile_blocks = section.blocks | where: 'type', 'tile'
   assign trust_blocks = section.blocks | where: 'type', 'trust'
+  assign note_blocks = section.blocks | where: 'type', 'note'
+  assign acc_blocks = section.blocks | where: 'type', 'accordion'
   assign app_blocks = section.blocks | where: 'type', '@app'
   assign benefits_filled = 0
   for block in benefit_blocks
-    if block.settings.text != blank
+    if block.settings.text != blank or block.settings.lead != blank
       assign benefits_filled = benefits_filled | plus: 1
+    endif
+  endfor
+  assign tiles_filled = 0
+  for block in tile_blocks
+    if block.settings.text != blank
+      assign tiles_filled = tiles_filled | plus: 1
     endif
   endfor
   assign trust_filled = 0
@@ -35,6 +46,13 @@
       assign trust_filled = trust_filled | plus: 1
     endif
   endfor
+  assign notes_filled = 0
+  for block in note_blocks
+    if block.settings.text != blank
+      assign notes_filled = notes_filled | plus: 1
+    endif
+  endfor
+  assign pay_types = shop.enabled_payment_types
 
   # Map every variant (by position) to a bundle block: a block whose "match" equals the variant title wins,
   # otherwise the block at the same position if its "match" is empty. -1 means no block.
@@ -79,9 +97,11 @@
   if current == blank
     assign current = product.selected_or_first_available_variant
   endif
-  assign initial_media = current.featured_media | default: product.featured_media
-  assign rating_obj = product.metafields.reviews.rating.value
-  assign rating_count = product.metafields.reviews.rating_count.value | plus: 0
+  assign hero_media = current.featured_media | default: product.featured_media
+  if hero_media == blank or hero_media.media_type != 'image'
+    assign hero_media = product.media | where: 'media_type', 'image' | first
+  endif
+  assign hero_img = hero_media.preview_image
   assign current_price_html = ''
   assign current_was_html = ''
   assign current_unit_html = ''
@@ -99,81 +119,34 @@
     <div class="bpdp-wrap">
       <div class="bpdp-buy">
 
-        <div class="bpdp-gallery{% if s.sticky_gallery %} bpdp-gallery--sticky{% endif %}" style="--bpdp-gallery-ratio: {{ s.gallery_aspect | default: '1 / 1' }}; --bpdp-gallery-fit: {{ s.media_fit | default: 'cover' }};">
-          <div class="bpdp-gallery__main">
-            {%- assign image_count = 0 -%}
-            {%- for media in product.media -%}
-              {%- if media.media_type == 'image' -%}
-                {%- assign image_count = image_count | plus: 1 -%}
-                {%- assign img = media.preview_image -%}
-                <img
-                  class="bpdp-gallery__img"
-                  src="{{ img | image_url: width: 1400 }}"
-                  srcset="{{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1400 }} 1400w"
-                  sizes="(min-width: 900px) 55vw, 100vw"
-                  width="{{ img.width }}"
-                  height="{{ img.height }}"
-                  alt="{{ media.alt | escape }}"
-                  data-bpdp-media="{{ media.id }}"
-                  {% if media.id == initial_media.id %}loading="eager" fetchpriority="high" data-active="true"{% else %}loading="lazy"{% endif %}
-                >
-              {%- endif -%}
-            {%- endfor -%}
-            {%- if image_count == 0 -%}
-              <span class="bpdp-gallery__empty bpdp-muted" aria-hidden="true">{% render 'boarage-icon', name: 'jar', size: 96 %}</span>
-              {%- if request.design_mode -%}{% render 'boarage-placeholder', label: 'Product images come from the product media in the Shopify admin' %}{%- endif -%}
-            {%- endif -%}
-          </div>
-          {%- if s.show_thumbnails and image_count > 1 -%}
-            <ul class="bpdp-gallery__thumbs">
-              {%- for media in product.media -%}
-                {%- if media.media_type == 'image' -%}
-                  {%- assign img = media.preview_image -%}
-                  <li>
-                    <button type="button" class="bpdp-thumb" data-bpdp-thumb="{{ media.id }}" aria-current="{% if media.id == initial_media.id %}true{% else %}false{% endif %}" aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}">
-                      <img src="{{ img | image_url: width: 240 }}" width="{{ img.width }}" height="{{ img.height }}" alt="" loading="lazy">
-                    </button>
-                  </li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          {%- endif -%}
-        </div>
+        {%- render 'boarage-gallery', s: s, product: product, hero_media: hero_media, hero_img: hero_img, tile_blocks: tile_blocks, tiles_filled: tiles_filled -%}
 
+        {%- comment -%} ---------- info column ---------- {%- endcomment -%}
         <div class="bpdp-buy__info">
-          {%- if s.show_rating and rating_obj != blank and app_blocks.size == 0 -%}
-            <div class="bpdp-rating">
-              <span class="bpdp-rating__stars" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: rating_obj, rating_max: rating_obj.scale_max }}" style="--rating: {{ rating_obj.rating }}; --rating-max: {{ rating_obj.scale_max }};">
-                <span class="bpdp-rating__base">{%- for i in (1..5) -%}{% render 'boarage-icon', name: 'star', size: 22 %}{%- endfor -%}</span>
-                <span class="bpdp-rating__fill">{%- for i in (1..5) -%}{% render 'boarage-icon', name: 'star', size: 22 %}{%- endfor -%}</span>
-              </span>
-              {%- if rating_count > 0 -%}
-                <span class="bpdp-rating__count"><span aria-hidden="true">({{ rating_count }})</span><span class="bpdp-visually-hidden">{{ rating_count }} {{ 'accessibility.total_reviews' | t }}</span></span>
-              {%- endif -%}
-            </div>
-          {%- elsif s.show_rating and request.design_mode and app_blocks.size == 0 -%}
-            <p class="bpdp-rating">{% render 'boarage-placeholder', label: 'Star rating: appears once a reviews app fills the reviews.rating metafield, or add the app block' %}</p>
-          {%- endif -%}
           {%- if app_blocks.size > 0 -%}
-            <div class="bpdp-buy__apps">
-              {%- for block in app_blocks -%}{% render block %}{%- endfor -%}
-            </div>
+            <div class="bpdp-buy__apps">{%- for block in app_blocks -%}{% render block %}{%- endfor -%}</div>
+          {%- elsif s.show_rating -%}
+            {%- render 'boarage-rating-line', prefix: s.rating_prefix, word: s.rating_word -%}
           {%- endif -%}
 
-          <h1 class="bpdp-buy__title">{{ product.title | escape }}</h1>
-          {%- if s.subtitle != blank -%}
-            <p class="bpdp-lede">{{ s.subtitle | escape | newline_to_br }}</p>
+          <h1 class="bpdp-head bpdp-h1">{{ product.title | escape }}</h1>
+
+          {%- if s.description != blank -%}
+            <div class="bpdp-desc bpdp-rte">{{ s.description }}</div>
           {%- elsif request.design_mode -%}
-            <p class="bpdp-lede">{% render 'boarage-placeholder', label: 'Subtitle under the product title' %}</p>
+            <div class="bpdp-desc">{% render 'boarage-placeholder', label: 'Description under the title' %}</div>
           {%- endif -%}
 
           {%- if benefits_filled > 0 or request.design_mode -%}
-            <ul class="bpdp-benefits">
+            <ul class="bpdp-benefits bpdp-list">
               {%- for block in benefit_blocks -%}
-                {%- if block.settings.text != blank or request.design_mode -%}
-                  <li class="bpdp-benefit" {{ block.shopify_attributes }}>
-                    <span class="bpdp-benefit__icon" aria-hidden="true">{% render 'boarage-icon', name: block.settings.icon, size: 22 %}</span>
-                    <span>{% if block.settings.text != blank %}{{ block.settings.text | escape }}{% else %}{% render 'boarage-placeholder', label: 'Benefit text' %}{% endif %}</span>
+                {%- if block.settings.text != blank or block.settings.lead != blank or request.design_mode -%}
+                  <li {{ block.shopify_attributes }}>
+                    {%- render 'boarage-icon', name: 'checksq', size: 24 -%}
+                    <span>
+                      {%- if block.settings.lead != blank -%}<b>{{ block.settings.lead | escape }}</b>{% if block.settings.text != blank %} – {% endif %}{%- endif -%}
+                      {%- if block.settings.text != blank -%}{{ block.settings.text | escape }}{%- elsif block.settings.lead == blank -%}{% render 'boarage-placeholder', label: 'Benefit' %}{%- endif -%}
+                    </span>
                   </li>
                 {%- endif -%}
               {%- endfor -%}
@@ -181,12 +154,12 @@
           {%- endif -%}
 
           {%- form 'product', product, id: form_id, class: 'bpdp-form', novalidate: 'novalidate', data-bpdp-form: 'true' -%}
-            <fieldset class="bpdp-bundles" role="radiogroup"{% if s.bundle_legend != blank %} aria-labelledby="{{ form_id }}-legend"{% endif %}>
-              {%- if s.bundle_legend != blank -%}
-                <legend class="bpdp-bundles__legend" id="{{ form_id }}-legend">{{ s.bundle_legend | escape }}</legend>
-              {%- elsif request.design_mode -%}
-                <legend class="bpdp-bundles__legend">{% render 'boarage-placeholder', label: 'Bundle selector legend' %}</legend>
-              {%- endif -%}
+            {%- if s.offer_label != blank -%}
+              <p class="bpdp-divider" id="{{ form_id }}-legend">{{ s.offer_label | escape }}</p>
+            {%- elsif request.design_mode -%}
+              <p class="bpdp-divider">{% render 'boarage-placeholder', label: 'Offer divider' %}</p>
+            {%- endif -%}
+            <fieldset class="bpdp-bundles" role="radiogroup" style="--bpdp-cols: {{ product.variants.size | at_most: 4 | at_least: 1 }};"{% if s.offer_label != blank %} aria-labelledby="{{ form_id }}-legend"{% else %} aria-label="{{ product.options.first | escape }}"{% endif %}>
               {%- for variant in product.variants -%}
                 {%- liquid
                   assign idx = map_arr[forloop.index0] | plus: 0
@@ -221,14 +194,24 @@
                   assign v_cta = ''
                   assign v_name = variant.title
                   assign v_sub = ''
+                  assign v_hl = ''
                   assign v_badge = ''
+                  assign v_badge_dark = false
+                  assign v_img = variant.featured_image | default: product.featured_image
                   if vb != blank
                     assign v_cta = vb.settings.cta_label
                     if vb.settings.name != blank
                       assign v_name = vb.settings.name
                     endif
                     assign v_sub = vb.settings.subline
+                    assign v_hl = vb.settings.highlight
                     assign v_badge = vb.settings.badge
+                    if vb.settings.badge_style == 'dark'
+                      assign v_badge_dark = true
+                    endif
+                    if vb.settings.image != blank
+                      assign v_img = vb.settings.image
+                    endif
                   endif
                   if variant.id == current.id
                     assign current_price_html = price_html
@@ -239,18 +222,21 @@
                   endif
                 -%}
                 <label class="bpdp-bundle{% if variant.id == current.id %} is-selected{% endif %}{% unless variant.available %} bpdp-bundle--soldout{% endunless %}" for="{{ form_id }}-v{{ variant.id }}"{% if vb != blank %} {{ vb.shopify_attributes }}{% endif %}>
-                  {%- if v_badge != blank -%}<span class="bpdp-badge">{{ v_badge | escape }}</span>{%- endif -%}
                   <input class="bpdp-bundle__radio" type="radio" name="id" id="{{ form_id }}-v{{ variant.id }}" value="{{ variant.id }}"{% if variant.id == current.id %} checked{% endif %} data-bpdp-variant="{{ variant.id }}" data-price="{{ price_html | escape }}" data-was="{{ was_html | escape }}" data-unit="{{ unit_html | escape }}" data-qty="{{ qty }}" data-available="{{ variant.available }}" data-cta="{{ v_cta | escape }}"{% if variant.featured_media != blank %} data-media="{{ variant.featured_media.id }}"{% endif %}>
-                  <span class="bpdp-bundle__text">
-                    <span class="bpdp-bundle__name">{{ v_name | escape }}</span>
-                    {%- if v_sub != blank -%}
-                      <span class="bpdp-bundle__sub">{{ v_sub | escape }}</span>
-                    {%- elsif request.design_mode -%}
-                      <span class="bpdp-bundle__sub">{% render 'boarage-placeholder', label: 'Bundle sub-line' %}</span>
-                    {%- endif -%}
+                  <span class="bpdp-bundle__box">
+                    {%- if v_badge != blank -%}<span class="bpdp-bundle__tab{% if v_badge_dark %} bpdp-bundle__tab--dark{% endif %}">{{ v_badge | escape }}</span>{%- endif -%}
+                    <span class="bpdp-bundle__body">
+                      {%- if v_img != blank -%}{{ v_img | image_url: width: 300 | image_tag: loading: 'lazy', class: 'bpdp-bundle__img', alt: '', widths: '150, 300' }}{%- endif -%}
+                      <span class="bpdp-bundle__name">{{ v_name | escape }}</span>
+                      {%- if v_sub != blank or v_hl != blank -%}
+                        <span class="bpdp-bundle__sub">{{ v_sub }}{% if v_hl != blank %} <b class="bpdp-hl">{{ v_hl | escape }}</b>{% endif %}</span>
+                      {%- elsif request.design_mode -%}
+                        <span class="bpdp-bundle__sub">{% render 'boarage-placeholder', label: 'Sub-line' %}</span>
+                      {%- endif -%}
+                    </span>
                   </span>
                   <span class="bpdp-bundle__price">
-                    {{ price_html }}
+                    <span>{{ price_html }}</span>
                     {%- if was_html != blank -%}<span class="bpdp-bundle__was">{{ was_html }}</span>{%- endif -%}
                     {%- if unit_html != blank -%}<span class="bpdp-bundle__unit">{{ unit_html }}{% if unit_label_visible %} {{ unit_label | escape }}{% endif %}</span>{%- endif -%}
                   </span>
@@ -258,28 +244,58 @@
               {%- endfor -%}
             </fieldset>
             <input type="hidden" name="quantity" value="{{ current_qty }}">
-            <div class="bpdp-price" aria-live="polite" aria-atomic="true">
-              <span class="bpdp-price__now" data-bpdp-price>{{ current_price_html }}</span>
-              <span class="bpdp-price__was" data-bpdp-was{% if current_was_html == blank %} hidden{% endif %}>{{ current_was_html }}</span>
-              <span class="bpdp-price__unit" data-bpdp-unit{% if current_unit_html == blank %} hidden{% endif %}><span data-bpdp-unit-value>{{ current_unit_html }}</span> {% if unit_label_visible %}{{ unit_label | escape }}{% else %}<span class="bpdp-visually-hidden">{{ unit_label | escape }}</span>{% endif %}</span>
+            <div class="bpdp-visually-hidden" aria-live="polite" aria-atomic="true">
+              <span data-bpdp-price>{{ current_price_html }}</span> <span data-bpdp-was{% if current_was_html == blank %} hidden{% endif %}>{{ current_was_html }}</span>
+              <span data-bpdp-unit{% if current_unit_html == blank %} hidden{% endif %}><span data-bpdp-unit-value>{{ current_unit_html }}</span> {{ unit_label | escape }}</span>
             </div>
-            <button type="submit" class="bpdp-btn" data-bpdp-cta{% unless current.available %} disabled aria-disabled="true"{% endunless %}>
+            {%- if s.stock_text != blank -%}
+              <p class="bpdp-stock" data-bpdp-stock{% unless current.available %} hidden{% endunless %}><i aria-hidden="true"></i><span>{{ s.stock_text | escape }}</span></p>
+            {%- elsif request.design_mode -%}
+              <p class="bpdp-stock"><i aria-hidden="true"></i>{% render 'boarage-placeholder', label: 'Stock / delivery line' %}</p>
+            {%- endif -%}
+            <button type="submit" class="bpdp-btn bpdp-btn--cta" data-bpdp-cta{% unless current.available %} disabled aria-disabled="true"{% endunless %}>
               <span class="bpdp-btn__label" data-bpdp-cta-label>{% if current.available %}{{ current_cta | default: cta_default | escape }}{% else %}{{ soldout_label }}{% endif %}</span>
+              {%- if s.cta_show_price -%}<span class="bpdp-btn__label" data-bpdp-cta-price{% unless current.available %} hidden{% endunless %}>• {{ current_price_html }}</span>{%- endif -%}
             </button>
             <p class="bpdp-form__error" role="alert" data-bpdp-error hidden></p>
           {%- endform -%}
 
-          {%- if trust_filled > 0 or request.design_mode -%}
-            <ul class="bpdp-trust">
-              {%- for block in trust_blocks -%}
+          {%- if notes_filled > 0 or request.design_mode -%}
+            <p class="bpdp-note">
+              {%- for block in note_blocks -%}
                 {%- if block.settings.text != blank or request.design_mode -%}
-                  <li class="bpdp-trust__item" {{ block.shopify_attributes }}>
-                    {% render 'boarage-icon', name: block.settings.icon, size: 22 %}
-                    <span>{% if block.settings.text != blank %}{{ block.settings.text }}{% else %}{% render 'boarage-placeholder', label: 'Trust line text' %}{% endif %}</span>
-                  </li>
+                  <span {{ block.shopify_attributes }}>{% render 'boarage-icon', name: block.settings.icon, size: 18 %} {% if block.settings.text != blank %}{{ block.settings.text }}{% else %}{% render 'boarage-placeholder', label: 'Note' %}{% endif %}</span>
                 {%- endif -%}
               {%- endfor -%}
-            </ul>
+            </p>
+          {%- endif -%}
+
+          {%- if trust_filled > 0 or s.show_payment_icons or request.design_mode -%}
+            <div class="bpdp-trustbox">
+              {%- if trust_filled > 0 or request.design_mode -%}
+                <ul class="bpdp-trust">
+                  {%- for block in trust_blocks -%}
+                    {%- if block.settings.text != blank or request.design_mode -%}
+                      <li {{ block.shopify_attributes }}>{% render 'boarage-icon', name: block.settings.icon, size: 22 %}<span>{% if block.settings.text != blank %}{{ block.settings.text }}{% else %}{% render 'boarage-placeholder', label: 'Trust line' %}{% endif %}</span></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+              {%- if s.show_payment_icons and pay_types.size > 0 -%}
+                <div class="bpdp-pay" aria-label="{{ 'sections.footer.payment' | t }}">{%- for type in pay_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if s.show_guarantee -%}{%- render 'boarage-guarantee-box' -%}{%- endif -%}
+
+          {%- if acc_blocks.size > 0 -%}
+            <div class="bpdp-accs">
+              {%- for block in acc_blocks -%}
+                {%- assign acc_id = 'bpdp-acc-' | append: block.id -%}
+                {%- render 'boarage-accordion', title: block.settings.title, content: block.settings.content, open: false, id: acc_id, attrs: block.shopify_attributes, title_label: 'Accordion title', content_label: 'Accordion content' -%}
+              {%- endfor -%}
+            </div>
           {%- endif -%}
         </div>
       </div>
@@ -309,29 +325,34 @@
       "id": "gallery_aspect",
       "label": "t:boarage.s02.settings.gallery_aspect.label",
       "options": [
-        { "value": "1 / 1", "label": "t:boarage.s02.settings.gallery_aspect.options.square" },
         { "value": "4 / 5", "label": "t:boarage.s02.settings.gallery_aspect.options.portrait" },
-        { "value": "3 / 4", "label": "t:boarage.s02.settings.gallery_aspect.options.tall" }
+        { "value": "1 / 1", "label": "t:boarage.s02.settings.gallery_aspect.options.square" },
+        { "value": "3 / 4", "label": "t:boarage.s02.settings.gallery_aspect.options.tall" },
+        { "value": "2 / 3", "label": "t:boarage.s02.settings.gallery_aspect.options.taller" }
       ],
-      "default": "1 / 1"
+      "default": "4 / 5"
     },
     {
       "type": "select",
       "id": "media_fit",
       "label": "t:boarage.s02.settings.media_fit.label",
       "options": [
-        { "value": "cover", "label": "t:boarage.s02.settings.media_fit.options.cover" },
-        { "value": "contain", "label": "t:boarage.s02.settings.media_fit.options.contain" }
+        { "value": "contain", "label": "t:boarage.s02.settings.media_fit.options.contain" },
+        { "value": "cover", "label": "t:boarage.s02.settings.media_fit.options.cover" }
       ],
-      "default": "cover"
+      "default": "contain"
     },
     { "type": "checkbox", "id": "sticky_gallery", "label": "t:boarage.s02.settings.sticky_gallery.label", "default": true },
     { "type": "checkbox", "id": "show_thumbnails", "label": "t:boarage.s02.settings.show_thumbnails.label", "default": true },
+    { "type": "text", "id": "seal_1", "label": "t:boarage.s02.settings.seal_1.label", "info": "t:boarage.s02.settings.seal_1.info" },
+    { "type": "text", "id": "seal_2", "label": "t:boarage.s02.settings.seal_2.label" },
     { "type": "header", "content": "t:boarage.s02.settings.text_header" },
     { "type": "checkbox", "id": "show_rating", "label": "t:boarage.s02.settings.show_rating.label", "info": "t:boarage.s02.settings.show_rating.info", "default": true },
-    { "type": "textarea", "id": "subtitle", "label": "t:boarage.s02.settings.subtitle.label", "info": "t:boarage.s02.settings.subtitle.info" },
+    { "type": "text", "id": "rating_prefix", "label": "t:boarage.common.rating_prefix.label", "info": "t:boarage.common.rating_prefix.info" },
+    { "type": "text", "id": "rating_word", "label": "t:boarage.common.rating_word.label", "info": "t:boarage.common.rating_word.info" },
+    { "type": "richtext", "id": "description", "label": "t:boarage.s02.settings.description.label", "info": "t:boarage.s02.settings.description.info" },
     { "type": "header", "content": "t:boarage.s02.settings.bundle_header" },
-    { "type": "text", "id": "bundle_legend", "label": "t:boarage.s02.settings.bundle_legend.label", "info": "t:boarage.s02.settings.bundle_legend.info" },
+    { "type": "text", "id": "offer_label", "label": "t:boarage.s02.settings.offer_label.label", "info": "t:boarage.s02.settings.offer_label.info" },
     {
       "type": "select",
       "id": "price_mode",
@@ -344,8 +365,10 @@
       "default": "bundle_total"
     },
     { "type": "text", "id": "per_unit_label", "label": "t:boarage.s02.settings.per_unit_label.label", "info": "t:boarage.s02.settings.per_unit_label.info" },
+    { "type": "text", "id": "stock_text", "label": "t:boarage.s02.settings.stock_text.label", "info": "t:boarage.s02.settings.stock_text.info" },
     { "type": "header", "content": "t:boarage.s02.settings.buttons_header" },
     { "type": "text", "id": "cta_label", "label": "t:boarage.s02.settings.cta_label.label", "info": "t:boarage.s02.settings.cta_label.info" },
+    { "type": "checkbox", "id": "cta_show_price", "label": "t:boarage.s02.settings.cta_show_price.label", "default": true },
     {
       "type": "select",
       "id": "after_add",
@@ -356,41 +379,55 @@
       ],
       "default": "drawer"
     },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "t:boarage.s02.settings.show_payment_icons.label", "info": "t:boarage.s02.settings.show_payment_icons.info", "default": true },
+    { "type": "checkbox", "id": "show_guarantee", "label": "t:boarage.common.show_guarantee.label", "info": "t:boarage.common.show_guarantee.info", "default": true },
     { "type": "checkbox", "id": "sticky_bar", "label": "t:boarage.s02.settings.sticky_bar.label", "default": true },
     { "type": "text", "id": "sticky_cta_label", "label": "t:boarage.s02.settings.sticky_cta_label.label", "info": "t:boarage.s02.settings.sticky_cta_label.info" }
   ],
   "blocks": [
     { "type": "@app" },
     {
-      "type": "benefit",
-      "name": "t:boarage.s02.blocks.benefit.name",
-      "limit": 4,
+      "type": "tile",
+      "name": "t:boarage.s02.blocks.tile.name",
+      "limit": 3,
       "settings": [
+        { "type": "paragraph", "content": "t:boarage.s02.blocks.tile.paragraph" },
         {
           "type": "select",
           "id": "icon",
           "label": "t:boarage.common.icon.label",
           "options": [
-            { "value": "check", "label": "t:boarage.icons.check" },
-            { "value": "shield", "label": "t:boarage.icons.shield" },
-            { "value": "box", "label": "t:boarage.icons.box" },
-            { "value": "truck", "label": "t:boarage.icons.truck" },
-            { "value": "chat", "label": "t:boarage.icons.chat" },
-            { "value": "invoice", "label": "t:boarage.icons.invoice" },
-            { "value": "lock", "label": "t:boarage.icons.lock" },
-            { "value": "leaf", "label": "t:boarage.icons.leaf" },
-            { "value": "drop", "label": "t:boarage.icons.drop" },
             { "value": "snowflake", "label": "t:boarage.icons.snowflake" },
             { "value": "flame", "label": "t:boarage.icons.flame" },
-            { "value": "wave", "label": "t:boarage.icons.wave" },
-            { "value": "hand", "label": "t:boarage.icons.hand" },
+            { "value": "muscle", "label": "t:boarage.icons.muscle" },
+            { "value": "bone", "label": "t:boarage.icons.bone" },
+            { "value": "bolt", "label": "t:boarage.icons.bolt" },
+            { "value": "moon", "label": "t:boarage.icons.moon" },
+            { "value": "leaf", "label": "t:boarage.icons.leaf" },
+            { "value": "drop", "label": "t:boarage.icons.drop" },
+            { "value": "plant", "label": "t:boarage.icons.plant" },
+            { "value": "shoe", "label": "t:boarage.icons.shoe" },
             { "value": "heart", "label": "t:boarage.icons.heart" },
+            { "value": "hand", "label": "t:boarage.icons.hand" },
+            { "value": "user", "label": "t:boarage.icons.user" },
+            { "value": "cell", "label": "t:boarage.icons.cell" },
+            { "value": "sun", "label": "t:boarage.icons.sun" },
+            { "value": "wave", "label": "t:boarage.icons.wave" },
             { "value": "jar", "label": "t:boarage.icons.jar" },
-            { "value": "clock", "label": "t:boarage.icons.clock" },
-            { "value": "star", "label": "t:boarage.icons.star" }
+            { "value": "shield", "label": "t:boarage.icons.shield" },
+            { "value": "check", "label": "t:boarage.icons.check" }
           ],
-          "default": "check"
+          "default": "snowflake"
         },
+        { "type": "text", "id": "text", "label": "t:boarage.s02.blocks.tile.settings.text.label" }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "t:boarage.s02.blocks.benefit.name",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "lead", "label": "t:boarage.s02.blocks.benefit.settings.lead.label", "info": "t:boarage.s02.blocks.benefit.settings.lead.info" },
         { "type": "text", "id": "text", "label": "t:boarage.s02.blocks.benefit.settings.text.label" }
       ]
     },
@@ -402,10 +439,44 @@
         { "type": "paragraph", "content": "t:boarage.s02.blocks.bundle.paragraph" },
         { "type": "text", "id": "match", "label": "t:boarage.s02.blocks.bundle.settings.match.label", "info": "t:boarage.s02.blocks.bundle.settings.match.info" },
         { "type": "text", "id": "name", "label": "t:boarage.s02.blocks.bundle.settings.name.label", "info": "t:boarage.s02.blocks.bundle.settings.name.info" },
-        { "type": "text", "id": "subline", "label": "t:boarage.s02.blocks.bundle.settings.subline.label" },
+        { "type": "inline_richtext", "id": "subline", "label": "t:boarage.s02.blocks.bundle.settings.subline.label" },
+        { "type": "text", "id": "highlight", "label": "t:boarage.s02.blocks.bundle.settings.highlight.label", "info": "t:boarage.s02.blocks.bundle.settings.highlight.info" },
         { "type": "text", "id": "badge", "label": "t:boarage.s02.blocks.bundle.settings.badge.label", "info": "t:boarage.s02.blocks.bundle.settings.badge.info" },
+        {
+          "type": "select",
+          "id": "badge_style",
+          "label": "t:boarage.s02.blocks.bundle.settings.badge_style.label",
+          "options": [
+            { "value": "light", "label": "t:boarage.s02.blocks.bundle.settings.badge_style.options.light" },
+            { "value": "dark", "label": "t:boarage.s02.blocks.bundle.settings.badge_style.options.dark" }
+          ],
+          "default": "light"
+        },
+        { "type": "image_picker", "id": "image", "label": "t:boarage.s02.blocks.bundle.settings.image.label", "info": "t:boarage.s02.blocks.bundle.settings.image.info" },
         { "type": "text", "id": "cta_label", "label": "t:boarage.s02.blocks.bundle.settings.cta_label.label", "info": "t:boarage.s02.blocks.bundle.settings.cta_label.info" },
         { "type": "checkbox", "id": "preselect", "label": "t:boarage.s02.blocks.bundle.settings.preselect.label", "info": "t:boarage.s02.blocks.bundle.settings.preselect.info", "default": false }
+      ]
+    },
+    {
+      "type": "note",
+      "name": "t:boarage.s02.blocks.note.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:boarage.common.icon.label",
+          "options": [
+            { "value": "refresh", "label": "t:boarage.icons.refresh" },
+            { "value": "clock", "label": "t:boarage.icons.clock" },
+            { "value": "truck", "label": "t:boarage.icons.truck" },
+            { "value": "shield", "label": "t:boarage.icons.shield" },
+            { "value": "check", "label": "t:boarage.icons.check" },
+            { "value": "info", "label": "t:boarage.icons.info" }
+          ],
+          "default": "clock"
+        },
+        { "type": "inline_richtext", "id": "text", "label": "t:boarage.s02.blocks.note.settings.text.label" }
       ]
     },
     {
@@ -418,20 +489,29 @@
           "id": "icon",
           "label": "t:boarage.common.icon.label",
           "options": [
-            { "value": "shield", "label": "t:boarage.icons.shield" },
             { "value": "box", "label": "t:boarage.icons.box" },
             { "value": "truck", "label": "t:boarage.icons.truck" },
-            { "value": "chat", "label": "t:boarage.icons.chat" },
-            { "value": "invoice", "label": "t:boarage.icons.invoice" },
             { "value": "lock", "label": "t:boarage.icons.lock" },
+            { "value": "shield", "label": "t:boarage.icons.shield" },
+            { "value": "invoice", "label": "t:boarage.icons.invoice" },
+            { "value": "chat", "label": "t:boarage.icons.chat" },
             { "value": "check", "label": "t:boarage.icons.check" },
             { "value": "heart", "label": "t:boarage.icons.heart" },
             { "value": "clock", "label": "t:boarage.icons.clock" },
-            { "value": "star", "label": "t:boarage.icons.star" }
+            { "value": "refresh", "label": "t:boarage.icons.refresh" }
           ],
-          "default": "shield"
+          "default": "box"
         },
         { "type": "inline_richtext", "id": "text", "label": "t:boarage.s02.blocks.trust.settings.text.label" }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "t:boarage.s02.blocks.accordion.name",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "title", "label": "t:boarage.common.accordion_title.label" },
+        { "type": "richtext", "id": "content", "label": "t:boarage.common.accordion_content.label" }
       ]
     }
   ],
@@ -439,9 +519,12 @@
     {
       "name": "t:boarage.s02.name",
       "blocks": [
+        { "type": "tile" }, { "type": "tile" }, { "type": "tile" },
         { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" },
         { "type": "bundle" }, { "type": "bundle" }, { "type": "bundle" },
-        { "type": "trust" }, { "type": "trust" }, { "type": "trust" }
+        { "type": "note" }, { "type": "note" },
+        { "type": "trust" }, { "type": "trust" },
+        { "type": "accordion" }, { "type": "accordion" }, { "type": "accordion" }, { "type": "accordion" }
       ]
     }
   ]

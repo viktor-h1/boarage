@@ -1,0 +1,64 @@
+{%- comment -%}
+  Boarage PDP 10 · Photo strip: five stars, headline (italic words render green) and a swipeable
+  edge-to-edge strip of customer photos.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign filled = 0
+  for block in photos
+    if block.settings.image != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if s.heading != blank or filled > 0
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap">
+      {%- if s.show_stars -%}<p class="bpdp-center" style="margin-bottom: 12px;">{% render 'boarage-stars', rating: 5 %}</p>{%- endif -%}
+      {%- render 'boarage-section-head', heading: s.heading, heading_label: '10 · Photo strip headline', align: 'center' -%}
+      {%- if filled > 0 or request.design_mode -%}
+        <ul class="bpdp-track bpdp-track--bleed bpdp-photos" data-bpdp-track>
+          {%- for block in photos -%}
+            {%- if block.settings.image != blank -%}
+              <li class="bpdp-photo" {{ block.shopify_attributes }}>{{ block.settings.image | image_url: width: 660 | image_tag: loading: 'lazy', widths: '330, 440, 660', sizes: '220px', alt: block.settings.alt }}</li>
+            {%- elsif request.design_mode -%}
+              <li class="bpdp-photo" {{ block.shopify_attributes }}>{% render 'boarage-placeholder', label: 'Photo', kind: 'block' %}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s10.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s10.settings.paragraph" },
+    { "type": "checkbox", "id": "show_stars", "label": "t:boarage.s10.settings.show_stars.label", "default": true },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label", "info": "t:boarage.common.heading.info" }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "t:boarage.s10.blocks.photo.name",
+      "limit": 12,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "t:boarage.common.image.label" },
+        { "type": "text", "id": "alt", "label": "t:boarage.common.image_alt.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s10.name", "blocks": [{ "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }] }]
+}
+{% endschema %}

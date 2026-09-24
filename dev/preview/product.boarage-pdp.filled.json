@@ -1,0 +1,741 @@
+{
+  "sections": {
+    "boarage_sale_bar": {
+      "type": "boarage-pdp-01-sale-bar",
+      "settings": {
+        "title": "60 Tage Geld-zurück-Garantie",
+        "subtitle": "Gratis Versand & Rückversand",
+        "align": "center",
+        "countdown_mode": "off"
+      }
+    },
+    "boarage_buy_box": {
+      "type": "boarage-pdp-02-buy-box",
+      "blocks": {
+        "star_rating": {
+          "type": "shopify://apps/lai-product-reviews/blocks/star_rating_product/cad3c6c6-329e-4416-ba74-b79359b5b6e1",
+          "settings": {
+            "lai_product": ""
+          }
+        },
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "icon": "snowflake",
+            "text": "Angenehm kühlend, wohlig wärmend"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "icon": "drop",
+            "text": "Zieht schnell ein"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "icon": "leaf",
+            "text": "Dermatologisch entwickelt"
+          }
+        },
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "lead": "",
+            "text": "Angenehm kühlend beim Auftragen, wohlig wärmend danach"
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "lead": "",
+            "text": "Ideal nach Bewegung, Garten oder langem Tag"
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "lead": "",
+            "text": "Zieht schnell ein, hinterlässt keine fettigen Rückstände"
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "lead": "",
+            "text": "Dermatologisch entwickelte Wirkstoff-Kombi"
+          }
+        },
+        "benefit_5": {
+          "type": "benefit",
+          "settings": {
+            "lead": "",
+            "text": "Hautfreundlich und angenehm für die tägliche Anwendung"
+          }
+        },
+        "bundle_1": {
+          "type": "bundle",
+          "settings": {
+            "match": "1 Dose",
+            "name": "",
+            "subline": "",
+            "highlight": "",
+            "badge": "",
+            "badge_style": "light",
+            "cta_label": "",
+            "preselect": false
+          }
+        },
+        "bundle_2": {
+          "type": "bundle",
+          "settings": {
+            "match": "3 Dosen",
+            "name": "",
+            "subline": "",
+            "highlight": "",
+            "badge": "",
+            "badge_style": "light",
+            "cta_label": "",
+            "preselect": true
+          }
+        },
+        "bundle_3": {
+          "type": "bundle",
+          "settings": {
+            "match": "6 Dosen",
+            "name": "",
+            "subline": "",
+            "highlight": "",
+            "badge": "",
+            "badge_style": "light",
+            "cta_label": "",
+            "preselect": false
+          }
+        },
+        "trust_1": {
+          "type": "trust",
+          "settings": {
+            "icon": "check",
+            "text": "Bestätigte Wirkung"
+          }
+        },
+        "trust_2": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield",
+            "text": "60 Tage Geld zurück"
+          }
+        },
+        "trust_3": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "text": "Wir zahlen Versand"
+          }
+        },
+        "accordion_1": {
+          "type": "accordion",
+          "settings": {
+            "title": "So trägst du Magnesium B3 Relief auf",
+            "content": "<p><strong>Auftragen</strong> — Eine erbsen- bis haselnussgroße Menge auf die beanspruchte Stelle geben (Nacken, Schultern, Knie, Rücken, Beine).</p><p><strong>Einmassieren</strong> — 30–60 Sekunden sanft einmassieren, bis die Creme eingezogen ist. Du spürst zuerst eine angenehme Kühle, dann eine wohlige Wärme.</p><p><strong>Wirken lassen</strong> — Bis zu 3× täglich anwenden, besonders morgens und abends oder nach Belastung. Danach Hände waschen.</p>"
+          }
+        },
+        "accordion_2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Versand & Lieferung",
+            "content": "<p><strong>Bearbeitungszeit:</strong> 1–3 Werktage</p><p><strong>Lieferzeit:</strong> 9-12 Werktage nach Versand</p><p><strong>Versandkosten:</strong> Kostenlos — ohne Mindestbestellwert</p><p><strong>Sendungsverfolgung:</strong> Du erhältst automatisch eine Trackingnummer per E-Mail sobald dein Paket unterwegs ist.</p>"
+          }
+        },
+        "accordion_3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Rückgabe & Garantie",
+            "content": "<p>Wir stehen hinter Boarage — ohne Wenn und Aber. Wenn du innerhalb von 60 Tagen nach dem Kauf nicht vollständig überzeugt bist, erstatten wir dir den vollen Kaufpreis. Keine Fragen, kein Aufwand, kein Risiko.</p><p>Um eine Rückgabe einzuleiten, schreib uns einfach eine E-Mail an <a href=\"mailto:support@boarage.de\" target=\"_blank\"><strong>support@boarage.de</strong></a>. Wir melden uns innerhalb von 24 Stunden und kümmern uns um alles Weitere.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "star_rating",
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "benefit_4",
+        "benefit_5",
+        "bundle_1",
+        "bundle_2",
+        "bundle_3",
+        "trust_1",
+        "trust_2",
+        "trust_3",
+        "accordion_1",
+        "accordion_2",
+        "accordion_3"
+      ],
+      "settings": {
+        "gallery_aspect": "4 / 5",
+        "media_fit": "contain",
+        "sticky_gallery": true,
+        "show_thumbnails": true,
+        "seal_1": "",
+        "seal_2": "",
+        "show_rating": true,
+        "rating_prefix": "",
+        "rating_word": "",
+        "description": "<p>&lt;h3 style=&quot;font-weight: bold;&quot;&gt;Das Mineral, das deine Gelenke, Nerven und Muskeln entspannen lässt.&lt;/h3&gt;</p><p>&lt;p&gt;Magnesiumchlorid + Vitamin B3, ohne fettende Sulfate, mit spürbarer Kühl-Wärme-Wirkung für beanspruchte Muskeln.</p><p>&lt;/p&gt;</p>",
+        "offer_label": "",
+        "price_mode": "bundle_total",
+        "per_unit_label": "",
+        "stock_text": "Kostenloser Versand – Lieferzeit 9–12 Werktage nach Versand",
+        "cta_label": "In den Warenkorb legen",
+        "cta_show_price": true,
+        "after_add": "drawer",
+        "show_payment_icons": true,
+        "show_guarantee": true,
+        "sticky_bar": true,
+        "sticky_cta_label": ""
+      }
+    },
+    "boarage_reviews": {
+      "type": "boarage-pdp-03-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "title": "Hab nicht viel erwartet, aber...",
+            "text": "\"Ich bin viel im Garten und abends waren Nacken und Schultern immer total verspannt. Magnesium B3 Relief massiere ich jetzt jeden Abend ein. Diese Kühle, die in eine angenehme Wärme übergeht, ist herrlich. Und nichts klebt oder fleckt.\"",
+            "rating": 5,
+            "name": "Jana T.",
+            "meta": "verifizierte Käuferin",
+            "date": "",
+            "image": "shopify://shop_images/produkt_bilder_magnesium_31.jpg",
+            "image_alt": "Jana T."
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "title": "Zieht sofort ein, kein fettiger Film",
+            "text": "„Andere Cremes habe ich gehasst, weil alles glänzte und an der Kleidung klebte. Die hier ist sofort eingezogen. Ich nehme sie morgens nach dem Aufstehen für den Nacken und der Tag startet einfach angenehmer.\"",
+            "rating": 5,
+            "name": "Markus P.",
+            "meta": "verifizierter Käufer",
+            "date": "",
+            "image": "shopify://shop_images/produkt_bilder_magnesium_65.jpg",
+            "image_alt": "Markus P."
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "title": "Mein festes Ritual morgens und abends",
+            "text": "\"Ich war erst skeptisch, weil ich schon so viel probiert hatte. Aber die Kombi aus Magnesium und B3 hat mich überzeugt. Zweimal am Tag einmassieren ist mein kleines Wohlfühl-Ritual geworden. Klare Empfehlung.\"",
+            "rating": 5,
+            "name": "Marika H.",
+            "meta": "verifizierte Käuferin",
+            "date": "",
+            "image": "shopify://shop_images/produkt_bilder_magnesium_66.jpg",
+            "image_alt": "Marika H."
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "title": "Endlich lockere Schultern",
+            "text": "„Ich sitze den ganzen Tag am Schreibtisch und hatte ständig verspannte Schultern. Die Creme zieht schnell ein, ist nicht fettig und der Kühleffekt kommt sofort. Abends ein bisschen einmassieren, für mich inzwischen ein festes Ritual.\"",
+            "rating": 5,
+            "name": "Katharina H.",
+            "meta": "verifizierte Käuferin",
+            "date": "",
+            "image": "shopify://shop_images/produkt_bilder_magnesium_3.jpg",
+            "image_alt": "Katharina H."
+          }
+        },
+        "review_5": {
+          "type": "review",
+          "settings": {
+            "title": "Nach der Gartenarbeit ein Segen",
+            "text": "„Nach ein paar Stunden im Garten sind meine Knie und der untere Rücken immer steif. Ich reibe die Stellen danach ein und die Kühle tut einfach gut. Praktische Größe, hält lange, für mich Teil der Grundausstattung.\"",
+            "rating": 5,
+            "name": "Michael F.",
+            "meta": "verifizierter Käufer",
+            "date": "",
+            "image": "shopify://shop_images/produkt_bilder_magnesium_7.jpg",
+            "image_alt": "Michael F."
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "review_5"
+      ],
+      "settings": {
+        "heading": "Was Kunden wie du sagen",
+        "show_rating": true,
+        "rating_prefix": "",
+        "rating_word": ""
+      }
+    },
+    "boarage_faq": {
+      "type": "boarage-pdp-04-faq",
+      "blocks": {
+        "qa_1": {
+          "type": "qa",
+          "settings": {
+            "question": "Was ist in Magnesium B3 Relief enthalten?",
+            "answer": "<p><strong>Jeder Tiegel enthält einen 30-Tage-Vorrat. Das steckt genau drin:</strong></p><p>Magnesiumchlorid, Vitamin B6 (Pyridoxin-HCl), Niacinamid (Vitamin B3), Arnika-Montana-Blütenextrakt, Weihrauchöl (Boswellia Carterii), Menthol, Kampfer, Pfefferminzöl, Teebaumöl, Vitamin E (Tocopherylacetat), Sheabutter, Aloe Vera sowie ein zweifach wirkendes Sensorik-System (Coolact® Kühlwirkstoff + Hotact® Wärmewirkstoff) in einer feuchtigkeitsspendenden Basis.</p>"
+          }
+        },
+        "qa_2": {
+          "type": "qa",
+          "settings": {
+            "question": "Wo kann ich die Creme anwenden?",
+            "answer": "<p>Unser Produkt ist vielseitig einsetzbar und kann problemlos am Nacken, an der Schulter, an den Armen, am Rücken, an den Knien und an den Füßen aufgetragen werden. Massiere es einfach sanft in die gewünschte Stelle ein, bis es vollständig eingezogen ist. Rund um die empfindliche Augen- und Mundpartie solltest du direkten Kontakt vermeiden und offene oder gereizte Hautstellen aussparen.</p>"
+          }
+        },
+        "qa_3": {
+          "type": "qa",
+          "settings": {
+            "question": "Verträgt sich die Creme mit Medikamenten?",
+            "answer": "<p>Die Inhaltsstoffe in Magnesium B3 Relief sind in der Regel sicher in Kombination mit verschreibungspflichtigen Medikamenten. Da es sich um ein topisches (äußerliches) Produkt handelt, beeinflusst es orale Medikamente nicht. Dennoch empfehlen wir, vorher Ihren Arzt oder Apotheker zu konsultieren, wenn du dir unsicher bist.</p>"
+          }
+        },
+        "qa_4": {
+          "type": "qa",
+          "settings": {
+            "question": "Haltbarkeit und Lagerung",
+            "answer": "<p>Eine Kühlung ist nicht erforderlich – bewahre das Produkt einfach trocken, bei Raumtemperatur und vor direkter Sonneneinstrahlung geschützt auf. Nach dem Öffnen ist es etwa 12 Monate haltbar und behält bei richtiger Lagerung seine volle Wirksamkeit. Ein veränderter Geruch oder eine veränderte Konsistenz sind Anzeichen dafür, dass es Zeit für ein neues Produkt ist.</p>"
+          }
+        },
+        "qa_5": {
+          "type": "qa",
+          "settings": {
+            "question": "Gibt es Nebenwirkungen?",
+            "answer": "<p>Alle Inhaltsstoffe in Magnesium B3 Relief sind sicher und es wurden keine bedeutenden Nebenwirkungen festgestellt. Die Basis aus Sheabutter und Aloe Vera ist sanft zu empfindlicher Haut. Du kannst ein angenehmes Kältegefühl verspüren, gefolgt von sanfter Wärme. Das ist das Doppel-System, das arbeitet. Da jedoch jeder Mensch unterschiedlich reagiert, sprich bitte immer mit deinem Arzt darüber, wenn du unsicher bist, ob Magnesium B3 Relief für dich geeignet ist.</p>"
+          }
+        },
+        "qa_6": {
+          "type": "qa",
+          "settings": {
+            "question": "Wie fühlt sich die Kühl-Wärme-Wirkung an?",
+            "answer": "<p>Beim Auftragen spürst du zuerst eine angenehme Kühle, die nach kurzer Zeit in ein wohliges Wärmegefühl übergeht — ideal für beanspruchte Muskeln nach einem langen Tag.</p>"
+          }
+        },
+        "qa_7": {
+          "type": "qa",
+          "settings": {
+            "question": "Ist die Creme fettig oder hinterlässt sie Flecken?",
+            "answer": "<p>Nein. Magnesium B3 Relief zieht schnell ein, ist nicht fettend und enthält keine fettenden Sulfate — sie eignet sich für die mehrmals tägliche Anwendung.</p>"
+          }
+        },
+        "qa_8": {
+          "type": "qa",
+          "settings": {
+            "question": "Wie oft sollte ich sie anwenden?",
+            "answer": "<p>Bis zu 3× täglich auf die beanspruchten Stellen auftragen und sanft einmassieren. Viele nutzen sie als festes Ritual morgens und abends.</p>"
+          }
+        },
+        "qa_9": {
+          "type": "qa",
+          "settings": {
+            "question": "Für wen ist die Creme geeignet?",
+            "answer": "<p>Erwachsene, die ihre Muskeln und Gelenke nach Belastung mit einem angenehmen Kühl-Wärme-Gefühl verwöhnen möchten. Bei empfindlicher Haut zunächst an einer kleinen Stelle testen. Nicht auf verletzter Haut anwenden.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "qa_1",
+        "qa_2",
+        "qa_3",
+        "qa_4",
+        "qa_5",
+        "qa_6",
+        "qa_7",
+        "qa_8",
+        "qa_9"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Häufige Fragen zu Boarage."
+      }
+    },
+    "boarage_problem": {
+      "type": "boarage-pdp-05-problem",
+      "blocks": {
+        "point_1": {
+          "type": "point",
+          "settings": {
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "point_1"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/produkt_bilder_magnesium_2.jpg",
+        "image_alt": "",
+        "heading": "Das eine Mineral, das deine Muskeln vermissen",
+        "text": "<p>Magnesium ist an unzähligen Prozessen in deinen Muskeln und Nerven beteiligt und genau hier liegt das Problem: </p><p>Mit den Jahren nimmt unser <strong>Körper Magnesium schlechter auf</strong> und die meisten von uns nehmen ohnehin <strong>zu wenig zu sich.</strong></p><p>Magnesium B3 Relief bringt das Mineral mit <strong>Vitamin B3 (Niacinamid)</strong> genau dorthin, wo du es spürst — direkt auf die Haut über deinen beanspruchten Muskeln und Gelenken. </p><p>Die Kombination sorgt für ein spürbares <strong>Kühl-Wärme-Gefühl</strong> und ein angenehmes Hautgefühl, das sich perfekt in deine tägliche Routine einfügt.</p>"
+      }
+    },
+    "boarage_mechanism": {
+      "type": "boarage-pdp-06-mechanism",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "icon": "snowflake",
+            "label": "Kühl-Wärme-Wirkung"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "icon": "drop",
+            "label": "Zieht schnell ein"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "label": "Ohne fettende Sulfate"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "icon": "sun",
+            "label": "Für die tägliche Anwendung"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Damit Bewegung sich wieder leicht anfühlt",
+        "text": "<p>Tausende Menschen machen mit Magnesium B3 Relief die kleinen Dinge wieder, die den Alltag schön machen — ohne ständig an verspannte Muskeln zu denken.</p>",
+        "image": "shopify://shop_images/produkt_bilder_magnesium_75.jpg",
+        "image_alt": ""
+      }
+    },
+    "boarage_stages": {
+      "type": "boarage-pdp-07-stages",
+      "blocks": {
+        "stage_1": {
+          "type": "stage",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_31.jpg",
+            "image_alt": "",
+            "label": "",
+            "title": "Wieder im Garten",
+            "text": "Stehen, knien, bücken, aufstehen — der Garten kennt keine Pause für verspannte Muskeln. Die spürbare Kühl-Wärme-Wirkung von Magnesium B3 Relief begleitet dich durch den ganzen Nachmittag im Beet, sodass du dich auch am Abend noch wohl in deinem Körper fühlst."
+          }
+        },
+        "stage_2": {
+          "type": "stage",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_65.jpg",
+            "image_alt": "",
+            "label": "",
+            "title": "Wieder spazieren",
+            "text": "Die lange Runde um den See, Schritt für Schritt, ohne nach der Hälfte umzukehren. Morgens eingecremt, ziehen deine beanspruchten Beine und Gelenke das angenehme Kühl-Wärme-Gefühl mit — und du kommst entspannt und durchgeatmet wieder zu Hause an, statt erschöpft."
+          }
+        },
+        "stage_3": {
+          "type": "stage",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_66.jpg",
+            "image_alt": "",
+            "label": "",
+            "title": "Wieder mit den Enkeln",
+            "text": "Auf dem Boden sitzen, Türme bauen, wieder hochkommen — Kinder warten nicht. Mit deiner kleinen Routine morgens und abends fühlen sich Schultern, Rücken und Knie gepflegt und gelockert an, sodass du die Momente genießt, statt an deine Verspannungen zu denken."
+          }
+        }
+      },
+      "block_order": [
+        "stage_1",
+        "stage_2",
+        "stage_3"
+      ],
+      "settings": {
+        "heading": ""
+      }
+    },
+    "boarage_science": {
+      "type": "boarage-pdp-08-science",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "visual": "chart",
+        "line_1": "",
+        "line_2": "",
+        "axis_y": "",
+        "axis_x": "",
+        "chart_alt": ""
+      }
+    },
+    "boarage_timeline": {
+      "type": "boarage-pdp-09-timeline",
+      "blocks": {
+        "milestone_1": {
+          "type": "milestone",
+          "settings": {
+            "when": "",
+            "title": "",
+            "text": "",
+            "points": ""
+          }
+        }
+      },
+      "block_order": [
+        "milestone_1"
+      ],
+      "settings": {
+        "heading": "",
+        "show_guarantee": true
+      }
+    },
+    "boarage_photo_strip": {
+      "type": "boarage-pdp-10-photo-strip",
+      "blocks": {
+        "photo_1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_31.jpg",
+            "alt": ""
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_65.jpg",
+            "alt": ""
+          }
+        },
+        "photo_3": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_66.jpg",
+            "alt": ""
+          }
+        },
+        "photo_4": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_3.jpg",
+            "alt": ""
+          }
+        },
+        "photo_5": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/produkt_bilder_magnesium_7.jpg",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "photo_1",
+        "photo_2",
+        "photo_3",
+        "photo_4",
+        "photo_5"
+      ],
+      "settings": {
+        "show_stars": true,
+        "heading": ""
+      }
+    },
+    "boarage_comparison": {
+      "type": "boarage-pdp-11-comparison",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "Lindert Spannung",
+            "us": "yes",
+            "them": "no"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "Zieht schnell ein",
+            "us": "yes",
+            "them": "no"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "Sulfate",
+            "us": "no",
+            "them": "yes"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Spürbare Wirkung",
+            "us": "yes",
+            "them": "no"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "Fettig",
+            "us": "no",
+            "them": "yes"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Der Unterschied ist eindeutig",
+        "image_us": "shopify://shop_images/produkt_bilder_magnesium_69.jpg",
+        "label_us": "Boarage",
+        "image_them": "",
+        "label_them": "Normale Creme",
+        "sr_yes": "ja",
+        "sr_no": "nein"
+      }
+    },
+    "boarage_results": {
+      "type": "boarage-pdp-12-results",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "94 %",
+            "label": "spüren beim Auftragen sofort die angenehme Kühl-Wärme-Wirkung",
+            "text": ""
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "89 %",
+            "label": "sagen, die Creme zieht schnell ein und fühlt sich nicht fettig an",
+            "text": ""
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "97 %",
+            "label": "würden Boarage einem Freund weiterempfehlen",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3"
+      ],
+      "settings": {
+        "heading": "Die Zahlen sprechen für sich.",
+        "subtitle": "*Ergebnisse basierend auf Kundenbefragungen und Bewertungen. Weitere Informationen sind auf der jeweiligen Produktseite zu finden.",
+        "image": "shopify://shop_images/produkt_bilder_magnesium_4.jpg",
+        "image_alt": "",
+        "image_product": "shopify://shop_images/produkt_bilder_magnesium_6.jpg",
+        "image_product_alt": "",
+        "guarantee_big": "60 Tage",
+        "guarantee_title": "Geld-zurück-Garantie",
+        "guarantee_text": "<p>Wir stehen hinter Boarage — ohne Wenn und Aber. Wenn du innerhalb von 60 Tagen nach dem Kauf nicht vollständig überzeugt bist, erstatten wir dir den vollen Kaufpreis. Keine Fragen, kein Aufwand, kein Risiko.</p>",
+        "guarantee_points": "Keine Fragen, kein Aufwand, kein Risiko\nGratis Versand & Rückversand"
+      }
+    },
+    "boarage_reviews_list": {
+      "type": "boarage-pdp-13-reviews-list",
+      "blocks": {
+        "lai_widget": {
+          "type": "shopify://apps/lai-product-reviews/blocks/lai-product-section/cad3c6c6-329e-4416-ba74-b79359b5b6e1",
+          "settings": {}
+        },
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "title": "",
+            "text": "Ich war zuerst skeptisch, aber nach ein paar Tagen ließ die Verspannung in meinem Nacken nach, die ich monatelang nicht loswerden konnte. Super für lange Schichten.",
+            "rating": 5,
+            "name": "Stephanie K.",
+            "meta": "verifizierte Käuferin",
+            "date": "",
+            "image": "shopify://shop_images/stephanie_k._foto.jpg",
+            "image_alt": "Stephanie K."
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "lai_widget"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "show_rating": true,
+        "rating_prefix": "",
+        "rating_word": "",
+        "initial_count": 3,
+        "more_label": ""
+      }
+    },
+    "boarage_legal": {
+      "type": "boarage-pdp-14-legal",
+      "settings": {
+        "category_line": "",
+        "note_1": "",
+        "note_2": "",
+        "note_3": "",
+        "inci_heading": "Inhaltsstoffe",
+        "inci": "<p><strong>Jeder Tiegel enthält einen 30-Tage-Vorrat. Das steckt genau drin:</strong></p><p>Magnesiumchlorid, Vitamin B6 (Pyridoxin-HCl), Niacinamid (Vitamin B3), Arnika-Montana-Blütenextrakt, Weihrauchöl (Boswellia Carterii), Menthol, Kampfer, Pfefferminzöl, Teebaumöl, Vitamin E (Tocopherylacetat), Sheabutter, Aloe Vera sowie ein zweifach wirkendes Sensorik-System (Coolact® Kühlwirkstoff + Hotact® Wärmewirkstoff) in einer feuchtigkeitsspendenden Basis.</p>",
+        "impressum_label": "Impressum",
+        "impressum_link": "/policies/legal-notice",
+        "widerruf_label": "Widerrufsbelehrung",
+        "widerruf_link": "/policies/refund-policy",
+        "datenschutz_label": "Datenschutz",
+        "datenschutz_link": "/policies/privacy-policy"
+      }
+    }
+  },
+  "order": [
+    "boarage_sale_bar",
+    "boarage_buy_box",
+    "boarage_reviews",
+    "boarage_faq",
+    "boarage_problem",
+    "boarage_mechanism",
+    "boarage_stages",
+    "boarage_science",
+    "boarage_timeline",
+    "boarage_photo_strip",
+    "boarage_comparison",
+    "boarage_results",
+    "boarage_reviews_list",
+    "boarage_legal"
+  ]
+}

@@ -1,74 +1,86 @@
 {
   "settings": {
     "name": "Boarage PDP",
-    "paragraph": "Design-Werte für die Boarage-Produktseiten-Abschnitte. Jeder Wert hat einen sinnvollen Standard; die Abschnitte funktionieren auch ohne diese Gruppe.",
-    "fonts_header": "Schriften",
+    "paragraph": "Design-Einstellungen für die Boarage-Produktseiten-Sektionen (boarage-pdp-01 … 14).",
+    "fonts_header": "Typografie",
     "use_theme_fonts": {
-      "label": "Schriften des Themes verwenden",
-      "info": "Wenn aktiv, übernehmen die Boarage-Abschnitte Überschriften- und Fließtextschrift des Themes. Deaktivieren, um unten eigene Schriften zu wählen."
+      "label": "Theme-Schriften verwenden",
+      "info": "Aus: die beiden Schriften unten werden verwendet (Outfit für Überschriften, Work Sans für Text, wie auf der Referenzseite)."
     },
     "font_heading": {
-      "label": "Überschriftenschrift (auch Buttons und Labels)"
+      "label": "Schrift für Überschriften"
     },
     "font_body": {
-      "label": "Fließtextschrift"
+      "label": "Schrift für Fließtext"
     },
     "base_size": {
       "label": "Grundschriftgröße",
-      "info": "Fließtextgröße auf allen Geräten. 18 px ist das Minimum für eine Zielgruppe 60+."
+      "info": "18 px ist das Minimum für die Zielgruppe 60+. Überschriften und Abstände skalieren mit."
     },
     "colors_header": "Farben",
-    "color_accent": {
-      "label": "Akzent (Buttons, Links, Hervorhebungen)"
+    "color_primary": {
+      "label": "Primärgrün",
+      "info": "Überschriften, Rahmen des gewählten Pakets, Siegel, Garantie-Icon."
     },
-    "color_accent_ink": {
-      "label": "Text auf Akzent"
+    "color_primary_ink": {
+      "label": "Text auf Primärgrün"
     },
-    "color_surface": {
-      "label": "Fläche (Karten, Bänder)"
+    "color_cta": {
+      "label": "Button-Grün",
+      "info": "Warenkorb-Button, Sterne, Häkchen. Dunkel genug für weißen Text lassen."
+    },
+    "color_cta_ink": {
+      "label": "Text auf Buttons"
+    },
+    "color_mint": {
+      "label": "Hervorhebung auf dunklen Flächen",
+      "info": "Kursive Wörter in Überschriften auf dunklen Sektionen und Vorzeilen."
+    },
+    "color_soft": {
+      "label": "Helles Grün",
+      "info": "Vorteile-Box, Garantie-Box, Stadien-Karten, Galerie-Hintergrund."
     },
     "color_line": {
-      "label": "Linien und Rahmen"
+      "label": "Linien und Kartenrahmen"
     },
-    "color_cool": {
-      "label": "Kühler Ton (linke Hälfte des Empfindungs-Panels, Icon-Kreise)"
-    },
-    "color_warm": {
-      "label": "Warmer Ton (rechte Hälfte des Empfindungs-Panels)"
+    "color_surface": {
+      "label": "Kartenhintergrund"
     },
     "color_bg": {
       "label": "Seitenhintergrund",
-      "info": "Leer lassen, um die Hintergrundfarbe des Themes zu behalten."
+      "info": "Leer lassen, um den Theme-Hintergrund zu behalten."
     },
     "radius": {
       "label": "Eckenradius"
     },
-    "mode_header": "Dunkelmodus",
     "dark_mode": {
-      "label": "Farbschema der Boarage-Abschnitte",
-      "info": "Header und Footer des Themes haben keinen Dunkelmodus, deshalb ist „Aus“ die sichere Voreinstellung.",
+      "label": "Dunkelmodus",
+      "info": "„System folgen“ übernimmt die Geräteeinstellung. Header und Footer des Themes haben keinen Dunkelmodus.",
       "options": {
         "light": "Aus (immer hell)",
-        "system": "Systemeinstellung der Besucher folgen",
+        "system": "System folgen",
         "dark": "Immer dunkel"
       }
+    },
+    "guarantee_header": "Garantie-Box",
+    "guarantee_paragraph": "Einmal eintragen, erscheint in der Kaufbox und im Zeitverlauf (jeweils mit Schalter).",
+    "guarantee_title": {
+      "label": "Garantie-Titel"
+    },
+    "guarantee_text": {
+      "label": "Garantie-Text"
     }
   },
   "common": {
-    "empty_info": "Leere Einstellungen zeigen im Shop nichts an. Im Editor erscheint ein gestrichelter Platzhalter mit dem Namen der Einstellung.",
     "heading": {
       "label": "Überschrift",
-      "info": "Leer lassen, um die Überschrift auszublenden."
+      "info": "Kursive Wörter erscheinen grün."
     },
-    "intro": {
-      "label": "Einleitungstext (formatierter Text)"
+    "eyebrow": {
+      "label": "Vorzeile (über der Überschrift)"
     },
     "text": {
-      "label": "Text (formatierter Text)"
-    },
-    "link": {
-      "label": "Link (optional)",
-      "info": "Leer lassen für reinen Text."
+      "label": "Text"
     },
     "icon": {
       "label": "Icon"
@@ -77,241 +89,317 @@
       "label": "Bild"
     },
     "image_alt": {
-      "label": "Alternativtext des Bildes",
-      "info": "Beschreibt das Bild für Screenreader und Suchmaschinen."
+      "label": "Bildbeschreibung (Alt-Text)"
     },
-    "cta_label": {
-      "label": "Button-Text"
+    "yes": "Ja",
+    "no": "Nein",
+    "show_rating": {
+      "label": "Sternebewertung anzeigen",
+      "info": "Nutzt das Metafeld reviews.rating der Bewertungs-App. Ohne Bewertung erscheint nichts."
     },
-    "cta_link": {
-      "label": "Button-Link (optional)",
-      "info": "Leer lassen, um auf der Produktseite zur Kaufbox zu scrollen."
+    "rating_prefix": {
+      "label": "Text vor der Bewertung",
+      "info": "Beispiel: „Bewertet mit“. Leer lassen, um nur die Zahl zu zeigen."
+    },
+    "rating_word": {
+      "label": "Wort nach der Bewertung",
+      "info": "Erscheint in Anführungszeichen, z. B. „Ausgezeichnet“."
+    },
+    "show_guarantee": {
+      "label": "Garantie-Box anzeigen",
+      "info": "Text aus Theme-Einstellungen › Boarage PDP › Garantie-Box."
+    },
+    "accordion_title": {
+      "label": "Akkordeon-Titel"
+    },
+    "accordion_content": {
+      "label": "Akkordeon-Inhalt"
+    },
+    "review": {
+      "name": "Bewertung",
+      "title": {
+        "label": "Titel der Bewertung"
+      },
+      "text": {
+        "label": "Bewertungstext"
+      },
+      "rating": {
+        "label": "Sterne"
+      },
+      "name_field": {
+        "label": "Kundenname"
+      },
+      "meta": {
+        "label": "Zeile unter dem Namen",
+        "info": "Beispiel: „Verifizierte Kundin“."
+      },
+      "date": {
+        "label": "Datum"
+      },
+      "image": {
+        "label": "Kundenfoto"
+      }
     }
   },
   "icons": {
-    "none": "Kein Icon",
-    "shield": "Schild",
+    "bolt": "Energie (Blitz)",
+    "bone": "Gelenk (Knochen)",
     "box": "Paket",
-    "truck": "Lieferwagen",
-    "chat": "Sprechblase",
-    "invoice": "Rechnung",
-    "lock": "Schloss",
-    "leaf": "Blatt",
+    "cell": "Zelle",
+    "chat": "Support-Chat",
+    "check": "Häkchen",
+    "clock": "Uhr",
     "drop": "Tropfen",
-    "snowflake": "Schneeflocke (kühl)",
-    "flame": "Flamme (warm)",
-    "wave": "Welle",
+    "flame": "Wärme (Flamme)",
     "hand": "Hand",
     "heart": "Herz",
-    "jar": "Dose",
-    "clock": "Uhr",
-    "star": "Stern",
-    "check": "Häkchen"
-  },
-  "panel": {
-    "header": "Empfindungs-Panel",
-    "paragraph": "Zwei beschriftete Hälften (kühl | warm) mit je Titel und kurzem Text, darunter ein Start- und ein End-Label auf der Achse.",
-    "left_title": "Linke Hälfte: Titel",
-    "left_text": "Linke Hälfte: Text",
-    "right_title": "Rechte Hälfte: Titel",
-    "right_text": "Rechte Hälfte: Text",
-    "axis_start": "Achse: Start-Label",
-    "axis_end": "Achse: End-Label"
+    "info": "Info",
+    "invoice": "Rechnung",
+    "jar": "Tiegel",
+    "leaf": "Blatt",
+    "lock": "Schloss",
+    "moon": "Schlaf (Mond)",
+    "muscle": "Muskel",
+    "plant": "Pflanze (Garten)",
+    "refresh": "Erneuern (Abo)",
+    "shield": "Schild",
+    "shoe": "Schuh (Spazieren)",
+    "snowflake": "Kühlung (Schneeflocke)",
+    "sun": "Sonne",
+    "truck": "Lieferwagen",
+    "user": "Person",
+    "wave": "Welle"
   },
   "s01": {
-    "name": "Boarage 01 Hinweisleiste",
+    "name": "Boarage 01 Sale-Leiste",
     "settings": {
-      "style": {
-        "label": "Stil",
+      "paragraph": "Dunkelgrüne Leiste mit Überschrift, Unterzeile und optionalem Countdown. Leer = unsichtbar.",
+      "title": {
+        "label": "Überschrift (z. B. Name der Aktion)"
+      },
+      "subtitle": {
+        "label": "Unterzeile"
+      },
+      "align": {
+        "label": "Ausrichtung",
         "options": {
-          "accent": "Akzent-Hintergrund",
-          "surface": "Helle Fläche mit Linie unten"
+          "left": "Text links, Countdown rechts",
+          "center": "Zentriert"
         }
-      }
-    },
-    "blocks": {
-      "item": {
-        "name": "Leisten-Eintrag",
-        "settings": {
-          "text": {
-            "label": "Eintragstext",
-            "info": "Eine kurze Aussage, z. B. zu Garantie, Support oder Zahlung."
-          }
+      },
+      "countdown_header": "Countdown",
+      "countdown_mode": {
+        "label": "Countdown",
+        "info": "„Täglich“ startet um Mitternacht (Besucherzeit) neu. „Bis Datum“ nutzt das Ende unten und blendet sich danach aus.",
+        "options": {
+          "off": "Aus",
+          "daily": "Täglich (um Mitternacht neu)",
+          "date": "Bis Datum"
         }
+      },
+      "countdown_end": {
+        "label": "Ende (JJJJ-MM-TT HH:MM)",
+        "info": "Wird in der Ortszeit des Besuchers gelesen."
+      },
+      "label_hours": {
+        "label": "Beschriftung unter den Stunden"
+      },
+      "label_minutes": {
+        "label": "Beschriftung unter den Minuten"
+      },
+      "label_seconds": {
+        "label": "Beschriftung unter den Sekunden"
       }
     }
   },
   "s02": {
     "name": "Boarage 02 Kaufbox",
     "settings": {
-      "paragraph": "Produkttitel, Bilder, Preise und Varianten kommen aus dem Produkt im Shopify-Admin. Alles andere sind die Einstellungen unten. Nur eine Kaufbox pro Seite.",
+      "paragraph": "Galerie mit Vorteil-Kacheln, Bewertung, Titel, Beschreibung, Vorteile, Paket-Karten, Warenkorb, Vertrauensbox, Garantie und Akkordeons. Nur für Produkte.",
       "gallery_header": "Galerie",
       "gallery_aspect": {
-        "label": "Bildrahmen-Verhältnis",
+        "label": "Bildformat",
         "options": {
-          "square": "Quadratisch (1:1)",
-          "portrait": "Hochformat (4:5)",
-          "tall": "Hoch (3:4)"
+          "portrait": "Hochformat 4:5",
+          "square": "Quadrat 1:1",
+          "tall": "Hochformat 3:4",
+          "taller": "Hochformat 2:3"
         }
       },
       "media_fit": {
         "label": "Bildanpassung",
         "options": {
-          "cover": "Rahmen füllen (cover)",
-          "contain": "Ganzes Bild zeigen (contain)"
+          "contain": "Ganzes Bild zeigen",
+          "cover": "Rahmen füllen (beschneiden)"
         }
       },
       "sticky_gallery": {
-        "label": "Galerie am Desktop im Blick halten"
+        "label": "Galerie bleibt beim Scrollen stehen (Desktop)"
       },
       "show_thumbnails": {
-        "label": "Vorschaubilder anzeigen"
+        "label": "Vorschaubilder zeigen (Desktop)"
       },
-      "text_header": "Text",
+      "seal_1": {
+        "label": "Rundes Siegel 1 auf dem ersten Bild",
+        "info": "Zwei bis vier kurze Wörter, z. B. „Made in Germany“."
+      },
+      "seal_2": {
+        "label": "Rundes Siegel 2"
+      },
+      "text_header": "Bewertung und Text",
       "show_rating": {
         "label": "Sternebewertung anzeigen",
-        "info": "Erscheint nur, wenn eine Bewertungs-App das Metafeld reviews.rating befüllt hat. Wird ein App-Block in diesen Abschnitt eingefügt, wird stattdessen der App-Block gezeigt."
+        "info": "Nutzt das Metafeld reviews.rating. Ein App-Block der Bewertungs-App ersetzt die Zeile."
       },
-      "subtitle": {
-        "label": "Untertitel unter dem Produkttitel",
-        "info": "Ein bis zwei Sätze. Zeilenumbrüche bleiben erhalten."
+      "description": {
+        "label": "Beschreibung unter dem Titel",
+        "info": "Zwei bis drei klare Sätze."
       },
-      "bundle_header": "Bundle-Auswahl",
-      "bundle_legend": {
-        "label": "Beschriftung der Bundle-Auswahl",
-        "info": "Kurze Zeile über den Varianten-Karten."
+      "bundle_header": "Pakete und Preis",
+      "offer_label": {
+        "label": "Trennzeile über den Paketen",
+        "info": "Beispiel: „Nur für kurze Zeit“."
       },
       "price_mode": {
-        "label": "Preismodell",
-        "info": "Bundle-Gesamtpreis: Der Variantenpreis ist der Preis des ganzen Bundles; der Stückpreis ist Preis ÷ Varianten-Metafeld custom.units_per_variant. Pro Stück: Der Variantenpreis gilt pro Stück; der Gesamtpreis ist Preis × Stück und der Warenkorb erhält so viele Stück.",
+        "label": "Variantenpreise sind",
+        "info": "Paketpreis: der Variantenpreis ist der Gesamtpreis. Pro Stück: Gesamtpreis = Preis × Stück (custom.units_per_variant), diese Menge wandert in den Warenkorb.",
         "options": {
-          "bundle_total": "Variantenpreis ist der Bundle-Gesamtpreis",
-          "per_unit": "Variantenpreis gilt pro Stück"
+          "bundle_total": "Paketpreise (Gesamt)",
+          "per_unit": "Pro Stück"
         }
       },
       "per_unit_label": {
-        "label": "Stückpreis-Beschriftung",
-        "info": "Wird hinter dem berechneten Stückpreis gezeigt, z. B. das Wort für „pro Dose“. Die Stückpreis-Zeile bleibt ausgeblendet, bis das Varianten-Metafeld custom.units_per_variant befüllt ist."
+        "label": "Beschriftung Stückpreis",
+        "info": "Beispiel: „pro Dose“. Erscheint nur, wenn custom.units_per_variant an der Variante gesetzt ist."
+      },
+      "stock_text": {
+        "label": "Lager-/Lieferzeile (grüner Punkt)",
+        "info": "Bei ausverkauften Varianten ausgeblendet."
       },
       "buttons_header": "Buttons",
       "cta_label": {
-        "label": "Text des In-den-Warenkorb-Buttons",
-        "info": "Leer lassen, um den Standardtext des Themes zu verwenden. Bundle-Blöcke können ihn je Variante überschreiben."
+        "label": "Text des Warenkorb-Buttons",
+        "info": "Leer: der „In den Warenkorb“-Text des Themes."
+      },
+      "cta_show_price": {
+        "label": "Preis im Button anzeigen"
       },
       "after_add": {
-        "label": "Nach dem Hinzufügen zum Warenkorb",
+        "label": "Nach dem Hinzufügen",
         "options": {
-          "drawer": "Warenkorb-Drawer oder -Hinweis des Themes öffnen (sonst Warenkorbseite)",
-          "cart": "Immer zur Warenkorbseite wechseln"
+          "drawer": "Warenkorb-Drawer des Themes öffnen",
+          "cart": "Zur Warenkorbseite"
         }
       },
+      "show_payment_icons": {
+        "label": "Zahlungsarten-Icons anzeigen",
+        "info": "Die im Shopify-Admin aktivierten Zahlungsarten."
+      },
       "sticky_bar": {
-        "label": "Mobile Sticky-Kaufleiste anzeigen"
+        "label": "Mobile Sticky-Kaufleiste"
       },
       "sticky_cta_label": {
         "label": "Button-Text der Sticky-Leiste",
-        "info": "Leer lassen, um den Text des In-den-Warenkorb-Buttons zu übernehmen."
+        "info": "Leer: wie der Haupt-Button."
       }
     },
     "blocks": {
-      "benefit": {
-        "name": "Vorteilszeile",
+      "tile": {
+        "name": "Galerie-Kachel",
+        "paragraph": "Dunkelgrüne Kachel neben dem ersten Bild (max. 3).",
         "settings": {
+          "text": {
+            "label": "Kacheltext (2–4 Wörter)"
+          }
+        }
+      },
+      "benefit": {
+        "name": "Vorteil",
+        "settings": {
+          "lead": {
+            "label": "Fettes Schlagwort",
+            "info": "Erscheint fett vor dem Text, z. B. „Muskeln“."
+          },
           "text": {
             "label": "Vorteilstext"
           }
         }
       },
       "bundle": {
-        "name": "Bundle-Kartentext",
-        "paragraph": "Ergänzt eine Varianten-Karte. Zuordnung über den Variantentitel oder, wenn das Titelfeld leer ist, über die Position (erster Block = erste Variante).",
+        "name": "Paket-Karte",
+        "paragraph": "Eine Karte pro Produktvariante, in Variantenreihenfolge. Preise kommen aus den Varianten.",
         "settings": {
           "match": {
-            "label": "Zuzuordnender Variantentitel (optional)",
-            "info": "Exakter Variantentitel wie im Shopify-Admin. Leer lassen für Zuordnung nach Position."
+            "label": "Variantentitel (Zuordnung)",
+            "info": "Beispiel: „3 Dosen“. Leer: die Karte folgt der Blockposition."
           },
           "name": {
             "label": "Kartenname",
-            "info": "Leer lassen, um den Variantentitel zu zeigen."
+            "info": "Leer: der Variantentitel."
           },
           "subline": {
             "label": "Unterzeile"
           },
+          "highlight": {
+            "label": "Grünes Wort nach der Unterzeile",
+            "info": "Beispiel: „GRATIS“."
+          },
           "badge": {
-            "label": "Badge-Text",
-            "info": "Kleine Pille an der Kartenecke. Leer lassen für keinen Badge."
+            "label": "Reiter über der Karte",
+            "info": "Beispiel: „Beliebteste Wahl“."
+          },
+          "badge_style": {
+            "label": "Reiter-Stil",
+            "options": {
+              "light": "Hellgrün",
+              "dark": "Dunkelgrün"
+            }
+          },
+          "image": {
+            "label": "Kartenbild",
+            "info": "Leer: das Variantenbild, sonst das Produktbild."
           },
           "cta_label": {
-            "label": "In-den-Warenkorb-Text für diese Variante",
-            "info": "Leer lassen, um den Button-Text des Abschnitts zu verwenden."
+            "label": "Button-Text für dieses Paket",
+            "info": "Leer: der Button-Text der Sektion."
           },
           "preselect": {
-            "label": "Diese Variante vorauswählen",
-            "info": "Gilt, wenn die Seite ohne Variante in der URL geöffnet wird."
+            "label": "Vorausgewählt",
+            "info": "Beim Laden ausgewählt, sofern die URL keine Variante nennt."
+          }
+        }
+      },
+      "note": {
+        "name": "Hinweis unter dem Button",
+        "settings": {
+          "text": {
+            "label": "Hinweistext"
           }
         }
       },
       "trust": {
-        "name": "Vertrauenszeile unter dem Button",
+        "name": "Vertrauenszeile",
         "settings": {
           "text": {
-            "label": "Text der Vertrauenszeile"
+            "label": "Vertrauenstext"
           }
         }
+      },
+      "accordion": {
+        "name": "Akkordeon"
       }
     }
   },
   "s03": {
-    "name": "Boarage 03 Aufklappen",
+    "name": "Boarage 03 Bewertungen",
     "settings": {
-      "first_open": {
-        "label": "Ersten Eintrag standardmäßig öffnen"
-      }
-    },
-    "blocks": {
-      "item": {
-        "name": "Aufklapp-Eintrag",
-        "settings": {
-          "title": {
-            "label": "Titel"
-          },
-          "content": {
-            "label": "Text (formatierter Text)"
-          }
-        }
-      }
+      "paragraph": "Dunkelgrünes Panel mit wischbaren Bewertungskarten. App-Block der Bewertungs-App oder manuelle Bewertungen."
     }
   },
   "s04": {
-    "name": "Boarage 04 Bewertungen",
+    "name": "Boarage 04 FAQ",
     "settings": {
-      "paragraph": "Füge deine Bewertungs-App als App-Block ein oder befülle die manuellen Bewertungsblöcke. Solange beides leer ist, zeigt der Abschnitt im Shop nichts an."
-    },
-    "blocks": {
-      "review": {
-        "name": "Manuelle Bewertung",
-        "settings": {
-          "text": {
-            "label": "Bewertungstext",
-            "info": "Nur Bewertungen mit Einverständnis der Kundin oder des Kunden."
-          },
-          "name": {
-            "label": "Name"
-          },
-          "location": {
-            "label": "Ort"
-          },
-          "image": {
-            "label": "Foto (optional)"
-          }
-        }
-      }
-    }
-  },
-  "s05": {
-    "name": "Boarage 05 FAQ",
-    "settings": {
-      "paragraph": "Einträge mit Frage und Antwort werden angezeigt und in die FAQPage-Strukturdaten aufgenommen."
+      "paragraph": "Fragen erscheinen als Akkordeon-Karten und als FAQ-Strukturdaten für Google."
     },
     "blocks": {
       "qa": {
@@ -321,43 +409,62 @@
             "label": "Frage"
           },
           "answer": {
-            "label": "Antwort (formatierter Text)"
+            "label": "Antwort"
+          }
+        }
+      }
+    }
+  },
+  "s05": {
+    "name": "Boarage 05 Problem",
+    "settings": {
+      "paragraph": "Dunkle Sektion: Foto, Überschrift, Absatz und rot markierte Symptomliste."
+    },
+    "blocks": {
+      "point": {
+        "name": "Symptom",
+        "settings": {
+          "text": {
+            "label": "Symptomtext"
           }
         }
       }
     }
   },
   "s06": {
-    "name": "Boarage 06 Problem",
+    "name": "Boarage 06 Wirkweise",
+    "settings": {
+      "paragraph": "Grüne Karte: Vorzeile, Überschrift, Absatz, bis zu vier Icon-Punkte und ein Produktbild.",
+      "image": {
+        "label": "Produktbild"
+      }
+    },
     "blocks": {
-      "stage": {
-        "name": "Stufe",
+      "item": {
+        "name": "Icon-Punkt",
         "settings": {
           "label": {
-            "label": "Stufen-Label",
-            "info": "Kleines Label über dem Titel, z. B. ein Schrittname."
-          },
-          "title": {
-            "label": "Stufentitel"
-          },
-          "text": {
-            "label": "Stufentext"
+            "label": "Beschriftung (2–3 Wörter)"
           }
         }
       }
     }
   },
   "s07": {
-    "name": "Boarage 07 Wirkweise",
+    "name": "Boarage 07 Stadien",
+    "settings": {
+      "paragraph": "Überschrift und bis zu vier Karten (Foto links, Text rechts), die den Verlauf beschreiben."
+    },
     "blocks": {
-      "ingredient": {
-        "name": "Inhaltsstoff",
+      "stage": {
+        "name": "Stadium",
         "settings": {
-          "name": {
-            "label": "Name des Inhaltsstoffs"
+          "label": {
+            "label": "Kleine Kennzeichnung",
+            "info": "Beispiel: „Stadium 1“."
           },
-          "role": {
-            "label": "Was er bewirkt"
+          "title": {
+            "label": "Titel des Stadiums"
           }
         }
       }
@@ -366,181 +473,210 @@
   "s08": {
     "name": "Boarage 08 Wissenschaft",
     "settings": {
-      "disclaimer": {
-        "label": "Hinweis (optional)",
-        "info": "Kleiner, gedämpfter Text unter der Erklärung."
-      },
-      "visual_header": "Visual",
+      "paragraph": "Vorzeile, Überschrift, Absatz und ein schematisches Diagramm mit zwei Kurven (ohne Zahlen) oder ein Bild.",
       "visual": {
-        "label": "Visual neben dem Text",
+        "label": "Visual",
         "options": {
-          "none": "Keins",
-          "image": "Bild",
-          "panel": "Empfindungs-Panel"
+          "chart": "Diagramm",
+          "image": "Bild"
         }
+      },
+      "line_1": {
+        "label": "Legende: grüne Kurve",
+        "info": "Die Kurve, die hoch bleibt."
+      },
+      "line_2": {
+        "label": "Legende: rote Kurve",
+        "info": "Die Kurve, die abfällt."
+      },
+      "axis_y": {
+        "label": "Beschriftung senkrechte Achse"
+      },
+      "axis_x": {
+        "label": "Beschriftung waagerechte Achse"
+      },
+      "chart_alt": {
+        "label": "Diagrammbeschreibung für Screenreader",
+        "info": "Ein Satz, was die beiden Kurven zeigen."
       }
     }
   },
   "s09": {
-    "name": "Boarage 09 Zeitstrahl",
+    "name": "Boarage 09 Zeitverlauf",
     "settings": {
-      "card_header": "Karte neben dem Zeitstrahl",
-      "card_paragraph": "Eine rein visuelle Karte, die eine gedruckte Karte aus dem Paket abbildet: Titel, Hinweis, zwei beschriftete Skalen von 1–10 und zwei Freitextzeilen.",
-      "card_enabled": {
-        "label": "Karte anzeigen"
-      },
-      "card_title": {
-        "label": "Kartentitel"
-      },
-      "card_hint": {
-        "label": "Kartenhinweis"
-      },
-      "scale_1_label": {
-        "label": "Beschriftung der ersten Skala"
-      },
-      "scale_2_label": {
-        "label": "Beschriftung der zweiten Skala"
-      },
-      "line_1": {
-        "label": "Freitextzeile 1"
-      },
-      "line_2": {
-        "label": "Freitextzeile 2"
-      }
+      "paragraph": "Grüne Sektion: Überschrift, Meilensteine an einer Linie mit Checklisten, Garantie-Box."
     },
     "blocks": {
       "milestone": {
         "name": "Meilenstein",
         "settings": {
           "when": {
-            "label": "Wann",
-            "info": "Kurzes Label für den Zeitpunkt, z. B. ein Tag oder eine Woche."
+            "label": "Zeitangabe (grün)",
+            "info": "Beispiel: „Woche 1–2:“."
           },
           "title": {
-            "label": "Meilensteintitel"
+            "label": "Titel des Meilensteins"
           },
-          "text": {
-            "label": "Meilensteintext"
+          "points": {
+            "label": "Checkliste",
+            "info": "Ein Punkt pro Zeile."
           }
         }
       }
     }
   },
   "s10": {
-    "name": "Boarage 10 Vergleich",
+    "name": "Boarage 10 Fotostreifen",
     "settings": {
-      "paragraph": "Spaltenblöcke sind die Tabellenköpfe (der erste bist du). Zeilenblöcke enthalten je einen Wert pro Spalte. „ja“, „nein“ und „teils“ (oder yes / no / varies) erhalten Icons.",
-      "note": {
-        "label": "Fußnote unter der Tabelle (optional)"
-      }
-    },
-    "blocks": {
-      "column": {
-        "name": "Spalte",
-        "paragraph": "Der erste Spaltenblock wird als dein Produkt hervorgehoben.",
-        "settings": {
-          "label": {
-            "label": "Spaltenüberschrift"
-          }
-        }
-      },
-      "row": {
-        "name": "Zeile",
-        "paragraph": "Werte in Spaltenreihenfolge. ja, nein oder teils ergibt ein Icon, sonst beliebiger kurzer Text.",
-        "settings": {
-          "label": {
-            "label": "Zeilenbezeichnung"
-          },
-          "value_1": {
-            "label": "Spalte 1 (du)"
-          },
-          "value_2": {
-            "label": "Spalte 2"
-          },
-          "value_3": {
-            "label": "Spalte 3"
-          },
-          "value_4": {
-            "label": "Spalte 4"
-          },
-          "value_5": {
-            "label": "Spalte 5"
-          }
-        }
-      }
-    }
-  },
-  "s11": {
-    "name": "Boarage 11 Garantie",
-    "settings": {
-      "badge_number": {
-        "label": "Badge-Zahl",
-        "info": "Großer Text im runden Siegel, z. B. eine Anzahl Tage."
-      },
-      "badge_word": {
-        "label": "Badge-Wort"
-      }
-    }
-  },
-  "s12": {
-    "name": "Boarage 12 Fotowand",
-    "settings": {
-      "columns": {
-        "label": "Spalten am Desktop"
+      "paragraph": "Fünf Sterne, Überschrift und ein wischbarer Streifen mit Kundenfotos.",
+      "show_stars": {
+        "label": "Fünf Sterne über der Überschrift zeigen"
       }
     },
     "blocks": {
       "photo": {
-        "name": "Foto",
+        "name": "Foto"
+      }
+    }
+  },
+  "s11": {
+    "name": "Boarage 11 Vergleich",
+    "settings": {
+      "paragraph": "Drei Spalten: wir (grün, Häkchen), Merkmal, andere (grau, Kreuze).",
+      "image_us": {
+        "label": "Unser Produktbild"
+      },
+      "label_us": {
+        "label": "Beschriftung unserer Spalte"
+      },
+      "image_them": {
+        "label": "Bild des anderen Produkts"
+      },
+      "label_them": {
+        "label": "Beschriftung der anderen Spalte"
+      },
+      "sr_yes": {
+        "label": "Screenreader-Wort für ein Häkchen",
+        "info": "Wird statt des Icons vorgelesen, z. B. „ja“."
+      },
+      "sr_no": {
+        "label": "Screenreader-Wort für ein Kreuz"
+      }
+    },
+    "blocks": {
+      "row": {
+        "name": "Zeile",
         "settings": {
-          "caption": {
-            "label": "Bildunterschrift (optional)"
+          "label": {
+            "label": "Merkmal"
+          },
+          "us": {
+            "label": "Wir"
+          },
+          "them": {
+            "label": "Andere"
+          }
+        }
+      }
+    }
+  },
+  "s12": {
+    "name": "Boarage 12 Ergebnisse",
+    "settings": {
+      "paragraph": "Dunkle Karte: Foto, Überschrift, selbst eingetragene Statistiken, Produktbild und die ausführliche Garantie.",
+      "subtitle": {
+        "label": "Unterzeile unter der Überschrift"
+      },
+      "image": {
+        "label": "Foto"
+      },
+      "guarantee_header": "Garantie",
+      "image_product": {
+        "label": "Produktbild"
+      },
+      "guarantee_big": {
+        "label": "Große Zeile",
+        "info": "Beispiel: „60 Tage“."
+      },
+      "guarantee_title": {
+        "label": "Garantie-Titel"
+      },
+      "guarantee_text": {
+        "label": "Garantie-Text"
+      },
+      "guarantee_points": {
+        "label": "Checkliste"
+      }
+    },
+    "blocks": {
+      "stat": {
+        "name": "Kennzahl",
+        "settings": {
+          "value": {
+            "label": "Wert",
+            "info": "Beispiel: „94 %“. Nur belegbare Zahlen verwenden."
+          },
+          "label": {
+            "label": "Beschriftung"
           }
         }
       }
     }
   },
   "s13": {
-    "name": "Boarage 13 Abschluss",
+    "name": "Boarage 13 Rezensionen",
     "settings": {
-      "guarantee_line": {
-        "label": "Garantiezeile über dem Button"
+      "paragraph": "Vorzeile, Überschrift, Bewertungszeile und eine Liste mit „Mehr laden“; App-Blöcke erscheinen darunter.",
+      "initial_count": {
+        "label": "Bewertungen vor „Mehr laden“"
+      },
+      "more_label": {
+        "label": "Text des „Mehr laden“-Links",
+        "info": "Leer: alle Bewertungen sofort sichtbar."
       }
     }
   },
   "s14": {
     "name": "Boarage 14 Rechtliches",
     "settings": {
-      "paragraph": "Rechtliche Links, die vollständige INCI-Liste und die Produktkategorie-Zeile. Links brauchen Beschriftung und Link, um zu erscheinen.",
+      "paragraph": "Dunkler Abschluss: Kategoriezeile, Hinweise, Inhaltsstoffe und Pflichtlinks.",
       "category_line": {
         "label": "Produktkategorie-Zeile",
-        "info": "Kurzer Satz, z. B. dass es ein kosmetisches Produkt zur äußerlichen Anwendung ist."
+        "info": "Beispiel: „Kosmetisches Mittel, zur äußerlichen Anwendung“."
       },
-      "inci_header": "INCI",
+      "note_1": {
+        "label": "Hinweis 1"
+      },
+      "note_2": {
+        "label": "Hinweis 2"
+      },
+      "note_3": {
+        "label": "Hinweis 3"
+      },
       "inci_heading": {
-        "label": "INCI-Überschrift"
+        "label": "Überschrift Inhaltsstoffe"
       },
       "inci": {
-        "label": "Vollständige INCI-Liste (formatierter Text)"
+        "label": "Inhaltsstoffe (INCI)"
       },
       "links_header": "Links",
       "impressum_label": {
-        "label": "Impressum: Beschriftung"
+        "label": "Impressum-Text"
       },
       "impressum_link": {
-        "label": "Impressum: Link"
+        "label": "Impressum-Link"
       },
       "widerruf_label": {
-        "label": "Widerruf: Beschriftung"
+        "label": "Widerruf-Text"
       },
       "widerruf_link": {
-        "label": "Widerruf: Link"
+        "label": "Widerruf-Link"
       },
       "datenschutz_label": {
-        "label": "Datenschutz: Beschriftung"
+        "label": "Datenschutz-Text"
       },
       "datenschutz_link": {
-        "label": "Datenschutz: Link"
+        "label": "Datenschutz-Link"
       }
     }
   }

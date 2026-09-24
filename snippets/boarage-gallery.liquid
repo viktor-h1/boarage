@@ -1,0 +1,53 @@
+{%- comment -%}
+  Buy-box gallery: scroll-snap carousel. First slide = hero image (+ round seals + up to 3 benefit tiles),
+  then the remaining product images; thumbnails on desktop.
+  Params: s (section settings), product, hero_media, hero_img, tile_blocks, tiles_filled.
+{%- endcomment -%}
+{%- assign gal_images = product.media | where: 'media_type', 'image' -%}
+<div class="bpdp-gal{% if s.sticky_gallery %} bpdp-gal--sticky{% endif %}" data-bpdp-carousel data-bpdp-gallery style="--bpdp-gal-ratio: {{ s.gallery_aspect | default: '4 / 5' }}; --bpdp-gal-fit: {{ s.media_fit | default: 'contain' }};">
+  <div class="bpdp-track bpdp-track--bleed" data-bpdp-track aria-label="{{ product.title | escape }}">
+    <div class="bpdp-gal__slide" data-bpdp-media="{{ hero_media.id }}">
+      <div class="bpdp-gal__hero{% if tiles_filled == 0 and request.design_mode == false %} bpdp-gal__hero--plain{% endif %}">
+        <div class="bpdp-gal__fig">
+          {%- if hero_img != blank -%}
+            {{ hero_img | image_url: width: 1000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000', sizes: '(min-width: 900px) 40vw, 62vw', alt: hero_media.alt }}
+          {%- else -%}
+            <span class="bpdp-gal__empty">{% render 'boarage-icon', name: 'jar', size: 96 %}</span>
+            {%- if request.design_mode -%}{% render 'boarage-placeholder', label: 'Product images come from the product media in the Shopify admin' %}{%- endif -%}
+          {%- endif -%}
+          {%- if s.seal_1 != blank or s.seal_2 != blank -%}
+            <div class="bpdp-seals">
+              {%- if s.seal_1 != blank -%}<span class="bpdp-seal">{{ s.seal_1 | escape }}</span>{%- endif -%}
+              {%- if s.seal_2 != blank -%}<span class="bpdp-seal">{{ s.seal_2 | escape }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+        {%- for block in tile_blocks -%}
+          {%- if block.settings.text != blank or request.design_mode -%}
+            <div class="bpdp-tile" {{ block.shopify_attributes }}>
+              {%- render 'boarage-icon', name: block.settings.icon, size: 34 -%}
+              <span>{% if block.settings.text != blank %}{{ block.settings.text | escape }}{% else %}{% render 'boarage-placeholder', label: 'Tile' %}{% endif %}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- for media in gal_images -%}
+      {%- if media.id != hero_media.id -%}
+        <div class="bpdp-gal__slide" data-bpdp-media="{{ media.id }}">
+          {{ media.preview_image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000', sizes: '(min-width: 900px) 40vw, 90vw', alt: media.alt }}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  {%- if s.show_thumbnails and gal_images.size > 1 -%}
+    <div class="bpdp-thumbs">
+      <button type="button" class="bpdp-press" data-bpdp-thumb="{{ hero_media.id }}" aria-current="true" aria-label="{{ 'products.product.media.load_image' | t: index: 1 }}">{{ hero_img | image_url: width: 128 | image_tag: loading: 'lazy', alt: '', widths: '64, 128' }}</button>
+      {%- for media in gal_images -%}
+        {%- if media.id != hero_media.id -%}
+          <button type="button" class="bpdp-press" data-bpdp-thumb="{{ media.id }}" aria-current="false" aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index | plus: 1 }}">{{ media.preview_image | image_url: width: 128 | image_tag: loading: 'lazy', alt: '', widths: '64, 128' }}</button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>

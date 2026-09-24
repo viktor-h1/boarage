@@ -1,0 +1,85 @@
+{%- comment -%}
+  Boarage PDP 01 · Sale bar: bold headline + sub-line on the left, optional countdown on the right.
+  Renders nothing on the storefront while every field is empty and the countdown is off.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign mode = s.countdown_mode | default: 'off'
+  if mode == 'date' and s.countdown_end == blank
+    assign mode = 'off'
+  endif
+  assign has_content = false
+  if s.title != blank or s.subtitle != blank or mode != 'off'
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sale{% if s.align == 'center' %} bpdp-sale--center{% endif %}">
+    <div class="bpdp-sale__in">
+      <div>
+        {%- if s.title != blank -%}
+          <p class="bpdp-sale__title">{{ s.title | escape }}</p>
+        {%- elsif request.design_mode -%}
+          <p class="bpdp-sale__title">{% render 'boarage-placeholder', label: '01 · Sale bar headline' %}</p>
+        {%- endif -%}
+        {%- if s.subtitle != blank -%}
+          <p class="bpdp-sale__sub">{{ s.subtitle | escape }}</p>
+        {%- elsif request.design_mode -%}
+          <p class="bpdp-sale__sub">{% render 'boarage-placeholder', label: 'Sub-line' %}</p>
+        {%- endif -%}
+      </div>
+      {%- if mode != 'off' -%}
+        <div class="bpdp-timer" data-bpdp-countdown data-mode="{{ mode }}" data-end="{{ s.countdown_end | escape }}" role="timer">
+          <span><b data-u="h">00</b>{% if s.label_hours != blank %}<small>{{ s.label_hours | escape }}</small>{% endif %}</span><i>:</i>
+          <span><b data-u="m">00</b>{% if s.label_minutes != blank %}<small>{{ s.label_minutes | escape }}</small>{% endif %}</span><i>:</i>
+          <span><b data-u="s">00</b>{% if s.label_seconds != blank %}<small>{{ s.label_seconds | escape }}</small>{% endif %}</span>
+        </div>
+      {%- elsif request.design_mode -%}
+        <div class="bpdp-timer">{% render 'boarage-placeholder', label: 'Countdown (off)' %}</div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s01.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s01.settings.paragraph" },
+    { "type": "text", "id": "title", "label": "t:boarage.s01.settings.title.label" },
+    { "type": "text", "id": "subtitle", "label": "t:boarage.s01.settings.subtitle.label" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "t:boarage.s01.settings.align.label",
+      "options": [
+        { "value": "left", "label": "t:boarage.s01.settings.align.options.left" },
+        { "value": "center", "label": "t:boarage.s01.settings.align.options.center" }
+      ],
+      "default": "left"
+    },
+    { "type": "header", "content": "t:boarage.s01.settings.countdown_header" },
+    {
+      "type": "select",
+      "id": "countdown_mode",
+      "label": "t:boarage.s01.settings.countdown_mode.label",
+      "info": "t:boarage.s01.settings.countdown_mode.info",
+      "options": [
+        { "value": "off", "label": "t:boarage.s01.settings.countdown_mode.options.off" },
+        { "value": "daily", "label": "t:boarage.s01.settings.countdown_mode.options.daily" },
+        { "value": "date", "label": "t:boarage.s01.settings.countdown_mode.options.date" }
+      ],
+      "default": "off"
+    },
+    { "type": "text", "id": "countdown_end", "label": "t:boarage.s01.settings.countdown_end.label", "info": "t:boarage.s01.settings.countdown_end.info" },
+    { "type": "text", "id": "label_hours", "label": "t:boarage.s01.settings.label_hours.label" },
+    { "type": "text", "id": "label_minutes", "label": "t:boarage.s01.settings.label_minutes.label" },
+    { "type": "text", "id": "label_seconds", "label": "t:boarage.s01.settings.label_seconds.label" }
+  ],
+  "presets": [{ "name": "t:boarage.s01.name" }]
+}
+{% endschema %}

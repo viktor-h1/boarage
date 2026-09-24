@@ -1,0 +1,67 @@
+{%- comment -%}
+  Boarage PDP 05 · Problem: dark section with a photo, a headline (italic words render green),
+  a paragraph and a red-marked symptom checklist.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign points = section.blocks | where: 'type', 'point'
+  assign filled = 0
+  for block in points
+    if block.settings.text != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if s.heading != blank or s.text != blank or s.image != blank or filled > 0
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec bpdp-sec--dark">
+    <div class="bpdp-wrap bpdp-problem">
+      {%- if s.image != blank -%}
+        <div class="bpdp-problem__img">{{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 40vw, 100vw', alt: s.image_alt }}</div>
+      {%- elsif request.design_mode -%}
+        <div class="bpdp-problem__img">{% render 'boarage-placeholder', label: 'Photo', kind: 'block' %}</div>
+      {%- endif -%}
+      <div class="bpdp-stack">
+        {%- render 'boarage-section-head', heading: s.heading, intro: s.text, heading_label: '05 · Problem headline (italic words turn green)', intro_label: 'Paragraph' -%}
+        {%- if filled > 0 or request.design_mode -%}
+          <ul class="bpdp-list bpdp-list--warn">
+            {%- for block in points -%}
+              {%- if block.settings.text != blank or request.design_mode -%}
+                <li {{ block.shopify_attributes }}>{% render 'boarage-icon', name: 'checksq', size: 24 %}<span>{% if block.settings.text != blank %}{{ block.settings.text | escape }}{% else %}{% render 'boarage-placeholder', label: 'Symptom' %}{% endif %}</span></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s05.name",
+  "tag": "section",
+  "class": "bpdp-section bpdp-section--dark",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s05.settings.paragraph" },
+    { "type": "image_picker", "id": "image", "label": "t:boarage.common.image.label" },
+    { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label", "info": "t:boarage.common.heading.info" },
+    { "type": "richtext", "id": "text", "label": "t:boarage.common.text.label" }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "t:boarage.s05.blocks.point.name",
+      "limit": 6,
+      "settings": [{ "type": "text", "id": "text", "label": "t:boarage.s05.blocks.point.settings.text.label" }]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s05.name", "blocks": [{ "type": "point" }, { "type": "point" }, { "type": "point" }, { "type": "point" }] }]
+}
+{% endschema %}

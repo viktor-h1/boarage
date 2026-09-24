@@ -1,0 +1,98 @@
+{%- comment -%}
+  Boarage PDP 06 · Mechanism card: green gradient card with eyebrow, headline, paragraph,
+  up to four icon items and a product image. Sits directly under 05 on the same dark background.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign items = section.blocks | where: 'type', 'item'
+  assign filled = 0
+  for block in items
+    if block.settings.label != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if s.heading != blank or s.text != blank or s.eyebrow != blank or s.image != blank or filled > 0
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec bpdp-sec--dark">
+    <div class="bpdp-wrap">
+      <div class="bpdp-mech bpdp-on-dark">
+        <div class="bpdp-stack">
+          {%- render 'boarage-section-head', eyebrow: s.eyebrow, caps: true, heading: s.heading, intro: s.text, eyebrow_label: 'Eyebrow', heading_label: '06 · Mechanism headline', intro_label: 'Paragraph' -%}
+          {%- if filled > 0 or request.design_mode -%}
+            <ul class="bpdp-mech__grid">
+              {%- for block in items -%}
+                {%- if block.settings.label != blank or request.design_mode -%}
+                  <li class="bpdp-mech__item" {{ block.shopify_attributes }}>{% render 'boarage-icon', name: block.settings.icon, size: 44 %}<span>{% if block.settings.label != blank %}{{ block.settings.label | escape }}{% else %}{% render 'boarage-placeholder', label: 'Label' %}{% endif %}</span></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+        {%- if s.image != blank -%}
+          <div class="bpdp-mech__img">{{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 45vw, 100vw', alt: s.image_alt }}</div>
+        {%- elsif request.design_mode -%}
+          <div class="bpdp-mech__img">{% render 'boarage-placeholder', label: 'Product image', kind: 'block' %}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s06.name",
+  "tag": "section",
+  "class": "bpdp-section bpdp-section--dark",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s06.settings.paragraph" },
+    { "type": "text", "id": "eyebrow", "label": "t:boarage.common.eyebrow.label" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
+    { "type": "richtext", "id": "text", "label": "t:boarage.common.text.label" },
+    { "type": "image_picker", "id": "image", "label": "t:boarage.s06.settings.image.label" },
+    { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:boarage.s06.blocks.item.name",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:boarage.common.icon.label",
+          "options": [
+            { "value": "muscle", "label": "t:boarage.icons.muscle" },
+            { "value": "bone", "label": "t:boarage.icons.bone" },
+            { "value": "snowflake", "label": "t:boarage.icons.snowflake" },
+            { "value": "flame", "label": "t:boarage.icons.flame" },
+            { "value": "bolt", "label": "t:boarage.icons.bolt" },
+            { "value": "moon", "label": "t:boarage.icons.moon" },
+            { "value": "leaf", "label": "t:boarage.icons.leaf" },
+            { "value": "drop", "label": "t:boarage.icons.drop" },
+            { "value": "cell", "label": "t:boarage.icons.cell" },
+            { "value": "user", "label": "t:boarage.icons.user" },
+            { "value": "heart", "label": "t:boarage.icons.heart" },
+            { "value": "hand", "label": "t:boarage.icons.hand" },
+            { "value": "plant", "label": "t:boarage.icons.plant" },
+            { "value": "shoe", "label": "t:boarage.icons.shoe" },
+            { "value": "sun", "label": "t:boarage.icons.sun" },
+            { "value": "wave", "label": "t:boarage.icons.wave" },
+            { "value": "shield", "label": "t:boarage.icons.shield" },
+            { "value": "check", "label": "t:boarage.icons.check" }
+          ],
+          "default": "muscle"
+        },
+        { "type": "text", "id": "label", "label": "t:boarage.s06.blocks.item.settings.label.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s06.name", "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" }] }]
+}
+{% endschema %}

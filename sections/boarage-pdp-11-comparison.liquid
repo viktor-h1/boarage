@@ -1,0 +1,107 @@
+{%- comment -%}
+  Boarage PDP 11 · Comparison: eyebrow, headline and a three-column table
+  (our column in green with checks, feature labels, the other column in grey with crosses).
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign rows = section.blocks | where: 'type', 'row'
+  assign filled = 0
+  for block in rows
+    if block.settings.label != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if s.heading != blank or filled > 0
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap">
+      {%- render 'boarage-section-head', eyebrow: s.eyebrow, caps: true, heading: s.heading, eyebrow_label: 'Eyebrow', heading_label: '11 · Comparison headline', align: 'center' -%}
+      {%- if filled > 0 or request.design_mode -%}
+        <div class="bpdp-cmp">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">
+                  {%- if s.image_us != blank -%}{{ s.image_us | image_url: width: 300 | image_tag: loading: 'lazy', class: 'bpdp-cmp__img', widths: '150, 300', alt: s.label_us }}{%- endif -%}
+                  {%- if s.label_us != blank -%}<span class="bpdp-cmp__us-h">{{ s.label_us | escape }}</span>{%- elsif request.design_mode and s.image_us == blank -%}{% render 'boarage-placeholder', label: 'Our label / image' %}{%- endif -%}
+                </th>
+                <td></td>
+                <th scope="col">
+                  {%- if s.image_them != blank -%}{{ s.image_them | image_url: width: 300 | image_tag: loading: 'lazy', class: 'bpdp-cmp__img', widths: '150, 300', alt: s.label_them }}{%- endif -%}
+                  {%- if s.label_them != blank -%}<span class="bpdp-cmp__them-h">{{ s.label_them | escape }}</span>{%- elsif request.design_mode and s.image_them == blank -%}{% render 'boarage-placeholder', label: 'Their label / image' %}{%- endif -%}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for block in rows -%}
+                {%- if block.settings.label != blank or request.design_mode -%}
+                  <tr {{ block.shopify_attributes }}>
+                    <td class="bpdp-cmp__us">{% if block.settings.us == 'no' %}{% render 'boarage-icon', name: 'xsq', size: 28 %}{% if s.sr_no != blank %}<span class="bpdp-visually-hidden">{{ s.sr_no | escape }}</span>{% endif %}{% else %}{% render 'boarage-icon', name: 'checksq', size: 28 %}{% if s.sr_yes != blank %}<span class="bpdp-visually-hidden">{{ s.sr_yes | escape }}</span>{% endif %}{% endif %}</td>
+                    <th scope="row">{% if block.settings.label != blank %}{{ block.settings.label | escape }}{% else %}{% render 'boarage-placeholder', label: 'Row label' %}{% endif %}</th>
+                    <td class="bpdp-cmp__them">{% if block.settings.them == 'yes' %}{% render 'boarage-icon', name: 'checksq', size: 28 %}{% if s.sr_yes != blank %}<span class="bpdp-visually-hidden">{{ s.sr_yes | escape }}</span>{% endif %}{% else %}{% render 'boarage-icon', name: 'xsq', size: 28 %}{% if s.sr_no != blank %}<span class="bpdp-visually-hidden">{{ s.sr_no | escape }}</span>{% endif %}{% endif %}</td>
+                  </tr>
+                {%- endif -%}
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s11.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s11.settings.paragraph" },
+    { "type": "text", "id": "eyebrow", "label": "t:boarage.common.eyebrow.label" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
+    { "type": "image_picker", "id": "image_us", "label": "t:boarage.s11.settings.image_us.label" },
+    { "type": "text", "id": "label_us", "label": "t:boarage.s11.settings.label_us.label" },
+    { "type": "image_picker", "id": "image_them", "label": "t:boarage.s11.settings.image_them.label" },
+    { "type": "text", "id": "label_them", "label": "t:boarage.s11.settings.label_them.label" },
+    { "type": "text", "id": "sr_yes", "label": "t:boarage.s11.settings.sr_yes.label", "info": "t:boarage.s11.settings.sr_yes.info" },
+    { "type": "text", "id": "sr_no", "label": "t:boarage.s11.settings.sr_no.label" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "t:boarage.s11.blocks.row.name",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "label", "label": "t:boarage.s11.blocks.row.settings.label.label" },
+        {
+          "type": "select",
+          "id": "us",
+          "label": "t:boarage.s11.blocks.row.settings.us.label",
+          "options": [
+            { "value": "yes", "label": "t:boarage.common.yes" },
+            { "value": "no", "label": "t:boarage.common.no" }
+          ],
+          "default": "yes"
+        },
+        {
+          "type": "select",
+          "id": "them",
+          "label": "t:boarage.s11.blocks.row.settings.them.label",
+          "options": [
+            { "value": "yes", "label": "t:boarage.common.yes" },
+            { "value": "no", "label": "t:boarage.common.no" }
+          ],
+          "default": "no"
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s11.name", "blocks": [{ "type": "row" }, { "type": "row" }, { "type": "row" }, { "type": "row" }, { "type": "row" }] }]
+}
+{% endschema %}

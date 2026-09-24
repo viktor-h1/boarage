@@ -1,0 +1,77 @@
+{%- comment -%}
+  Boarage PDP 09 · Timeline: green section with a headline, milestones on a rail (label pill, text,
+  checklist typed one line per item) and the guarantee box.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign milestones = section.blocks | where: 'type', 'milestone'
+  assign filled = 0
+  for block in milestones
+    if block.settings.title != blank or block.settings.text != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if s.heading != blank or filled > 0
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec bpdp-sec--green">
+    <div class="bpdp-wrap">
+      {%- render 'boarage-section-head', heading: s.heading, heading_label: '09 · Timeline headline', align: 'center' -%}
+      {%- if filled > 0 or request.design_mode -%}
+        <ol class="bpdp-tl" style="--bpdp-tl-cols: {{ milestones.size | at_least: 1 | at_most: 4 }};" data-bpdp-reveal>
+          {%- for block in milestones -%}
+            {%- if block.settings.title != blank or block.settings.text != blank or request.design_mode -%}
+              <li class="bpdp-tl__item" data-bpdp-reveal-item {{ block.shopify_attributes }}>
+                {%- if block.settings.when != blank or block.settings.title != blank -%}
+                  <p class="bpdp-tl__pill">{% if block.settings.when != blank %}<b>{{ block.settings.when | escape }}</b> {% endif %}<span>{{ block.settings.title | escape }}</span></p>
+                {%- elsif request.design_mode -%}
+                  <p class="bpdp-tl__pill">{% render 'boarage-placeholder', label: 'Milestone label' %}</p>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape | newline_to_br }}</p>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Milestone text' %}</p>{%- endif -%}
+                {%- if block.settings.points != blank -%}
+                  {%- assign pts = block.settings.points | strip | newline_to_br | split: '<br />' -%}
+                  <ul class="bpdp-list bpdp-list--white">
+                    {%- for p in pts -%}{%- assign pt = p | strip -%}{%- if pt != blank -%}<li>{% render 'boarage-icon', name: 'checksq', size: 22 %}<span>{{ pt | escape }}</span></li>{%- endif -%}{%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+      {%- if s.show_guarantee -%}{%- render 'boarage-guarantee-box' -%}{%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s09.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s09.settings.paragraph" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" },
+    { "type": "checkbox", "id": "show_guarantee", "label": "t:boarage.common.show_guarantee.label", "info": "t:boarage.common.show_guarantee.info", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "t:boarage.s09.blocks.milestone.name",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "when", "label": "t:boarage.s09.blocks.milestone.settings.when.label", "info": "t:boarage.s09.blocks.milestone.settings.when.info" },
+        { "type": "text", "id": "title", "label": "t:boarage.s09.blocks.milestone.settings.title.label" },
+        { "type": "textarea", "id": "text", "label": "t:boarage.common.text.label" },
+        { "type": "textarea", "id": "points", "label": "t:boarage.s09.blocks.milestone.settings.points.label", "info": "t:boarage.s09.blocks.milestone.settings.points.info" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s09.name", "blocks": [{ "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }] }]
+}
+{% endschema %}

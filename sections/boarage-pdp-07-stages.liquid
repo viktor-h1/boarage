@@ -1,0 +1,76 @@
+{%- comment -%}
+  Boarage PDP 07 · Stages: headline and up to four cards (photo left, light green text panel right)
+  that describe how the problem progresses.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign stages = section.blocks | where: 'type', 'stage'
+  assign filled = 0
+  for block in stages
+    if block.settings.title != blank or block.settings.text != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign has_content = false
+  if s.heading != blank or filled > 0
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-sec">
+    <div class="bpdp-wrap">
+      {%- render 'boarage-section-head', heading: s.heading, heading_label: '07 · Stages headline', align: 'center' -%}
+      {%- if filled > 0 or request.design_mode -%}
+        <div class="bpdp-stages" data-bpdp-reveal>
+          {%- for block in stages -%}
+            {%- if block.settings.title != blank or block.settings.text != blank or request.design_mode -%}
+              <article class="bpdp-stage" data-bpdp-reveal-item {{ block.shopify_attributes }}>
+                <div class="bpdp-stage__img">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 900px) 15vw, 40vw', alt: block.settings.image_alt }}
+                  {%- elsif request.design_mode -%}
+                    {% render 'boarage-placeholder', label: 'Photo', kind: 'block' %}
+                  {%- endif -%}
+                </div>
+                <div class="bpdp-stage__body">
+                  {%- if block.settings.label != blank -%}<span class="bpdp-eyebrow bpdp-eyebrow--caps">{{ block.settings.label | escape }}</span>{%- elsif request.design_mode -%}<span class="bpdp-eyebrow">{% render 'boarage-placeholder', label: 'Stage label' %}</span>{%- endif -%}
+                  {%- if block.settings.title != blank -%}<h3 class="bpdp-head bpdp-h3">{{ block.settings.title | escape }}</h3>{%- elsif request.design_mode -%}<p class="bpdp-head bpdp-h3">{% render 'boarage-placeholder', label: 'Stage title' %}</p>{%- endif -%}
+                  {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape | newline_to_br }}</p>{%- elsif request.design_mode -%}<p>{% render 'boarage-placeholder', label: 'Stage text' %}</p>{%- endif -%}
+                </div>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s07.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s07.settings.paragraph" },
+    { "type": "inline_richtext", "id": "heading", "label": "t:boarage.common.heading.label" }
+  ],
+  "blocks": [
+    {
+      "type": "stage",
+      "name": "t:boarage.s07.blocks.stage.name",
+      "limit": 4,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "t:boarage.common.image.label" },
+        { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label" },
+        { "type": "text", "id": "label", "label": "t:boarage.s07.blocks.stage.settings.label.label", "info": "t:boarage.s07.blocks.stage.settings.label.info" },
+        { "type": "text", "id": "title", "label": "t:boarage.s07.blocks.stage.settings.title.label" },
+        { "type": "textarea", "id": "text", "label": "t:boarage.common.text.label" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "t:boarage.s07.name", "blocks": [{ "type": "stage" }, { "type": "stage" }, { "type": "stage" }] }]
+}
+{% endschema %}
