@@ -1,0 +1,33 @@
+{%- comment -%}
+  Benefit checklist card (paste into a "Custom Liquid" section or block).
+  Light-green card, one row per benefit: green check-square icon, bold lead, " - ", description.
+  Measured from the reference screenshot: card #f6fdfa, text #0c482b, icon #34a23b, no border, 2 px radius,
+  18 px text at line-height 1.33, 1 em between rows, 20 px icon centred on the row.
+  Edit the four <li> rows below; the font family is inherited from the theme.
+{%- endcomment -%}
+<style>
+  .bx-checks { display: grid; gap: 1em; margin: 0; padding: .65em .72em; list-style: none; background: #f6fdfa; border-radius: 2px; font-size: 18px; line-height: 1.333; color: #0c482b; -webkit-font-smoothing: antialiased; }
+  .bx-checks li { display: flex; align-items: center; gap: .7em; margin: 0; padding: 0; }
+  .bx-checks li::before { content: none; }
+  .bx-checks svg { display: block; flex: 0 0 auto; width: 1.1em; height: 1.1em; color: #34a23b; }
+  .bx-checks span { display: block; min-width: 0; }
+  .bx-checks b { font-weight: 700; color: #0c482b; }
+</style>
+<ul class="bx-checks" role="list">
+  <li>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>
+    <span><b>Mitochondria</b> - Reactivated to support nerve repair</span>
+  </li>
+  <li>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>
+    <span><b>Nerve Pain</b> - Helps reduce burning, tingling, numbness</span>
+  </li>
+  <li>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>
+    <span><b>Sleep</b> - Supports the nighttime burn stealing rest</span>
+  </li>
+  <li>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>
+    <span><b>Balance</b> - Helps brain-to-feet signaling</span>
+  </li>
+</ul>
