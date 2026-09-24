@@ -1,0 +1,92 @@
+{%- comment -%}
+  Boarage · Benefit checklist: light-green card, one row per block with a green check-square icon,
+  a bold lead, " - " and the description. Stand-alone (own inline styles, no dependency on the
+  Boarage assets), so it can be added to any template. Colours and spacing are measured from the
+  reference screenshot: card #f6fdfa, text #0c482b, icon #34a23b, 18 px text at line-height 1.33,
+  1 em between rows, 20 px icon centred on the row. Empty rows render nothing on the storefront.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign filled = 0
+  for block in section.blocks
+    if block.settings.lead != blank or block.settings.text != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign sid = 'bx-' | append: section.id
+-%}
+{%- if filled > 0 or request.design_mode -%}
+  <style>
+    #{{ sid }} { padding: {{ s.padding_top }}px 0 {{ s.padding_bottom }}px; }
+    #{{ sid }} .bx-checks__wrap { max-width: {{ s.max_width }}px; margin: 0 auto; padding: 0 {{ s.gutter }}px; }
+    #{{ sid }} .bx-checks { display: grid; gap: 1em; margin: 0; padding: .65em .72em; list-style: none; background: {{ s.color_bg }}; border-radius: {{ s.radius }}px; font-size: {{ s.text_size }}px; line-height: 1.333; color: {{ s.color_text }}; -webkit-font-smoothing: antialiased; }
+    #{{ sid }} .bx-checks li { display: flex; align-items: center; gap: .7em; margin: 0; padding: 0; }
+    #{{ sid }} .bx-checks li::before { content: none; }
+    #{{ sid }} .bx-checks svg { display: block; flex: 0 0 auto; width: 1.1em; height: 1.1em; color: {{ s.color_icon }}; }
+    #{{ sid }} .bx-checks span { display: block; min-width: 0; }
+    #{{ sid }} .bx-checks b { font-weight: 700; color: {{ s.color_text }}; }
+    #{{ sid }} .bx-checks__empty { opacity: .55; font-style: italic; }
+  </style>
+  <div id="{{ sid }}">
+    <div class="bx-checks__wrap">
+      <ul class="bx-checks" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.lead != blank or block.settings.text != blank or request.design_mode -%}
+            <li {{ block.shopify_attributes }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>
+              <span>
+                {%- if block.settings.lead != blank -%}<b>{{ block.settings.lead | escape }}</b>{% if block.settings.text != blank %} - {% endif %}{%- endif -%}
+                {%- if block.settings.text != blank -%}{{ block.settings.text | escape }}{%- elsif block.settings.lead == blank -%}<span class="bx-checks__empty">Benefit (empty rows are hidden on the storefront)</span>{%- endif -%}
+              </span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Benefit checklist",
+  "tag": "section",
+  "class": "bx-checks-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "One row per block: a bold lead, then \" - \" and the description. Rows with no text are hidden on the storefront." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_bg", "label": "Card background", "default": "#f6fdfa" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#0c482b" },
+    { "type": "color", "id": "color_icon", "label": "Check icon", "default": "#34a23b" },
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 2 },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 400, "max": 1200, "step": 20, "unit": "px", "default": 600 },
+    { "type": "range", "id": "gutter", "label": "Side gutter", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 20 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "limit": 12,
+      "settings": [
+        { "type": "text", "id": "lead", "label": "Bold lead", "info": "e.g. Mitochondria" },
+        { "type": "text", "id": "text", "label": "Description", "info": "e.g. Reactivated to support nerve repair" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefit checklist",
+      "blocks": [
+        { "type": "benefit", "settings": { "lead": "Mitochondria", "text": "Reactivated to support nerve repair" } },
+        { "type": "benefit", "settings": { "lead": "Nerve Pain", "text": "Helps reduce burning, tingling, numbness" } },
+        { "type": "benefit", "settings": { "lead": "Sleep", "text": "Supports the nighttime burn stealing rest" } },
+        { "type": "benefit", "settings": { "lead": "Balance", "text": "Helps brain-to-feet signaling" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
