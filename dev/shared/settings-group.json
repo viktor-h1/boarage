@@ -1,0 +1,33 @@
+{
+  "name": "t:boarage.settings.name",
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.settings.paragraph" },
+    { "type": "header", "content": "t:boarage.settings.fonts_header" },
+    { "type": "checkbox", "id": "boarage_use_theme_fonts", "label": "t:boarage.settings.use_theme_fonts.label", "info": "t:boarage.settings.use_theme_fonts.info", "default": true },
+    { "type": "font_picker", "id": "boarage_font_heading", "label": "t:boarage.settings.font_heading.label", "default": "assistant_n4" },
+    { "type": "font_picker", "id": "boarage_font_body", "label": "t:boarage.settings.font_body.label", "default": "assistant_n4" },
+    { "type": "range", "id": "boarage_base_size", "label": "t:boarage.settings.base_size.label", "info": "t:boarage.settings.base_size.info", "min": 18, "max": 22, "step": 1, "unit": "px", "default": 18 },
+    { "type": "header", "content": "t:boarage.settings.colors_header" },
+    { "type": "color", "id": "boarage_color_accent", "label": "t:boarage.settings.color_accent.label", "default": "#1F4A3D" },
+    { "type": "color", "id": "boarage_color_accent_ink", "label": "t:boarage.settings.color_accent_ink.label", "default": "#FFFFFF" },
+    { "type": "color", "id": "boarage_color_surface", "label": "t:boarage.settings.color_surface.label", "default": "#FFFFFF" },
+    { "type": "color", "id": "boarage_color_line", "label": "t:boarage.settings.color_line.label", "default": "#D0DBD4" },
+    { "type": "color", "id": "boarage_color_cool", "label": "t:boarage.settings.color_cool.label", "default": "#D6EBE1" },
+    { "type": "color", "id": "boarage_color_warm", "label": "t:boarage.settings.color_warm.label", "default": "#F6E5CB" },
+    { "type": "color", "id": "boarage_color_bg", "label": "t:boarage.settings.color_bg.label", "info": "t:boarage.settings.color_bg.info" },
+    { "type": "range", "id": "boarage_radius", "label": "t:boarage.settings.radius.label", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 14 },
+    { "type": "header", "content": "t:boarage.settings.mode_header" },
+    {
+      "type": "select",
+      "id": "boarage_dark_mode",
+      "label": "t:boarage.settings.dark_mode.label",
+      "info": "t:boarage.settings.dark_mode.info",
+      "options": [
+        { "value": "light", "label": "t:boarage.settings.dark_mode.options.light" },
+        { "value": "system", "label": "t:boarage.settings.dark_mode.options.system" },
+        { "value": "dark", "label": "t:boarage.settings.dark_mode.options.dark" }
+      ],
+      "default": "light"
+    }
+  ]
+}

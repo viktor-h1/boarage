@@ -1,0 +1,9 @@
+{
+  "products.product.add_to_cart": "In den Warenkorb legen",
+  "products.product.sold_out": "Ausverkauft",
+  "products.product.price.unit_price": "Grundpreis",
+  "accessibility.star_reviews_info": "{{ rating_value }} von {{ rating_max }} Sternen",
+  "accessibility.total_reviews": "Bewertungen insgesamt",
+  "products.product.media.load_image": "Bild {{ index }} in Galerieansicht laden",
+  "sections.cart.cart_error": "Beim Aktualisieren deines Warenkorbs ist ein Fehler aufgetreten. Bitte versuche es erneut."
+}

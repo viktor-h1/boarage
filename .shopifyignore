@@ -1,0 +1,11 @@
+# Files that must never be pushed to the theme with `shopify theme push`.
+node_modules/
+dev/
+*.md
+package.json
+package-lock.json
+.theme-check.yml
+.gitignore
+.shopifyignore
+# Lint-only snapshot of the live storefront strings (edited by merchants in the language editor): never pushed.
+locales/en.default.json

@@ -1,0 +1,547 @@
+{
+  "settings": {
+    "name": "Boarage PDP",
+    "paragraph": "Design tokens for the Boarage product page sections. Every value has a sensible default; the sections also work when this group is missing.",
+    "fonts_header": "Fonts",
+    "use_theme_fonts": {
+      "label": "Use the theme's fonts",
+      "info": "When enabled, the Boarage sections inherit the theme's heading and body fonts. Disable it to pick separate fonts below."
+    },
+    "font_heading": {
+      "label": "Heading font (also buttons and labels)"
+    },
+    "font_body": {
+      "label": "Body font"
+    },
+    "base_size": {
+      "label": "Base font size",
+      "info": "Body text size on all devices. 18 px is the minimum for a 60+ audience."
+    },
+    "colors_header": "Colours",
+    "color_accent": {
+      "label": "Accent (buttons, links, highlights)"
+    },
+    "color_accent_ink": {
+      "label": "Text on accent"
+    },
+    "color_surface": {
+      "label": "Surface (cards, bands)"
+    },
+    "color_line": {
+      "label": "Lines and borders"
+    },
+    "color_cool": {
+      "label": "Cool tint (left half of the sensation panel, icon circles)"
+    },
+    "color_warm": {
+      "label": "Warm tint (right half of the sensation panel)"
+    },
+    "color_bg": {
+      "label": "Page background",
+      "info": "Leave empty to keep the theme's background colour."
+    },
+    "radius": {
+      "label": "Corner radius"
+    },
+    "mode_header": "Dark mode",
+    "dark_mode": {
+      "label": "Colour scheme for the Boarage sections",
+      "info": "The theme's header and footer have no dark mode, so 'Off' is the safe default.",
+      "options": {
+        "light": "Off (always light)",
+        "system": "Follow the visitor's system setting",
+        "dark": "Always dark"
+      }
+    }
+  },
+  "common": {
+    "empty_info": "Empty settings render nothing on the storefront. In the editor they show a dashed placeholder with the setting's name.",
+    "heading": {
+      "label": "Headline",
+      "info": "Leave empty to hide the headline."
+    },
+    "intro": {
+      "label": "Intro text (rich text)"
+    },
+    "text": {
+      "label": "Text (rich text)"
+    },
+    "link": {
+      "label": "Link (optional)",
+      "info": "Leave empty for plain text."
+    },
+    "icon": {
+      "label": "Icon"
+    },
+    "image": {
+      "label": "Image"
+    },
+    "image_alt": {
+      "label": "Image alt text",
+      "info": "Describe the image for screen readers and search engines."
+    },
+    "cta_label": {
+      "label": "Button text"
+    },
+    "cta_link": {
+      "label": "Button link (optional)",
+      "info": "Leave empty to scroll to the buy box on the product page."
+    }
+  },
+  "icons": {
+    "none": "No icon",
+    "shield": "Shield",
+    "box": "Parcel",
+    "truck": "Truck",
+    "chat": "Speech bubble",
+    "invoice": "Invoice",
+    "lock": "Lock",
+    "leaf": "Leaf",
+    "drop": "Drop",
+    "snowflake": "Snowflake (cool)",
+    "flame": "Flame (warm)",
+    "wave": "Wave",
+    "hand": "Hand",
+    "heart": "Heart",
+    "jar": "Jar",
+    "clock": "Clock",
+    "star": "Star",
+    "check": "Check mark"
+  },
+  "panel": {
+    "header": "Sensation panel",
+    "paragraph": "Two labelled halves (cool | warm) with a title and a short text each, plus a start and an end label on the axis underneath.",
+    "left_title": "Left half: title",
+    "left_text": "Left half: text",
+    "right_title": "Right half: title",
+    "right_text": "Right half: text",
+    "axis_start": "Axis: start label",
+    "axis_end": "Axis: end label"
+  },
+  "s01": {
+    "name": "Boarage 01 Announcement",
+    "settings": {
+      "style": {
+        "label": "Style",
+        "options": {
+          "accent": "Accent background",
+          "surface": "Light surface with a bottom line"
+        }
+      }
+    },
+    "blocks": {
+      "item": {
+        "name": "Strip item",
+        "settings": {
+          "text": {
+            "label": "Item text",
+            "info": "One short phrase, e.g. a guarantee, support or payment note."
+          }
+        }
+      }
+    }
+  },
+  "s02": {
+    "name": "Boarage 02 Buy box",
+    "settings": {
+      "paragraph": "Product title, images, prices and variants come from the product in the Shopify admin. Everything else is a setting below. Only one buy box per page.",
+      "gallery_header": "Gallery",
+      "gallery_aspect": {
+        "label": "Image frame ratio",
+        "options": {
+          "square": "Square (1:1)",
+          "portrait": "Portrait (4:5)",
+          "tall": "Tall (3:4)"
+        }
+      },
+      "media_fit": {
+        "label": "Image fit",
+        "options": {
+          "cover": "Fill the frame (cover)",
+          "contain": "Show the whole image (contain)"
+        }
+      },
+      "sticky_gallery": {
+        "label": "Keep the gallery in view on desktop"
+      },
+      "show_thumbnails": {
+        "label": "Show thumbnails"
+      },
+      "text_header": "Text",
+      "show_rating": {
+        "label": "Show the star rating",
+        "info": "Renders only when a reviews app has filled the reviews.rating metafield. If an app block is added to this section, the app block is shown instead."
+      },
+      "subtitle": {
+        "label": "Subtitle under the product title",
+        "info": "One or two sentences. Line breaks are kept."
+      },
+      "bundle_header": "Bundle selector",
+      "bundle_legend": {
+        "label": "Bundle selector legend",
+        "info": "Short label above the variant cards."
+      },
+      "price_mode": {
+        "label": "Price model",
+        "info": "Bundle total: the variant price is the price of the whole bundle; the per-unit price is price ÷ the variant metafield custom.units_per_variant. Per unit: the variant price is the price per unit; the total is price × units and the cart receives that many units.",
+        "options": {
+          "bundle_total": "Variant price is the bundle total",
+          "per_unit": "Variant price is per unit"
+        }
+      },
+      "per_unit_label": {
+        "label": "Per-unit label",
+        "info": "Shown after the computed unit price, e.g. the word for 'per jar'. The unit line is hidden until the variant metafield custom.units_per_variant is filled."
+      },
+      "buttons_header": "Buttons",
+      "cta_label": {
+        "label": "Add-to-cart button text",
+        "info": "Leave empty to use the theme's default add-to-cart text. Bundle blocks can override it per variant."
+      },
+      "after_add": {
+        "label": "After adding to cart",
+        "options": {
+          "drawer": "Open the theme's cart drawer or notification (falls back to the cart page)",
+          "cart": "Always go to the cart page"
+        }
+      },
+      "sticky_bar": {
+        "label": "Show the mobile sticky buy bar"
+      },
+      "sticky_cta_label": {
+        "label": "Sticky bar button text",
+        "info": "Leave empty to reuse the add-to-cart button text."
+      }
+    },
+    "blocks": {
+      "benefit": {
+        "name": "Benefit line",
+        "settings": {
+          "text": {
+            "label": "Benefit text"
+          }
+        }
+      },
+      "bundle": {
+        "name": "Bundle card text",
+        "paragraph": "Decorates one variant card. Matched by variant title, or by position when the title field is empty (first block = first variant).",
+        "settings": {
+          "match": {
+            "label": "Variant title to match (optional)",
+            "info": "Exact variant title as in the Shopify admin. Leave empty to match by position."
+          },
+          "name": {
+            "label": "Card name",
+            "info": "Leave empty to show the variant title."
+          },
+          "subline": {
+            "label": "Sub-line"
+          },
+          "badge": {
+            "label": "Badge text",
+            "info": "Small pill on the card's corner. Leave empty for no badge."
+          },
+          "cta_label": {
+            "label": "Add-to-cart text for this variant",
+            "info": "Leave empty to use the section's button text."
+          },
+          "preselect": {
+            "label": "Preselect this variant",
+            "info": "Applies when the page is opened without a variant in the URL."
+          }
+        }
+      },
+      "trust": {
+        "name": "Trust line under the button",
+        "settings": {
+          "text": {
+            "label": "Trust line text"
+          }
+        }
+      }
+    }
+  },
+  "s03": {
+    "name": "Boarage 03 Accordions",
+    "settings": {
+      "first_open": {
+        "label": "Open the first item by default"
+      }
+    },
+    "blocks": {
+      "item": {
+        "name": "Accordion item",
+        "settings": {
+          "title": {
+            "label": "Title"
+          },
+          "content": {
+            "label": "Text (rich text)"
+          }
+        }
+      }
+    }
+  },
+  "s04": {
+    "name": "Boarage 04 Reviews",
+    "settings": {
+      "paragraph": "Add your reviews app as an app block, or fill the manual review blocks. The section renders nothing on the storefront while both are empty."
+    },
+    "blocks": {
+      "review": {
+        "name": "Manual review",
+        "settings": {
+          "text": {
+            "label": "Review text",
+            "info": "Only reviews with permission from the customer."
+          },
+          "name": {
+            "label": "Name"
+          },
+          "location": {
+            "label": "Location"
+          },
+          "image": {
+            "label": "Photo (optional)"
+          }
+        }
+      }
+    }
+  },
+  "s05": {
+    "name": "Boarage 05 FAQ",
+    "settings": {
+      "paragraph": "Entries with both a question and an answer are shown and added to the FAQPage structured data."
+    },
+    "blocks": {
+      "qa": {
+        "name": "Question",
+        "settings": {
+          "question": {
+            "label": "Question"
+          },
+          "answer": {
+            "label": "Answer (rich text)"
+          }
+        }
+      }
+    }
+  },
+  "s06": {
+    "name": "Boarage 06 Problem",
+    "blocks": {
+      "stage": {
+        "name": "Stage",
+        "settings": {
+          "label": {
+            "label": "Stage label",
+            "info": "Small label above the title, e.g. a step name."
+          },
+          "title": {
+            "label": "Stage title"
+          },
+          "text": {
+            "label": "Stage text"
+          }
+        }
+      }
+    }
+  },
+  "s07": {
+    "name": "Boarage 07 Mechanism",
+    "blocks": {
+      "ingredient": {
+        "name": "Ingredient",
+        "settings": {
+          "name": {
+            "label": "Ingredient name"
+          },
+          "role": {
+            "label": "What it does"
+          }
+        }
+      }
+    }
+  },
+  "s08": {
+    "name": "Boarage 08 Science",
+    "settings": {
+      "disclaimer": {
+        "label": "Disclaimer (optional)",
+        "info": "Small muted text under the explainer."
+      },
+      "visual_header": "Visual",
+      "visual": {
+        "label": "Visual beside the text",
+        "options": {
+          "none": "None",
+          "image": "Image",
+          "panel": "Sensation panel"
+        }
+      }
+    }
+  },
+  "s09": {
+    "name": "Boarage 09 Journey",
+    "settings": {
+      "card_header": "Card beside the timeline",
+      "card_paragraph": "A purely visual card that mirrors a printed card shipped with the product: title, hint, two labelled 1–10 scales and two free-text lines.",
+      "card_enabled": {
+        "label": "Show the card"
+      },
+      "card_title": {
+        "label": "Card title"
+      },
+      "card_hint": {
+        "label": "Card hint"
+      },
+      "scale_1_label": {
+        "label": "First scale label"
+      },
+      "scale_2_label": {
+        "label": "Second scale label"
+      },
+      "line_1": {
+        "label": "Free-text line 1"
+      },
+      "line_2": {
+        "label": "Free-text line 2"
+      }
+    },
+    "blocks": {
+      "milestone": {
+        "name": "Milestone",
+        "settings": {
+          "when": {
+            "label": "When",
+            "info": "Short label for the moment, e.g. a day or week."
+          },
+          "title": {
+            "label": "Milestone title"
+          },
+          "text": {
+            "label": "Milestone text"
+          }
+        }
+      }
+    }
+  },
+  "s10": {
+    "name": "Boarage 10 Comparison",
+    "settings": {
+      "paragraph": "Column blocks are the table headers (the first one is you). Row blocks hold one value per column. 'yes', 'no' and 'varies' (or ja / nein / teils) get styled icons.",
+      "note": {
+        "label": "Footnote under the table (optional)"
+      }
+    },
+    "blocks": {
+      "column": {
+        "name": "Column",
+        "paragraph": "The first column block is highlighted as your product.",
+        "settings": {
+          "label": {
+            "label": "Column header"
+          }
+        }
+      },
+      "row": {
+        "name": "Row",
+        "paragraph": "Values in column order. Type yes, no or varies for a styled icon, or any short text.",
+        "settings": {
+          "label": {
+            "label": "Row label"
+          },
+          "value_1": {
+            "label": "Column 1 (you)"
+          },
+          "value_2": {
+            "label": "Column 2"
+          },
+          "value_3": {
+            "label": "Column 3"
+          },
+          "value_4": {
+            "label": "Column 4"
+          },
+          "value_5": {
+            "label": "Column 5"
+          }
+        }
+      }
+    }
+  },
+  "s11": {
+    "name": "Boarage 11 Guarantee",
+    "settings": {
+      "badge_number": {
+        "label": "Badge number",
+        "info": "Large text in the round seal, e.g. a number of days."
+      },
+      "badge_word": {
+        "label": "Badge word"
+      }
+    }
+  },
+  "s12": {
+    "name": "Boarage 12 Photo wall",
+    "settings": {
+      "columns": {
+        "label": "Columns on desktop"
+      }
+    },
+    "blocks": {
+      "photo": {
+        "name": "Photo",
+        "settings": {
+          "caption": {
+            "label": "Caption (optional)"
+          }
+        }
+      }
+    }
+  },
+  "s13": {
+    "name": "Boarage 13 Closing CTA",
+    "settings": {
+      "guarantee_line": {
+        "label": "Guarantee line above the button"
+      }
+    }
+  },
+  "s14": {
+    "name": "Boarage 14 Legal strip",
+    "settings": {
+      "paragraph": "Legal links, the full INCI list and the product category line. Links need both a label and a link to show.",
+      "category_line": {
+        "label": "Product category line",
+        "info": "Short sentence, e.g. that it is a cosmetic product for external use."
+      },
+      "inci_header": "INCI",
+      "inci_heading": {
+        "label": "INCI heading"
+      },
+      "inci": {
+        "label": "Full INCI list (rich text)"
+      },
+      "links_header": "Links",
+      "impressum_label": {
+        "label": "Impressum: label"
+      },
+      "impressum_link": {
+        "label": "Impressum: link"
+      },
+      "widerruf_label": {
+        "label": "Widerruf: label"
+      },
+      "widerruf_link": {
+        "label": "Widerruf: link"
+      },
+      "datenschutz_label": {
+        "label": "Datenschutz: label"
+      },
+      "datenschutz_link": {
+        "label": "Datenschutz: link"
+      }
+    }
+  }
+}

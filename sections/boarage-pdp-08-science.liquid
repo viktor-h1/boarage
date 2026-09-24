@@ -1,0 +1,97 @@
+{%- comment -%} Boarage PDP 08 · Science / explainer: headline, rich text, optional disclaimer, optional image or sensation panel. {%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign visual = s.visual | default: 'none'
+  assign panel_filled = false
+  if s.left_title != blank or s.left_text != blank or s.right_title != blank or s.right_text != blank or s.axis_start != blank or s.axis_end != blank
+    assign panel_filled = true
+  endif
+  assign has_visual = false
+  if visual == 'image' and s.image != blank
+    assign has_visual = true
+  elsif visual == 'panel' and panel_filled
+    assign has_visual = true
+  endif
+  assign has_content = false
+  if s.heading != blank or s.text != blank or s.disclaimer != blank or has_visual
+    assign has_content = true
+  endif
+-%}
+{%- if has_content or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-s08">
+    <div class="bpdp-wrap">
+      {%- if has_content == false -%}{% render 'boarage-placeholder', label: '08 · Science / explainer: headline, text, disclaimer and an optional visual', kind: 'block' %}{%- endif -%}
+      <div class="bpdp-mech">
+        {%- if s.heading != blank or s.text != blank or s.disclaimer != blank or request.design_mode -%}
+          <div>
+            {%- if s.heading != blank -%}
+              <h2>{{ s.heading | escape }}</h2>
+            {%- elsif request.design_mode -%}
+              <p>{% render 'boarage-placeholder', label: 'Explainer headline' %}</p>
+            {%- endif -%}
+            {%- if s.text != blank -%}
+              <div class="bpdp-rte">{{ s.text }}</div>
+            {%- elsif request.design_mode -%}
+              {% render 'boarage-placeholder', label: 'Explainer text (rich text)', kind: 'block' %}
+            {%- endif -%}
+            {%- if s.disclaimer != blank -%}
+              <p class="bpdp-disclaimer">{{ s.disclaimer | escape | newline_to_br }}</p>
+            {%- elsif request.design_mode -%}
+              <p class="bpdp-disclaimer">{% render 'boarage-placeholder', label: 'Disclaimer (optional)' %}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if visual == 'image' -%}
+          {%- if s.image != blank -%}
+            <figure class="bpdp-figure">
+              {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 900px) 50vw, 100vw', alt: s.image_alt }}
+            </figure>
+          {%- elsif request.design_mode -%}
+            {% render 'boarage-placeholder', label: 'Explainer image + alt text', kind: 'block' %}
+          {%- endif -%}
+        {%- elsif visual == 'panel' -%}
+          {% render 'boarage-sensation-panel', left_title: s.left_title, left_text: s.left_text, right_title: s.right_title, right_text: s.right_text, axis_start: s.axis_start, axis_end: s.axis_end %}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s08.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.common.empty_info" },
+    { "type": "text", "id": "heading", "label": "t:boarage.common.heading.label", "info": "t:boarage.common.heading.info" },
+    { "type": "richtext", "id": "text", "label": "t:boarage.common.text.label" },
+    { "type": "textarea", "id": "disclaimer", "label": "t:boarage.s08.settings.disclaimer.label", "info": "t:boarage.s08.settings.disclaimer.info" },
+    { "type": "header", "content": "t:boarage.s08.settings.visual_header" },
+    {
+      "type": "select",
+      "id": "visual",
+      "label": "t:boarage.s08.settings.visual.label",
+      "options": [
+        { "value": "none", "label": "t:boarage.s08.settings.visual.options.none" },
+        { "value": "image", "label": "t:boarage.s08.settings.visual.options.image" },
+        { "value": "panel", "label": "t:boarage.s08.settings.visual.options.panel" }
+      ],
+      "default": "none"
+    },
+    { "type": "image_picker", "id": "image", "label": "t:boarage.common.image.label" },
+    { "type": "text", "id": "image_alt", "label": "t:boarage.common.image_alt.label", "info": "t:boarage.common.image_alt.info" },
+    { "type": "header", "content": "t:boarage.panel.header" },
+    { "type": "paragraph", "content": "t:boarage.panel.paragraph" },
+    { "type": "text", "id": "left_title", "label": "t:boarage.panel.left_title" },
+    { "type": "textarea", "id": "left_text", "label": "t:boarage.panel.left_text" },
+    { "type": "text", "id": "right_title", "label": "t:boarage.panel.right_title" },
+    { "type": "textarea", "id": "right_text", "label": "t:boarage.panel.right_text" },
+    { "type": "text", "id": "axis_start", "label": "t:boarage.panel.axis_start" },
+    { "type": "text", "id": "axis_end", "label": "t:boarage.panel.axis_end" }
+  ],
+  "presets": [ { "name": "t:boarage.s08.name" } ]
+}
+{% endschema %}

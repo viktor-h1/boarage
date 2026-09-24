@@ -1,0 +1,12 @@
+{%- comment -%}
+  Round guarantee seal: a number and a word (both theme settings). Params: number, word, class.
+  Renders nothing when both are empty.
+{%- endcomment -%}
+{%- if number != blank or word != blank -%}
+  <svg class="bpdp-seal{% if class != blank %} {{ class }}{% endif %}" viewBox="0 0 150 150" role="img" aria-label="{{ number | escape }} {{ word | escape }}">
+    <circle cx="75" cy="75" r="70" fill="none" stroke="currentColor" stroke-width="3"/>
+    <circle cx="75" cy="75" r="58" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 5"/>
+    {%- if number != blank -%}<text x="75" y="{% if word != blank %}72{% else %}86{% endif %}" text-anchor="middle" font-size="34" font-weight="700" fill="currentColor">{{ number | escape }}</text>{%- endif -%}
+    {%- if word != blank -%}<text x="75" y="{% if number != blank %}96{% else %}80{% endif %}" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">{{ word | escape }}</text>{%- endif -%}
+  </svg>
+{%- endif -%}

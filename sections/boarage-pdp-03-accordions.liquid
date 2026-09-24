@@ -1,0 +1,61 @@
+{%- comment -%} Boarage PDP 03 · Accordions under the buy box (title + rich text, first open by default). {%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign filled = 0
+  for block in section.blocks
+    if block.settings.title != blank and block.settings.content != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+-%}
+{%- if filled > 0 or request.design_mode -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-s03">
+    <div class="bpdp-wrap bpdp-faq">
+      {%- if filled == 0 -%}{% render 'boarage-placeholder', label: '03 · Accordions: each item needs a title and a text', kind: 'block' %}{%- endif -%}
+      {% render 'boarage-section-head', heading: s.heading, heading_label: 'Accordions headline (optional)' %}
+      <div class="bpdp-accs">
+        {%- assign opened = false -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign open_item = false
+            if s.first_open and opened == false and block.settings.title != blank and block.settings.content != blank
+              assign open_item = true
+              assign opened = true
+            endif
+            assign acc_id = 'bpdp-acc-' | append: block.id
+          -%}
+          {% render 'boarage-accordion', title: block.settings.title, content: block.settings.content, open: open_item, id: acc_id, attrs: block.shopify_attributes, title_label: 'Accordion title', content_label: 'Accordion text' %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s03.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "max_blocks": 8,
+  "enabled_on": { "templates": ["*"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.common.empty_info" },
+    { "type": "text", "id": "heading", "label": "t:boarage.common.heading.label", "info": "t:boarage.common.heading.info" },
+    { "type": "checkbox", "id": "first_open", "label": "t:boarage.s03.settings.first_open.label", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:boarage.s03.blocks.item.name",
+      "settings": [
+        { "type": "text", "id": "title", "label": "t:boarage.s03.blocks.item.settings.title.label" },
+        { "type": "richtext", "id": "content", "label": "t:boarage.s03.blocks.item.settings.content.label" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "t:boarage.s03.name", "blocks": [ { "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" } ] }
+  ]
+}
+{% endschema %}

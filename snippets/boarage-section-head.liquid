@@ -1,0 +1,18 @@
+{%- comment -%}
+  Section heading + optional intro with empty-state handling.
+  Params: heading (text), intro (richtext HTML), heading_label, intro_label (placeholder labels), align ('center' or blank).
+{%- endcomment -%}
+{%- if heading != blank or intro != blank or request.design_mode -%}
+  <div class="bpdp-head{% if align == 'center' %} bpdp-head--center{% endif %}">
+    {%- if heading != blank -%}
+      <h2>{{ heading | escape }}</h2>
+    {%- elsif request.design_mode and heading_label != blank -%}
+      <p>{% render 'boarage-placeholder', label: heading_label %}</p>
+    {%- endif -%}
+    {%- if intro != blank -%}
+      <div class="bpdp-intro bpdp-rte">{{ intro }}</div>
+    {%- elsif request.design_mode and intro_label != blank -%}
+      <div class="bpdp-intro">{% render 'boarage-placeholder', label: intro_label %}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

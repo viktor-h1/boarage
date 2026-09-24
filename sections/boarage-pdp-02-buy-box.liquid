@@ -1,0 +1,449 @@
+{%- comment -%}
+  Boarage PDP 02 · Buy box (main product): gallery, rating slot, title, subtitle, benefit blocks,
+  variant-driven bundle selector, add-to-cart, trust lines and the mobile sticky buy bar.
+  Price modes: bundle_total (variant price is the bundle total; per-unit = price ÷ custom.units_per_variant)
+  or per_unit (variant price is per unit; total = price × units, cart quantity = units).
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign price_mode = s.price_mode | default: 'bundle_total'
+  assign form_id = 'bpdp-form-' | append: section.id
+  assign cta_default = s.cta_label
+  if cta_default == blank
+    assign cta_default = 'products.product.add_to_cart' | t
+  endif
+  assign soldout_label = 'products.product.sold_out' | t
+  assign unit_label = s.per_unit_label
+  assign unit_label_visible = true
+  if unit_label == blank
+    assign unit_label = 'products.product.price.unit_price' | t
+    assign unit_label_visible = false
+  endif
+  assign bundle_blocks = section.blocks | where: 'type', 'bundle'
+  assign benefit_blocks = section.blocks | where: 'type', 'benefit'
+  assign trust_blocks = section.blocks | where: 'type', 'trust'
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign benefits_filled = 0
+  for block in benefit_blocks
+    if block.settings.text != blank
+      assign benefits_filled = benefits_filled | plus: 1
+    endif
+  endfor
+  assign trust_filled = 0
+  for block in trust_blocks
+    if block.settings.text != blank
+      assign trust_filled = trust_filled | plus: 1
+    endif
+  endfor
+
+  # Map every variant (by position) to a bundle block: a block whose "match" equals the variant title wins,
+  # otherwise the block at the same position if its "match" is empty. -1 means no block.
+  assign map = ''
+  for variant in product.variants
+    assign vtitle = variant.title | strip | downcase
+    assign found = -1
+    for b in bundle_blocks
+      assign m = b.settings.match | strip | downcase
+      if m != blank and m == vtitle
+        assign found = forloop.index0
+        break
+      endif
+    endfor
+    if found == -1
+      assign pos = forloop.index0
+      assign candidate = bundle_blocks[pos]
+      if candidate != blank
+        assign cm = candidate.settings.match | strip | downcase
+        if cm == blank
+          assign found = pos
+        endif
+      endif
+    endif
+    assign map = map | append: found | append: ','
+  endfor
+  assign map_arr = map | split: ','
+
+  assign current = product.selected_variant
+  if current == blank
+    for variant in product.variants
+      assign idx = map_arr[forloop.index0] | plus: 0
+      if idx >= 0
+        assign vb = bundle_blocks[idx]
+        if vb.settings.preselect and variant.available
+          assign current = variant
+          break
+        endif
+      endif
+    endfor
+  endif
+  if current == blank
+    assign current = product.selected_or_first_available_variant
+  endif
+  assign initial_media = current.featured_media | default: product.featured_media
+  assign rating_obj = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | plus: 0
+  assign current_price_html = ''
+  assign current_was_html = ''
+  assign current_unit_html = ''
+  assign current_qty = 1
+  assign current_cta = ''
+-%}
+{%- if product == blank -%}
+  {%- if request.design_mode -%}
+    {%- render 'boarage-tokens' -%}
+    <div class="bpdp"><div class="bpdp-wrap">{% render 'boarage-placeholder', label: '02 · Buy box: this section needs a product and only works on product templates', kind: 'block' %}</div></div>
+  {%- endif -%}
+{%- else -%}
+  {%- render 'boarage-tokens' -%}
+  <div class="bpdp bpdp-buy-root" id="boarage-buy-box" tabindex="-1" data-bpdp-buybox data-bpdp-section="{{ section.id }}" data-bpdp-cta-default="{{ cta_default | escape }}" data-bpdp-soldout="{{ soldout_label | escape }}" data-bpdp-sticky-default="{{ s.sticky_cta_label | escape }}" data-bpdp-after="{{ s.after_add | default: 'drawer' }}" data-bpdp-cart-url="{{ routes.cart_url }}" data-bpdp-error-text="{{ 'sections.cart.cart_error' | t | escape }}">
+    <div class="bpdp-wrap">
+      <div class="bpdp-buy">
+
+        <div class="bpdp-gallery{% if s.sticky_gallery %} bpdp-gallery--sticky{% endif %}" style="--bpdp-gallery-ratio: {{ s.gallery_aspect | default: '1 / 1' }}; --bpdp-gallery-fit: {{ s.media_fit | default: 'cover' }};">
+          <div class="bpdp-gallery__main">
+            {%- assign image_count = 0 -%}
+            {%- for media in product.media -%}
+              {%- if media.media_type == 'image' -%}
+                {%- assign image_count = image_count | plus: 1 -%}
+                {%- assign img = media.preview_image -%}
+                <img
+                  class="bpdp-gallery__img"
+                  src="{{ img | image_url: width: 1400 }}"
+                  srcset="{{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1400 }} 1400w"
+                  sizes="(min-width: 900px) 55vw, 100vw"
+                  width="{{ img.width }}"
+                  height="{{ img.height }}"
+                  alt="{{ media.alt | escape }}"
+                  data-bpdp-media="{{ media.id }}"
+                  {% if media.id == initial_media.id %}loading="eager" fetchpriority="high" data-active="true"{% else %}loading="lazy"{% endif %}
+                >
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if image_count == 0 -%}
+              <span class="bpdp-gallery__empty bpdp-muted" aria-hidden="true">{% render 'boarage-icon', name: 'jar', size: 96 %}</span>
+              {%- if request.design_mode -%}{% render 'boarage-placeholder', label: 'Product images come from the product media in the Shopify admin' %}{%- endif -%}
+            {%- endif -%}
+          </div>
+          {%- if s.show_thumbnails and image_count > 1 -%}
+            <ul class="bpdp-gallery__thumbs">
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  {%- assign img = media.preview_image -%}
+                  <li>
+                    <button type="button" class="bpdp-thumb" data-bpdp-thumb="{{ media.id }}" aria-current="{% if media.id == initial_media.id %}true{% else %}false{% endif %}" aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}">
+                      <img src="{{ img | image_url: width: 240 }}" width="{{ img.width }}" height="{{ img.height }}" alt="" loading="lazy">
+                    </button>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+        <div class="bpdp-buy__info">
+          {%- if s.show_rating and rating_obj != blank and app_blocks.size == 0 -%}
+            <div class="bpdp-rating">
+              <span class="bpdp-rating__stars" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: rating_obj, rating_max: rating_obj.scale_max }}" style="--rating: {{ rating_obj.rating }}; --rating-max: {{ rating_obj.scale_max }};">
+                <span class="bpdp-rating__base">{%- for i in (1..5) -%}{% render 'boarage-icon', name: 'star', size: 22 %}{%- endfor -%}</span>
+                <span class="bpdp-rating__fill">{%- for i in (1..5) -%}{% render 'boarage-icon', name: 'star', size: 22 %}{%- endfor -%}</span>
+              </span>
+              {%- if rating_count > 0 -%}
+                <span class="bpdp-rating__count"><span aria-hidden="true">({{ rating_count }})</span><span class="bpdp-visually-hidden">{{ rating_count }} {{ 'accessibility.total_reviews' | t }}</span></span>
+              {%- endif -%}
+            </div>
+          {%- elsif s.show_rating and request.design_mode and app_blocks.size == 0 -%}
+            <p class="bpdp-rating">{% render 'boarage-placeholder', label: 'Star rating: appears once a reviews app fills the reviews.rating metafield, or add the app block' %}</p>
+          {%- endif -%}
+          {%- if app_blocks.size > 0 -%}
+            <div class="bpdp-buy__apps">
+              {%- for block in app_blocks -%}{% render block %}{%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          <h1 class="bpdp-buy__title">{{ product.title | escape }}</h1>
+          {%- if s.subtitle != blank -%}
+            <p class="bpdp-lede">{{ s.subtitle | escape | newline_to_br }}</p>
+          {%- elsif request.design_mode -%}
+            <p class="bpdp-lede">{% render 'boarage-placeholder', label: 'Subtitle under the product title' %}</p>
+          {%- endif -%}
+
+          {%- if benefits_filled > 0 or request.design_mode -%}
+            <ul class="bpdp-benefits">
+              {%- for block in benefit_blocks -%}
+                {%- if block.settings.text != blank or request.design_mode -%}
+                  <li class="bpdp-benefit" {{ block.shopify_attributes }}>
+                    <span class="bpdp-benefit__icon" aria-hidden="true">{% render 'boarage-icon', name: block.settings.icon, size: 22 %}</span>
+                    <span>{% if block.settings.text != blank %}{{ block.settings.text | escape }}{% else %}{% render 'boarage-placeholder', label: 'Benefit text' %}{% endif %}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          {%- form 'product', product, id: form_id, class: 'bpdp-form', novalidate: 'novalidate', data-bpdp-form: 'true' -%}
+            <fieldset class="bpdp-bundles" role="radiogroup"{% if s.bundle_legend != blank %} aria-labelledby="{{ form_id }}-legend"{% endif %}>
+              {%- if s.bundle_legend != blank -%}
+                <legend class="bpdp-bundles__legend" id="{{ form_id }}-legend">{{ s.bundle_legend | escape }}</legend>
+              {%- elsif request.design_mode -%}
+                <legend class="bpdp-bundles__legend">{% render 'boarage-placeholder', label: 'Bundle selector legend' %}</legend>
+              {%- endif -%}
+              {%- for variant in product.variants -%}
+                {%- liquid
+                  assign idx = map_arr[forloop.index0] | plus: 0
+                  assign vb = nil
+                  if idx >= 0
+                    assign vb = bundle_blocks[idx]
+                  endif
+                  assign units = variant.metafields.custom.units_per_variant.value | plus: 0
+                  assign total = variant.price
+                  assign compare = variant.compare_at_price | default: 0
+                  assign unit_price = 0
+                  assign qty = 1
+                  if price_mode == 'per_unit'
+                    if units > 1
+                      assign total = variant.price | times: units
+                      assign compare = compare | times: units
+                      assign unit_price = variant.price
+                      assign qty = units
+                    endif
+                  elsif units > 0
+                    assign unit_price = variant.price | times: 1.0 | divided_by: units | round
+                  endif
+                  assign price_html = total | money
+                  assign was_html = ''
+                  if compare > total
+                    assign was_html = compare | money
+                  endif
+                  assign unit_html = ''
+                  if unit_price > 0
+                    assign unit_html = unit_price | money
+                  endif
+                  assign v_cta = ''
+                  assign v_name = variant.title
+                  assign v_sub = ''
+                  assign v_badge = ''
+                  if vb != blank
+                    assign v_cta = vb.settings.cta_label
+                    if vb.settings.name != blank
+                      assign v_name = vb.settings.name
+                    endif
+                    assign v_sub = vb.settings.subline
+                    assign v_badge = vb.settings.badge
+                  endif
+                  if variant.id == current.id
+                    assign current_price_html = price_html
+                    assign current_was_html = was_html
+                    assign current_unit_html = unit_html
+                    assign current_qty = qty
+                    assign current_cta = v_cta
+                  endif
+                -%}
+                <label class="bpdp-bundle{% if variant.id == current.id %} is-selected{% endif %}{% unless variant.available %} bpdp-bundle--soldout{% endunless %}" for="{{ form_id }}-v{{ variant.id }}"{% if vb != blank %} {{ vb.shopify_attributes }}{% endif %}>
+                  {%- if v_badge != blank -%}<span class="bpdp-badge">{{ v_badge | escape }}</span>{%- endif -%}
+                  <input class="bpdp-bundle__radio" type="radio" name="id" id="{{ form_id }}-v{{ variant.id }}" value="{{ variant.id }}"{% if variant.id == current.id %} checked{% endif %} data-bpdp-variant="{{ variant.id }}" data-price="{{ price_html | escape }}" data-was="{{ was_html | escape }}" data-unit="{{ unit_html | escape }}" data-qty="{{ qty }}" data-available="{{ variant.available }}" data-cta="{{ v_cta | escape }}"{% if variant.featured_media != blank %} data-media="{{ variant.featured_media.id }}"{% endif %}>
+                  <span class="bpdp-bundle__text">
+                    <span class="bpdp-bundle__name">{{ v_name | escape }}</span>
+                    {%- if v_sub != blank -%}
+                      <span class="bpdp-bundle__sub">{{ v_sub | escape }}</span>
+                    {%- elsif request.design_mode -%}
+                      <span class="bpdp-bundle__sub">{% render 'boarage-placeholder', label: 'Bundle sub-line' %}</span>
+                    {%- endif -%}
+                  </span>
+                  <span class="bpdp-bundle__price">
+                    {{ price_html }}
+                    {%- if was_html != blank -%}<span class="bpdp-bundle__was">{{ was_html }}</span>{%- endif -%}
+                    {%- if unit_html != blank -%}<span class="bpdp-bundle__unit">{{ unit_html }}{% if unit_label_visible %} {{ unit_label | escape }}{% endif %}</span>{%- endif -%}
+                  </span>
+                </label>
+              {%- endfor -%}
+            </fieldset>
+            <input type="hidden" name="quantity" value="{{ current_qty }}">
+            <div class="bpdp-price" aria-live="polite" aria-atomic="true">
+              <span class="bpdp-price__now" data-bpdp-price>{{ current_price_html }}</span>
+              <span class="bpdp-price__was" data-bpdp-was{% if current_was_html == blank %} hidden{% endif %}>{{ current_was_html }}</span>
+              <span class="bpdp-price__unit" data-bpdp-unit{% if current_unit_html == blank %} hidden{% endif %}><span data-bpdp-unit-value>{{ current_unit_html }}</span> {% if unit_label_visible %}{{ unit_label | escape }}{% else %}<span class="bpdp-visually-hidden">{{ unit_label | escape }}</span>{% endif %}</span>
+            </div>
+            <button type="submit" class="bpdp-btn" data-bpdp-cta{% unless current.available %} disabled aria-disabled="true"{% endunless %}>
+              <span class="bpdp-btn__label" data-bpdp-cta-label>{% if current.available %}{{ current_cta | default: cta_default | escape }}{% else %}{{ soldout_label }}{% endif %}</span>
+            </button>
+            <p class="bpdp-form__error" role="alert" data-bpdp-error hidden></p>
+          {%- endform -%}
+
+          {%- if trust_filled > 0 or request.design_mode -%}
+            <ul class="bpdp-trust">
+              {%- for block in trust_blocks -%}
+                {%- if block.settings.text != blank or request.design_mode -%}
+                  <li class="bpdp-trust__item" {{ block.shopify_attributes }}>
+                    {% render 'boarage-icon', name: block.settings.icon, size: 22 %}
+                    <span>{% if block.settings.text != blank %}{{ block.settings.text }}{% else %}{% render 'boarage-placeholder', label: 'Trust line text' %}{% endif %}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if s.sticky_bar -%}
+      <div class="bpdp-sticky" data-bpdp-sticky hidden>
+        <span class="bpdp-sticky__price"><span data-bpdp-sticky-price>{{ current_price_html }}</span><span class="bpdp-sticky__was" data-bpdp-sticky-was{% if current_was_html == blank %} hidden{% endif %}>{{ current_was_html }}</span></span>
+        <button type="submit" form="{{ form_id }}" class="bpdp-btn"><span class="bpdp-btn__label" data-bpdp-sticky-label>{% if current.available %}{{ s.sticky_cta_label | default: current_cta | default: cta_default | escape }}{% else %}{{ soldout_label }}{% endif %}</span></button>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:boarage.s02.name",
+  "tag": "section",
+  "class": "bpdp-section",
+  "limit": 1,
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "paragraph", "content": "t:boarage.s02.settings.paragraph" },
+    { "type": "header", "content": "t:boarage.s02.settings.gallery_header" },
+    {
+      "type": "select",
+      "id": "gallery_aspect",
+      "label": "t:boarage.s02.settings.gallery_aspect.label",
+      "options": [
+        { "value": "1 / 1", "label": "t:boarage.s02.settings.gallery_aspect.options.square" },
+        { "value": "4 / 5", "label": "t:boarage.s02.settings.gallery_aspect.options.portrait" },
+        { "value": "3 / 4", "label": "t:boarage.s02.settings.gallery_aspect.options.tall" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "t:boarage.s02.settings.media_fit.label",
+      "options": [
+        { "value": "cover", "label": "t:boarage.s02.settings.media_fit.options.cover" },
+        { "value": "contain", "label": "t:boarage.s02.settings.media_fit.options.contain" }
+      ],
+      "default": "cover"
+    },
+    { "type": "checkbox", "id": "sticky_gallery", "label": "t:boarage.s02.settings.sticky_gallery.label", "default": true },
+    { "type": "checkbox", "id": "show_thumbnails", "label": "t:boarage.s02.settings.show_thumbnails.label", "default": true },
+    { "type": "header", "content": "t:boarage.s02.settings.text_header" },
+    { "type": "checkbox", "id": "show_rating", "label": "t:boarage.s02.settings.show_rating.label", "info": "t:boarage.s02.settings.show_rating.info", "default": true },
+    { "type": "textarea", "id": "subtitle", "label": "t:boarage.s02.settings.subtitle.label", "info": "t:boarage.s02.settings.subtitle.info" },
+    { "type": "header", "content": "t:boarage.s02.settings.bundle_header" },
+    { "type": "text", "id": "bundle_legend", "label": "t:boarage.s02.settings.bundle_legend.label", "info": "t:boarage.s02.settings.bundle_legend.info" },
+    {
+      "type": "select",
+      "id": "price_mode",
+      "label": "t:boarage.s02.settings.price_mode.label",
+      "info": "t:boarage.s02.settings.price_mode.info",
+      "options": [
+        { "value": "bundle_total", "label": "t:boarage.s02.settings.price_mode.options.bundle_total" },
+        { "value": "per_unit", "label": "t:boarage.s02.settings.price_mode.options.per_unit" }
+      ],
+      "default": "bundle_total"
+    },
+    { "type": "text", "id": "per_unit_label", "label": "t:boarage.s02.settings.per_unit_label.label", "info": "t:boarage.s02.settings.per_unit_label.info" },
+    { "type": "header", "content": "t:boarage.s02.settings.buttons_header" },
+    { "type": "text", "id": "cta_label", "label": "t:boarage.s02.settings.cta_label.label", "info": "t:boarage.s02.settings.cta_label.info" },
+    {
+      "type": "select",
+      "id": "after_add",
+      "label": "t:boarage.s02.settings.after_add.label",
+      "options": [
+        { "value": "drawer", "label": "t:boarage.s02.settings.after_add.options.drawer" },
+        { "value": "cart", "label": "t:boarage.s02.settings.after_add.options.cart" }
+      ],
+      "default": "drawer"
+    },
+    { "type": "checkbox", "id": "sticky_bar", "label": "t:boarage.s02.settings.sticky_bar.label", "default": true },
+    { "type": "text", "id": "sticky_cta_label", "label": "t:boarage.s02.settings.sticky_cta_label.label", "info": "t:boarage.s02.settings.sticky_cta_label.info" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "benefit",
+      "name": "t:boarage.s02.blocks.benefit.name",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:boarage.common.icon.label",
+          "options": [
+            { "value": "check", "label": "t:boarage.icons.check" },
+            { "value": "shield", "label": "t:boarage.icons.shield" },
+            { "value": "box", "label": "t:boarage.icons.box" },
+            { "value": "truck", "label": "t:boarage.icons.truck" },
+            { "value": "chat", "label": "t:boarage.icons.chat" },
+            { "value": "invoice", "label": "t:boarage.icons.invoice" },
+            { "value": "lock", "label": "t:boarage.icons.lock" },
+            { "value": "leaf", "label": "t:boarage.icons.leaf" },
+            { "value": "drop", "label": "t:boarage.icons.drop" },
+            { "value": "snowflake", "label": "t:boarage.icons.snowflake" },
+            { "value": "flame", "label": "t:boarage.icons.flame" },
+            { "value": "wave", "label": "t:boarage.icons.wave" },
+            { "value": "hand", "label": "t:boarage.icons.hand" },
+            { "value": "heart", "label": "t:boarage.icons.heart" },
+            { "value": "jar", "label": "t:boarage.icons.jar" },
+            { "value": "clock", "label": "t:boarage.icons.clock" },
+            { "value": "star", "label": "t:boarage.icons.star" }
+          ],
+          "default": "check"
+        },
+        { "type": "text", "id": "text", "label": "t:boarage.s02.blocks.benefit.settings.text.label" }
+      ]
+    },
+    {
+      "type": "bundle",
+      "name": "t:boarage.s02.blocks.bundle.name",
+      "limit": 6,
+      "settings": [
+        { "type": "paragraph", "content": "t:boarage.s02.blocks.bundle.paragraph" },
+        { "type": "text", "id": "match", "label": "t:boarage.s02.blocks.bundle.settings.match.label", "info": "t:boarage.s02.blocks.bundle.settings.match.info" },
+        { "type": "text", "id": "name", "label": "t:boarage.s02.blocks.bundle.settings.name.label", "info": "t:boarage.s02.blocks.bundle.settings.name.info" },
+        { "type": "text", "id": "subline", "label": "t:boarage.s02.blocks.bundle.settings.subline.label" },
+        { "type": "text", "id": "badge", "label": "t:boarage.s02.blocks.bundle.settings.badge.label", "info": "t:boarage.s02.blocks.bundle.settings.badge.info" },
+        { "type": "text", "id": "cta_label", "label": "t:boarage.s02.blocks.bundle.settings.cta_label.label", "info": "t:boarage.s02.blocks.bundle.settings.cta_label.info" },
+        { "type": "checkbox", "id": "preselect", "label": "t:boarage.s02.blocks.bundle.settings.preselect.label", "info": "t:boarage.s02.blocks.bundle.settings.preselect.info", "default": false }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "t:boarage.s02.blocks.trust.name",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:boarage.common.icon.label",
+          "options": [
+            { "value": "shield", "label": "t:boarage.icons.shield" },
+            { "value": "box", "label": "t:boarage.icons.box" },
+            { "value": "truck", "label": "t:boarage.icons.truck" },
+            { "value": "chat", "label": "t:boarage.icons.chat" },
+            { "value": "invoice", "label": "t:boarage.icons.invoice" },
+            { "value": "lock", "label": "t:boarage.icons.lock" },
+            { "value": "check", "label": "t:boarage.icons.check" },
+            { "value": "heart", "label": "t:boarage.icons.heart" },
+            { "value": "clock", "label": "t:boarage.icons.clock" },
+            { "value": "star", "label": "t:boarage.icons.star" }
+          ],
+          "default": "shield"
+        },
+        { "type": "inline_richtext", "id": "text", "label": "t:boarage.s02.blocks.trust.settings.text.label" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:boarage.s02.name",
+      "blocks": [
+        { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" },
+        { "type": "bundle" }, { "type": "bundle" }, { "type": "bundle" },
+        { "type": "trust" }, { "type": "trust" }, { "type": "trust" }
+      ]
+    }
+  ]
+}
+{% endschema %}

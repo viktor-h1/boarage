@@ -1,0 +1,15 @@
+# Theme Check configuration for the Boarage PDP files.
+# Runs the recommended rule set plus the two asset-size budgets from the build spec
+# (CSS < 25 KB, JS < 10 KB) so the budgets fail the lint instead of a manual check.
+extends: theme-check:recommended
+ignore:
+  - node_modules/**
+  - dev/**
+AssetSizeCSS:
+  enabled: true
+  severity: error
+  thresholdInBytes: 25000
+AssetSizeJavaScript:
+  enabled: true
+  severity: error
+  thresholdInBytes: 10000

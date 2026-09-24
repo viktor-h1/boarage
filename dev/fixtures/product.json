@@ -1,0 +1,27 @@
+{
+  "id": 1001,
+  "title": "Fixture product",
+  "handle": "fixture-product",
+  "url": "/products/fixture-product",
+  "available": true,
+  "featured_media": { "id": 11 },
+  "media": [
+    { "id": 11, "media_type": "image", "alt": "Fixture media 1", "preview_image": { "width": 1200, "height": 1200, "src": "/img/media-11.svg" } },
+    { "id": 12, "media_type": "image", "alt": "Fixture media 2", "preview_image": { "width": 1200, "height": 1200, "src": "/img/media-12.svg" } },
+    { "id": 13, "media_type": "image", "alt": "Fixture media 3", "preview_image": { "width": 1200, "height": 1200, "src": "/img/media-13.svg" } },
+    { "id": 14, "media_type": "image", "alt": "Fixture media 4", "preview_image": { "width": 1200, "height": 1200, "src": "/img/media-14.svg" } },
+    { "id": 15, "media_type": "video", "alt": "Fixture video", "preview_image": { "width": 1200, "height": 1200, "src": "/img/media-15.svg" } }
+  ],
+  "variants": [
+    { "id": 2001, "title": "Fixture variant A", "price": 4999, "compare_at_price": 8999, "available": true, "featured_media": { "id": 11 }, "metafields": { "custom": { "units_per_variant": { "value": 1 } } } },
+    { "id": 2002, "title": "Fixture variant B", "price": 12000, "compare_at_price": 18000, "available": true, "featured_media": { "id": 12 }, "metafields": { "custom": { "units_per_variant": { "value": 3 } } } },
+    { "id": 2003, "title": "Fixture variant C", "price": 18000, "compare_at_price": null, "available": true, "featured_media": { "id": 13 }, "metafields": { "custom": {} } },
+    { "id": 2004, "title": "Fixture variant D", "price": 5000, "compare_at_price": null, "available": false, "featured_media": { "id": 14 }, "metafields": { "custom": { "units_per_variant": { "value": 1 } } } }
+  ],
+  "metafields": {
+    "reviews": {
+      "rating": { "value": { "rating": 4.6, "scale_min": 1.0, "scale_max": 5.0 } },
+      "rating_count": { "value": 111 }
+    }
+  }
+}

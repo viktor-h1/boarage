@@ -1,0 +1,25 @@
+{%- comment -%}
+  One accordion item on a native <details>. Params:
+    title (text), content (HTML), open (boolean), id (string), attrs (block.shopify_attributes),
+    title_label / content_label (editor placeholder labels).
+  Storefront: renders only when title AND content are filled. Editor: always renders, with placeholders.
+{%- endcomment -%}
+{%- liquid
+  assign filled = false
+  if title != blank and content != blank
+    assign filled = true
+  endif
+-%}
+{%- if filled or request.design_mode -%}
+  <details class="bpdp-acc" data-bpdp-acc{% if id != blank %} id="{{ id }}"{% endif %}{% if open and filled %} open{% endif %} {{ attrs }}>
+    <summary class="bpdp-acc__summary bpdp-press">
+      <span class="bpdp-acc__title">{% if title != blank %}{{ title | escape }}{% else %}{% render 'boarage-placeholder', label: title_label %}{% endif %}</span>
+      <span class="bpdp-acc__icon" aria-hidden="true">{% render 'boarage-icon', name: 'chevron' %}</span>
+    </summary>
+    <div class="bpdp-acc__grid">
+      <div class="bpdp-acc__body">
+        <div class="bpdp-acc__inner bpdp-rte">{% if content != blank %}{{ content }}{% else %}{% render 'boarage-placeholder', label: content_label, kind: 'block' %}{% endif %}</div>
+      </div>
+    </div>
+  </details>
+{%- endif -%}

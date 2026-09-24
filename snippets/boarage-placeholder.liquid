@@ -1,0 +1,12 @@
+{%- comment -%}
+  Editor-only placeholder for an empty setting or block. Renders nothing on the storefront.
+  Usage: {% render 'boarage-placeholder', label: 'Headline' %}
+         {% render 'boarage-placeholder', label: 'Review text', kind: 'block' %}
+{%- endcomment -%}
+{%- if request.design_mode and label != blank -%}
+  {%- if kind == 'block' -%}
+    <div class="bpdp-ph bpdp-ph--block" aria-hidden="true">{{ label | escape }}</div>
+  {%- else -%}
+    <span class="bpdp-ph" aria-hidden="true">{{ label | escape }}</span>
+  {%- endif -%}
+{%- endif -%}

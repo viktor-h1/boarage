@@ -1,0 +1,21 @@
+{%- comment -%}
+  Manual review card (list item). Params: name, location, text, image (image object), image_alt, attrs (block.shopify_attributes).
+  Storefront: renders only when the text is filled. Editor: always, with placeholders.
+{%- endcomment -%}
+{%- if text != blank or request.design_mode -%}
+  <li class="bpdp-review" {{ attrs }}>
+    {%- if image != blank -%}
+      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 800', sizes: '(min-width: 820px) 33vw, 100vw', class: 'bpdp-review__img', alt: image_alt }}
+    {%- endif -%}
+    {%- if text != blank -%}
+      <p class="bpdp-review__text">{{ text | escape | newline_to_br }}</p>
+    {%- else -%}
+      {% render 'boarage-placeholder', label: 'Review text', kind: 'block' %}
+    {%- endif -%}
+    {%- if name != blank or location != blank -%}
+      <p class="bpdp-review__meta">{% if name != blank %}<b>{{ name | escape }}</b>{% endif %}{% if name != blank and location != blank %}, {% endif %}{% if location != blank %}{{ location | escape }}{% endif %}</p>
+    {%- elsif request.design_mode -%}
+      <p class="bpdp-review__meta">{% render 'boarage-placeholder', label: 'Name, location' %}</p>
+    {%- endif -%}
+  </li>
+{%- endif -%}

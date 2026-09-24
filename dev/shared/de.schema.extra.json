@@ -1,0 +1,12 @@
+{
+  "settings_schema": {
+    "social-media": {
+      "settings": {
+        "social_discord_link": { "label": "Discord", "info": "https://discord.com/shopify" },
+        "social_linkedin_link": { "label": "LinkedIn", "info": "https://linkedin.com/shopify" },
+        "social_linkedin_icon_style": { "label": "LinkedIn-Icon-Stil", "options__1": { "label": "Klassisch" }, "options__2": { "label": "Gefüllt" } },
+        "social_rednote_link": { "label": "Rednote", "info": "https://rednote.in/.com/shopify" }
+      }
+    }
+  }
+}

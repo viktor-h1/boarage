@@ -1,0 +1,20 @@
+{
+  "name": "boarage-pdp-skeleton",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Boarage product page template (Shopify OS 2.0 sections) for boarage.de, blank-content skeleton",
+  "type": "module",
+  "scripts": {
+    "check": "shopify theme check",
+    "dev:render": "node dev/render.mjs",
+    "dev:test": "node dev/test.mjs",
+    "dev:lighthouse": "node dev/lighthouse.mjs",
+    "verify": "npm run check && npm run dev:render && npm run dev:test && npm run dev:lighthouse"
+  },
+  "devDependencies": {
+    "@shopify/cli": "^4.8.2",
+    "lighthouse": "^13.5.0",
+    "liquidjs": "^10.29.0",
+    "playwright": "1.56.1"
+  }
+}

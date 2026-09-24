@@ -1,0 +1,31 @@
+{%- comment -%}
+  "Sensation panel": two labeled halves (cool | warm) with a title and a text each, plus two axis labels.
+  Params: left_title, left_text, right_title, right_text, axis_start, axis_end.
+  Storefront: renders when any field is filled. Editor: always, with placeholders.
+{%- endcomment -%}
+{%- liquid
+  assign filled = false
+  if left_title != blank or left_text != blank or right_title != blank or right_text != blank or axis_start != blank or axis_end != blank
+    assign filled = true
+  endif
+-%}
+{%- if filled or request.design_mode -%}
+  <div class="bpdp-sense">
+    <div class="bpdp-sense__row">
+      <div class="bpdp-sense__half">
+        {%- if left_title != blank -%}<h3 class="bpdp-sense__title">{{ left_title | escape }}</h3>{%- elsif request.design_mode -%}<p class="bpdp-sense__title">{% render 'boarage-placeholder', label: 'Left half: title' %}</p>{%- endif -%}
+        {%- if left_text != blank -%}<p class="bpdp-sense__text">{{ left_text | escape | newline_to_br }}</p>{%- elsif request.design_mode -%}<p class="bpdp-sense__text">{% render 'boarage-placeholder', label: 'Left half: text' %}</p>{%- endif -%}
+      </div>
+      <div class="bpdp-sense__half">
+        {%- if right_title != blank -%}<h3 class="bpdp-sense__title">{{ right_title | escape }}</h3>{%- elsif request.design_mode -%}<p class="bpdp-sense__title">{% render 'boarage-placeholder', label: 'Right half: title' %}</p>{%- endif -%}
+        {%- if right_text != blank -%}<p class="bpdp-sense__text">{{ right_text | escape | newline_to_br }}</p>{%- elsif request.design_mode -%}<p class="bpdp-sense__text">{% render 'boarage-placeholder', label: 'Right half: text' %}</p>{%- endif -%}
+      </div>
+    </div>
+    {%- if axis_start != blank or axis_end != blank or request.design_mode -%}
+      <div class="bpdp-sense__axis">
+        <span>{% if axis_start != blank %}{{ axis_start | escape }}{% else %}{% render 'boarage-placeholder', label: 'Axis: start label' %}{% endif %}</span>
+        <span>{% if axis_end != blank %}{{ axis_end | escape }}{% else %}{% render 'boarage-placeholder', label: 'Axis: end label' %}{% endif %}</span>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
