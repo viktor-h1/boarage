@@ -1,0 +1,68 @@
+{%- comment -%}
+  Hero title + paragraph: bold dark-green heading, regular paragraph below it.
+  Self-contained (own CSS). Rendered by blocks/boarage-hero-text.liquid or from a "Custom Liquid" block:
+
+    {% render 'boarage-hero-text', title: product.title, text: '<p>Reactivates …</p>', title_color: '#1d4d36' %}
+
+  Params (all optional):
+    title        heading text (default: the product title)      tag          'h1' | 'h2' | 'h3' | 'p' (default 'h1')
+    text         paragraph, HTML from a richtext setting or plain text; blank hides it
+    title_color  (#1d4d36)                text_color  (#1d4d36)
+    title_font   CSS font-family (default the theme heading font)   text_font  CSS font-family (default the theme body font)
+    title_size   px (34)   title_weight (700)   title_line  line-height (1.15)
+    text_size    px (18)   text_weight  (400)   text_line   line-height (1.5)
+    gap          px between title and paragraph (12)   align  'left' | 'center' | 'right'   max_width  px of the text column, 0 = none (0)
+    attrs        extra attributes on the root element (block.shopify_attributes)
+{%- endcomment -%}
+{%- liquid
+  if title == nil
+    assign title = product.title
+  endif
+  assign tag = tag | default: 'h1'
+  unless tag == 'h1' or tag == 'h2' or tag == 'h3' or tag == 'p'
+    assign tag = 'h1'
+  endunless
+  assign title_color = title_color | default: '#1d4d36'
+  assign text_color = text_color | default: '#1d4d36'
+  assign title_font = title_font | default: 'var(--font-heading-family, system-ui, sans-serif)'
+  assign text_font = text_font | default: 'var(--font-body-family, system-ui, sans-serif)'
+  assign title_size = title_size | default: 34
+  assign title_weight = title_weight | default: 700
+  assign title_line = title_line | default: 1.15
+  assign text_size = text_size | default: 18
+  assign text_weight = text_weight | default: 400
+  assign text_line = text_line | default: 1.5
+  assign gap = gap | default: 12
+  assign align = align | default: 'left'
+  assign max_width = max_width | default: 0 | plus: 0
+  unless align == 'center' or align == 'right'
+    assign align = 'left'
+  endunless
+  assign has_text = false
+  if text != blank
+    assign plain = text | strip_html | strip
+    if plain != blank
+      assign has_text = true
+    endif
+  endif
+-%}
+{%- if title != blank or has_text -%}
+{%- style -%}
+  .bht { margin: 0; padding: 0; text-align: var(--bht-align, left); max-width: var(--bht-max, none); }
+  .bht--center { margin-left: auto; margin-right: auto; }
+  .bht--right { margin-left: auto; }
+  .bht__title { margin: 0; padding: 0; font-family: var(--bht-title-font); font-size: var(--bht-title-size, 34px); font-weight: var(--bht-title-weight, 700); line-height: var(--bht-title-line, 1.15); letter-spacing: -.01em; color: var(--bht-title-color, #1d4d36); overflow-wrap: anywhere; -webkit-font-smoothing: antialiased; }
+  .bht__text { margin: var(--bht-gap, 12px) 0 0; padding: 0; font-family: var(--bht-text-font); font-size: var(--bht-text-size, 18px); font-weight: var(--bht-text-weight, 400); line-height: var(--bht-text-line, 1.5); color: var(--bht-text-color, #1d4d36); -webkit-font-smoothing: antialiased; }
+  .bht__text p { margin: 0; }
+  .bht__text p + p { margin-top: .6em; }
+  .bht__text a { color: inherit; text-decoration: underline; text-underline-offset: .15em; }
+{%- endstyle -%}
+<div class="bht bht--{{ align }}" style="--bht-align: {{ align }}; --bht-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bht-title-font: {{ title_font }}; --bht-title-size: {{ title_size }}px; --bht-title-weight: {{ title_weight }}; --bht-title-line: {{ title_line }}; --bht-title-color: {{ title_color }}; --bht-text-font: {{ text_font }}; --bht-text-size: {{ text_size }}px; --bht-text-weight: {{ text_weight }}; --bht-text-line: {{ text_line }}; --bht-text-color: {{ text_color }}; --bht-gap: {{ gap }}px;" {{ attrs }}>
+  {%- if title != blank -%}
+    <{{ tag }} class="bht__title">{{ title | escape }}</{{ tag }}>
+  {%- endif -%}
+  {%- if has_text -%}
+    <div class="bht__text">{% if text contains '<p' or text contains '<div' %}{{ text }}{% else %}<p>{{ text }}</p>{% endif %}</div>
+  {%- endif -%}
+</div>
+{%- endif -%}

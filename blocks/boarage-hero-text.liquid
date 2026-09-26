@@ -1,0 +1,135 @@
+{%- comment -%}
+  Boarage PDP · Hero title + paragraph (theme block for the hero / buy box).
+  Renders snippets/boarage-hero-text.liquid with the block settings. The title falls back to the product title.
+  For a section that only offers "Custom Liquid", paste the render tag documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  assign title = s.title
+  if title == blank
+    assign title = product.title
+  endif
+
+  case s.title_font_source
+    when 'body'
+      assign title_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign title_font = s.title_font.family | append: ', ' | append: s.title_font.fallback_families
+    else
+      assign title_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.text_font_source
+    when 'heading'
+      assign text_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign text_font = s.text_font.family | append: ', ' | append: s.text_font.fallback_families
+    else
+      assign text_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign title_line = s.title_line | times: 1.0 | divided_by: 100
+  assign text_line = s.text_line | times: 1.0 | divided_by: 100
+-%}
+{%- if s.title_font_source == 'custom' and s.title_font != blank -%}
+  {%- style -%}{{ s.title_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.text_font_source == 'custom' and s.text_font != blank -%}
+  {%- style -%}{{ s.text_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- render 'boarage-hero-text', title: title, tag: s.tag, text: s.text, title_color: s.title_color, text_color: s.text_color, title_font: title_font, text_font: text_font, title_size: s.title_size, title_weight: s.title_weight, title_line: title_line, text_size: s.text_size, text_weight: s.text_weight, text_line: text_line, gap: s.gap, align: s.align, max_width: s.max_width, attrs: block.shopify_attributes -%}
+
+{% schema %}
+{
+  "name": "Hero title + text",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the product title." },
+    {
+      "type": "select",
+      "id": "tag",
+      "label": "Title HTML tag",
+      "info": "Use H1 once per page (the main product title).",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "p", "label": "Paragraph (no heading)" }
+      ],
+      "default": "h1"
+    },
+    { "type": "richtext", "id": "text", "label": "Paragraph" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "title_color", "label": "Title", "default": "#1d4d36" },
+    { "type": "color", "id": "text_color", "label": "Paragraph", "default": "#1d4d36" },
+    { "type": "header", "content": "Title font" },
+    {
+      "type": "select",
+      "id": "title_font_source",
+      "label": "Font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "title_font", "label": "Custom font", "default": "outfit_n7" },
+    { "type": "range", "id": "title_size", "label": "Size", "min": 18, "max": 64, "step": 1, "unit": "px", "default": 34 },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    { "type": "range", "id": "title_line", "label": "Line height", "min": 90, "max": 160, "step": 5, "unit": "%", "default": 115 },
+    { "type": "header", "content": "Paragraph font" },
+    {
+      "type": "select",
+      "id": "text_font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "text_font", "label": "Custom font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Size", "min": 12, "max": 32, "step": 1, "unit": "px", "default": 18 },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" }
+      ],
+      "default": "400"
+    },
+    { "type": "range", "id": "text_line", "label": "Line height", "min": 110, "max": 200, "step": 5, "unit": "%", "default": 150 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap", "label": "Space between title and paragraph", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 12 },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "info": "0 = full width of the column.", "min": 0, "max": 900, "step": 20, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Hero title + text" }]
+}
+{% endschema %}

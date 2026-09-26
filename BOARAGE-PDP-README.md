@@ -15,7 +15,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | `templates/product.boarage-pdp.json` | The template: 14 sections in the reference order, all blank |
 | `sections/boarage-pdp-01-sale-bar.liquid` … `14-legal.liquid` | The sections (schemas use `t:boarage.*` keys) |
 | `snippets/boarage-*.liquid` | Shared pieces: tokens/asset loader, gallery, icon set, stars, rating line, guarantee box, review card, accordion, section head, editor placeholder |
-| `blocks/boarage-trust-rating.liquid`, `snippets/boarage-trust-rating.liquid` | Hero pieces, built one by one: theme block (editor settings for rating, wording, colours, font, sizes) over a self-contained snippet that a "Custom Liquid" block can also `render` with the same parameters |
+| `blocks/boarage-trust-rating.liquid`, `blocks/boarage-hero-text.liquid` + the snippets of the same name | Hero pieces, built one by one: a theme block (editor settings for content, colours, font, sizes) over a self-contained snippet that a "Custom Liquid" block can also `render` with the same parameters. Trust rating row; title + paragraph |
 | `assets/boarage-pdp.css`, `assets/boarage-pdp.js` | **Built** assets (under 25 KB / 10 KB). Edit the sources in `dev/src/` and run `npm run build` |
 | `config/settings_schema.json` | Shrine's file + the *Boarage PDP* settings group |
 | `locales/en.default.schema.json`, `locales/de.schema.json` | Shrine's files + the `boarage` namespace (English / German editor labels) |
