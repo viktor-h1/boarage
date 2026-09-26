@@ -29,6 +29,17 @@
   if s.image_us != blank or s.image_them != blank
     assign has_images = true
   endif
+  comment
+    Row 1 of the grid holds the product images (height = image height, 0 when there are none). The side
+    panels span every row and start "overlap" pixels above the bottom of row 1, so the images overhang them.
+  endcomment
+  assign head_h = 0
+  assign panel_top = 0
+  if has_images
+    assign head_h = s.image_height
+    assign overlap_px = s.image_height | times: s.overlap | divided_by: 100
+    assign panel_top = s.image_height | minus: overlap_px
+  endif
 -%}
 {%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
   {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
@@ -45,57 +56,58 @@
   .bcp__eyebrow { display: block; margin: 0 0 10px; font-size: .8em; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--bcp-eyebrow, #2fbd44); }
   .bcp__title { margin: 0 0 28px; font-family: var(--bcp-heading-font); font-size: var(--bcp-heading-size, 30px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bcp-heading, #1d4d36); overflow-wrap: anywhere; }
   .bcp__title em, .bcp__title i { font-style: normal; color: var(--bcp-eyebrow, #2fbd44); }
-  .bcp__table { position: relative; display: grid; grid-template-columns: var(--bcp-col, 26%) 1fr var(--bcp-col, 26%); }
-  .bcp__panel { position: absolute; top: var(--bcp-overlap, 0px); bottom: 0; border-radius: var(--bcp-radius, 8px); z-index: 0; }
-  .bcp__panel--us { left: 0; width: var(--bcp-col, 26%); background: linear-gradient(170deg, var(--bcp-us-1, #2f8a55) 0%, var(--bcp-us-2, #0e3d26) 100%); }
-  .bcp__panel--them { right: 0; width: var(--bcp-col, 26%); background: var(--bcp-them, #eeeeee); }
-  .bcp__cell { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: var(--bcp-row, 92px); padding: 10px 6px; text-align: center; }
-  .bcp__cell--label { padding: 12px 8px; border-bottom: 1px solid var(--bcp-line, #dfe6e2); color: var(--bcp-text, #1d4d36); }
+  .bcp__table { display: grid; grid-template-columns: var(--bcp-col, 26%) minmax(0, 1fr) var(--bcp-col, 26%); grid-template-rows: var(--bcp-head-h, 0px) repeat(var(--bcp-rows, 1), auto); }
+  .bcp__panel { grid-row: 1 / -1; z-index: 0; margin-top: var(--bcp-panel-top, 0px); border-radius: var(--bcp-radius, 8px); }
+  .bcp__panel--us { grid-column: 1; background: linear-gradient(170deg, var(--bcp-us-1, #2f8a55) 0%, var(--bcp-us-2, #0e3d26) 100%); }
+  .bcp__panel--them { grid-column: 3; background: var(--bcp-them, #eeeeee); }
+  .bcp__head { grid-row: 1; position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; height: var(--bcp-head-h, 0px); padding: 0 6px; }
+  .bcp__head--us { grid-column: 1; }
+  .bcp__head--them { grid-column: 3; }
+  .bcp__head img { display: block; max-width: 100%; max-height: var(--bcp-img, 100px); width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .18)); }
+  .bcp__cell { grid-row: var(--r, auto); position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: var(--bcp-row, 92px); margin: 0; padding: 10px 6px; text-align: center; }
+  .bcp__cell--us { grid-column: 1; color: var(--bcp-us-icon, #fff); }
+  .bcp__cell--label { grid-column: 2; padding: 12px 8px; border-bottom: 1px solid var(--bcp-line, #dfe6e2); color: var(--bcp-text, #1d4d36); }
   .bcp__cell--label.is-last { border-bottom: 0; }
-  .bcp__icon { width: var(--bcp-icon, 32px); height: var(--bcp-icon, 32px); }
+  .bcp__cell--them { grid-column: 3; color: var(--bcp-them-icon, #c0392b); }
+  .bcp__icon { display: block; flex: none; width: var(--bcp-icon, 32px); height: var(--bcp-icon, 32px); }
   .bcp__icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .bcp__cell--us { color: var(--bcp-us-icon, #fff); }
-  .bcp__cell--them { color: var(--bcp-them-icon, #c0392b); }
   .bcp__cell--us .bcp__icon--no { color: rgba(255, 255, 255, .6); }
   .bcp__cell--them .bcp__icon--yes { color: var(--bcp-text, #1d4d36); }
-  .bcp__head { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; height: calc(var(--bcp-img, 100px) + var(--bcp-overlap, 50px) * 0); min-height: var(--bcp-img, 100px); padding: 0 6px; }
-  .bcp__head img { display: block; max-width: 100%; max-height: var(--bcp-img, 100px); width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .18)); }
-  .bcp__head--label { align-items: flex-end; font-size: .85em; font-weight: 600; color: var(--bcp-text, #1d4d36); padding-bottom: 8px; }
-  .bcp__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .bcp__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .bcp__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
-  @media (min-width: 750px) { .bcp__table { grid-template-columns: var(--bcp-col-d, 160px) 1fr var(--bcp-col-d, 160px); } .bcp__panel--us, .bcp__panel--them { width: var(--bcp-col-d, 160px); } }
-  #shopify-section-{{ sid }} .bcp { --bcp-bg: {{ s.bg_color }}; --bcp-eyebrow: {{ s.eyebrow_color }}; --bcp-heading: {{ s.heading_color }}; --bcp-text: {{ s.text_color }}; --bcp-line: {{ s.line_color }}; --bcp-us-1: {{ s.us_bg_1 }}; --bcp-us-2: {{ s.us_bg_2 }}; --bcp-us-icon: {{ s.us_icon_color }}; --bcp-them: {{ s.them_bg }}; --bcp-them-icon: {{ s.them_icon_color }}; --bcp-heading-font: {{ heading_font }}; --bcp-body-font: {{ body_font }}; --bcp-heading-size: {{ s.heading_size }}px; --bcp-text-size: {{ s.text_size }}px; --bcp-icon: {{ s.icon_size }}px; --bcp-col: {{ s.col_width }}%; --bcp-col-d: {{ s.col_width_desktop }}px; --bcp-row: {{ s.row_height }}px; --bcp-img: {{ s.image_height }}px; --bcp-overlap: {% if has_images %}{{ s.image_height | times: s.overlap | divided_by: 100 }}px{% else %}0px{% endif %}; --bcp-radius: {{ s.radius }}px; --bcp-max: {{ s.max_width }}px; --bcp-pad-top: {{ s.padding_top }}px; --bcp-pad-bottom: {{ s.padding_bottom }}px; }
+  @media (min-width: 750px) { .bcp__table { grid-template-columns: var(--bcp-col-d, 160px) minmax(0, 1fr) var(--bcp-col-d, 160px); } }
+  #shopify-section-{{ sid }} .bcp { --bcp-bg: {{ s.bg_color }}; --bcp-eyebrow: {{ s.eyebrow_color }}; --bcp-heading: {{ s.heading_color }}; --bcp-text: {{ s.text_color }}; --bcp-line: {{ s.line_color }}; --bcp-us-1: {{ s.us_bg_1 }}; --bcp-us-2: {{ s.us_bg_2 }}; --bcp-us-icon: {{ s.us_icon_color }}; --bcp-them: {{ s.them_bg }}; --bcp-them-icon: {{ s.them_icon_color }}; --bcp-heading-font: {{ heading_font }}; --bcp-body-font: {{ body_font }}; --bcp-heading-size: {{ s.heading_size }}px; --bcp-text-size: {{ s.text_size }}px; --bcp-icon: {{ s.icon_size }}px; --bcp-col: {{ s.col_width }}%; --bcp-col-d: {{ s.col_width_desktop }}px; --bcp-row: {{ s.row_height }}px; --bcp-img: {{ s.image_height }}px; --bcp-head-h: {{ head_h }}px; --bcp-panel-top: {{ panel_top }}px; --bcp-rows: {{ rows.size | at_least: 1 }}; --bcp-radius: {{ s.radius }}px; --bcp-max: {{ s.max_width }}px; --bcp-pad-top: {{ s.padding_top }}px; --bcp-pad-bottom: {{ s.padding_bottom }}px; }
 {%- endstyle -%}
 <div class="bcp">
   <div class="bcp__wrap">
     {%- if s.eyebrow != blank -%}<span class="bcp__eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
     {%- if s.heading != blank -%}<h2 class="bcp__title">{{ s.heading }}</h2>{%- endif -%}
     {%- if rows.size > 0 -%}
-      <div class="bcp__table" role="table" aria-label="{{ s.heading | strip_html | default: 'Comparison' | escape }}">
+      <div class="bcp__table" aria-label="{{ s.heading | strip_html | default: 'Comparison' | escape }}">
         <div class="bcp__panel bcp__panel--us" aria-hidden="true"></div>
         <div class="bcp__panel bcp__panel--them" aria-hidden="true"></div>
-        {%- if has_images or s.label_us != blank or s.label_them != blank -%}
-          <div class="bcp__head" role="columnheader">
-            {%- if s.image_us != blank -%}
-              {{ s.image_us | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_us }}
-            {%- endif -%}
-            {%- if s.label_us != blank -%}<span class="bcp__sr">{{ s.label_us | escape }}</span>{%- endif -%}
-          </div>
-          <div class="bcp__head" role="columnheader" aria-hidden="true"></div>
-          <div class="bcp__head" role="columnheader">
-            {%- if s.image_them != blank -%}
-              {{ s.image_them | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_them }}
-            {%- endif -%}
-            {%- if s.label_them != blank -%}<span class="bcp__sr">{{ s.label_them | escape }}</span>{%- endif -%}
-          </div>
-        {%- endif -%}
+        <div class="bcp__head bcp__head--us">
+          {%- if s.image_us != blank -%}
+            {{ s.image_us | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_us }}
+          {%- endif -%}
+          {%- if s.label_us != blank -%}<span class="bcp__sr">{{ s.label_us | escape }}</span>{%- endif -%}
+        </div>
+        <div class="bcp__head bcp__head--them">
+          {%- if s.image_them != blank -%}
+            {{ s.image_them | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_them }}
+          {%- endif -%}
+          {%- if s.label_them != blank -%}<span class="bcp__sr">{{ s.label_them | escape }}</span>{%- endif -%}
+        </div>
         {%- for block in rows -%}
-          {%- assign b = block.settings -%}
-          <div class="bcp__cell bcp__cell--us" role="cell" {{ block.shopify_attributes }}>
+          {%- liquid
+            assign b = block.settings
+            assign r = forloop.index | plus: 1
+          -%}
+          <div class="bcp__cell bcp__cell--us" style="--r: {{ r }};" {{ block.shopify_attributes }}>
             {%- if b.us -%}<span class="bcp__icon bcp__icon--yes">{{ icon_yes }}</span><span class="bcp__sr">{{ s.sr_yes | escape }}</span>{%- else -%}<span class="bcp__icon bcp__icon--no">{{ icon_no }}</span><span class="bcp__sr">{{ s.sr_no | escape }}</span>{%- endif -%}
           </div>
-          <div class="bcp__cell bcp__cell--label{% if forloop.last %} is-last{% endif %}" role="rowheader">{{ b.label | escape }}</div>
-          <div class="bcp__cell bcp__cell--them" role="cell">
+          <div class="bcp__cell bcp__cell--label{% if forloop.last %} is-last{% endif %}" style="--r: {{ r }};">{{ b.label | escape }}</div>
+          <div class="bcp__cell bcp__cell--them" style="--r: {{ r }};">
             {%- if b.them -%}<span class="bcp__icon bcp__icon--yes">{{ icon_yes }}</span><span class="bcp__sr">{{ s.sr_yes | escape }}</span>{%- else -%}<span class="bcp__icon bcp__icon--no">{{ icon_no }}</span><span class="bcp__sr">{{ s.sr_no | escape }}</span>{%- endif -%}
           </div>
         {%- endfor -%}
