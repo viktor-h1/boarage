@@ -1,0 +1,116 @@
+{%- comment -%}
+  Boarage PDP · Benefit bullets (theme block for the hero / buy box).
+  Renders snippets/boarage-bullets.liquid with the block settings: one bullet per line, "Lead - text".
+  For a section that only offers "Custom Liquid", paste the render tag documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  case s.font_source
+    when 'heading'
+      assign font_family = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign font_family = s.font.family | append: ', ' | append: s.font.fallback_families
+    else
+      assign font_family = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign line_height = s.line_height | times: 1.0 | divided_by: 100
+  assign box_color = s.box_color
+  unless s.show_box
+    assign box_color = 'transparent'
+  endunless
+  assign padding = s.padding
+  unless s.show_box
+    assign padding = 0
+  endunless
+-%}
+{%- if s.font_source == 'custom' and s.font != blank -%}
+  {%- style -%}{{ s.font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.items == blank and request.design_mode -%}
+  <p style="margin:0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif;" {{ block.shopify_attributes }}>Bullets: add one line per bullet in the block settings, e.g. “Mitochondria - Reactivated to support nerve repair”.</p>
+{%- else -%}
+  {%- render 'boarage-bullets', items: s.items, icon: s.icon, icon_size: s.icon_size, icon_color: s.icon_color, box_color: box_color, radius: s.radius, padding: padding, lead_color: s.lead_color, lead_weight: s.lead_weight, text_color: s.text_color, text_weight: s.text_weight, separator: s.separator, font_family: font_family, font_size: s.font_size, line_height: line_height, gap: s.gap, max_width: s.max_width, align: s.align, attrs: block.shopify_attributes -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Benefit bullets",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "textarea", "id": "items", "label": "Bullets", "info": "One bullet per line. Text before the first “ - ” becomes the bold lead, e.g. “Sleep - Supports the nighttime burn stealing rest”." },
+    { "type": "text", "id": "separator", "label": "Separator shown after the lead", "default": " - " },
+    { "type": "header", "content": "Icon" },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "options": [
+        { "value": "check-square", "label": "Check in a square" },
+        { "value": "check-circle", "label": "Check in a circle" },
+        { "value": "check", "label": "Check mark only" }
+      ],
+      "default": "check-square"
+    },
+    { "type": "color", "id": "icon_color", "label": "Icon colour", "default": "#2fbd44" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 14, "max": 36, "step": 1, "unit": "px", "default": 22 },
+    { "type": "header", "content": "Box" },
+    { "type": "checkbox", "id": "show_box", "label": "Show the background box", "default": true },
+    { "type": "color", "id": "box_color", "label": "Box colour", "default": "#eef7f1" },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding", "label": "Inner padding", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 24 },
+    { "type": "header", "content": "Text" },
+    { "type": "color", "id": "lead_color", "label": "Lead colour", "default": "#1d4d36" },
+    {
+      "type": "select",
+      "id": "lead_weight",
+      "label": "Lead weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#1d4d36" },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "font", "label": "Custom font", "default": "work_sans_n4" },
+    { "type": "range", "id": "font_size", "label": "Text size", "min": 12, "max": 28, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "line_height", "label": "Line height", "min": 110, "max": 180, "step": 5, "unit": "%", "default": 135 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap", "label": "Space between bullets", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Box placement",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "info": "0 = full width of the column.", "min": 0, "max": 900, "step": 20, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Benefit bullets" }]
+}
+{% endschema %}
