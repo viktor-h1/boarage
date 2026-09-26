@@ -21,6 +21,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | `sections/boarage-problem-mechanism.liquid` | Standalone problem + mechanism: image, highlighted heading, text, red check `bullet` blocks, dark green inner card (eyebrow, heading, text, `feature` icon grid) with the product image overhanging its bottom edge |
 | `sections/boarage-stages.liquid` | Standalone stages: centered heading, one `stage` block per card (image left, pale green panel with label, title, text); side-by-side row or stacked on desktop |
 | `sections/boarage-science.liquid` | Standalone science chart: eyebrow, heading, text, inline SVG two-curve chart (labels, colours, curve end heights as settings, or an uploaded image); text/chart columns on desktop |
+| `sections/boarage-timeline.liquid` | Standalone timeline: green gradient, heading, one static vertical line with a marker per `milestone` block (week pill, text, check bullets via `boarage-bullets`), guarantee card via `boarage-guarantee` |
 | `assets/boarage-pdp.css`, `assets/boarage-pdp.js` | **Built** assets (under 25 KB / 10 KB). Edit the sources in `dev/src/` and run `npm run build` |
 | `config/settings_schema.json` | Shrine's file + the *Boarage PDP* settings group |
 | `locales/en.default.schema.json`, `locales/de.schema.json` | Shrine's files + the `boarage` namespace (English / German editor labels) |

@@ -1,0 +1,167 @@
+{%- comment -%}
+  Boarage PDP · Timeline ("What to expect … over time"). Dark green gradient band, white heading, then one
+  "Milestone" block after another along a single static vertical line on the left: a small square marker,
+  a white pill ("Week 1-2:" in green + the title), a paragraph and check-square bullets (one per line of the
+  points field, rendered by snippets/boarage-bullets.liquid). The guarantee card
+  (snippets/boarage-guarantee.liquid) closes the section. Own CSS, no JavaScript.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign milestones = section.blocks | where: 'type', 'milestone'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- style -%}
+  .btl { box-sizing: border-box; padding: var(--btl-pad-top, 44px) 0 var(--btl-pad-bottom, 44px); background: linear-gradient(165deg, var(--btl-bg-1, #2f8a55) 0%, var(--btl-bg-2, #0e3d26) 100%); font-family: var(--btl-body-font); font-size: var(--btl-text-size, 17px); line-height: 1.5; color: var(--btl-text, #fff); -webkit-font-smoothing: antialiased; }
+  .btl *, .btl *::before, .btl *::after { box-sizing: border-box; }
+  .btl__wrap { max-width: var(--btl-max, 760px); margin: 0 auto; padding: 0 20px; }
+  .btl__title { margin: 0 0 28px; font-family: var(--btl-heading-font); font-size: var(--btl-heading-size, 28px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--btl-heading, #fff); overflow-wrap: anywhere; }
+  .btl__list { position: relative; margin: 0; padding: 0 0 0 30px; list-style: none; }
+  .btl__list::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: var(--btl-line, rgba(255, 255, 255, .55)); border-radius: 1px; }
+  .btl__item { position: relative; margin: 0 0 34px; }
+  .btl__item:last-child { margin-bottom: 0; }
+  .btl__item::before { content: ""; position: absolute; left: -30px; top: 6px; width: 12px; height: 12px; border-radius: 2px; background: var(--btl-marker, #fff); box-shadow: 0 0 0 3px var(--btl-bg-2, #0e3d26); }
+  .btl__pill { display: inline-block; margin: 0 0 14px; padding: 6px 12px; border-radius: 4px; background: var(--btl-pill, #fff); font-size: .92em; font-weight: 500; line-height: 1.35; color: var(--btl-pill-title, #1d4d36); }
+  .btl__pill b { font-weight: 700; color: var(--btl-pill-when, #2fbd44); }
+  .btl__text { margin: 0 0 16px; }
+  .btl__text p { margin: 0 0 1em; }
+  .btl__text p:last-child { margin-bottom: 0; }
+  .btl__text strong { font-weight: 700; }
+  .btl__item .bbl { font-size: 1em; }
+  .btl__guarantee { margin-top: 36px; }
+  .btl__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(255,255,255,.92); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  #shopify-section-{{ sid }} .btl { --btl-bg-1: {{ s.bg_1 }}; --btl-bg-2: {{ s.bg_2 }}; --btl-heading: {{ s.heading_color }}; --btl-text: {{ s.text_color }}; --btl-line: {{ s.line_color }}; --btl-marker: {{ s.marker_color }}; --btl-pill: {{ s.pill_color }}; --btl-pill-when: {{ s.pill_when_color }}; --btl-pill-title: {{ s.pill_title_color }}; --btl-heading-font: {{ heading_font }}; --btl-body-font: {{ body_font }}; --btl-heading-size: {{ s.heading_size }}px; --btl-text-size: {{ s.text_size }}px; --btl-max: {{ s.max_width }}px; --btl-pad-top: {{ s.padding_top }}px; --btl-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="btl">
+  <div class="btl__wrap">
+    {%- if s.heading != blank -%}<h2 class="btl__title">{{ s.heading | escape }}</h2>{%- endif -%}
+    {%- if milestones.size > 0 -%}
+      <ol class="btl__list">
+        {%- for block in milestones -%}
+          {%- assign b = block.settings -%}
+          <li class="btl__item" {{ block.shopify_attributes }}>
+            {%- if b.when != blank or b.title != blank -%}
+              <p class="btl__pill">{% if b.when != blank %}<b>{{ b.when | escape }}</b> {% endif %}{{ b.title | escape }}</p>
+            {%- endif -%}
+            {%- if b.text != blank -%}<div class="btl__text">{{ b.text }}</div>{%- endif -%}
+            {%- if b.points != blank -%}
+              {%- render 'boarage-bullets', items: b.points, box_color: 'transparent', padding: 0, radius: 0, icon_color: s.bullet_icon_color, lead_color: s.text_color, text_color: s.text_color, lead_weight: 600, text_weight: 500, font_family: body_font, font_size: s.text_size, line_height: 1.35, gap: 14, icon_size: 20 -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- elsif request.design_mode -%}
+      <p class="btl__ph">Timeline: add “Milestone” blocks to this section.</p>
+    {%- endif -%}
+    {%- if s.show_guarantee -%}
+      <div class="btl__guarantee">
+        {%- render 'boarage-guarantee', title: s.guarantee_title, text: s.guarantee_text, box_color: s.guarantee_box, border_color: s.guarantee_border, icon_color: s.guarantee_ink, title_color: s.guarantee_ink, text_color: s.guarantee_ink, title_font: heading_font, text_font: body_font, title_size: 20, text_size: 16, padding: 18 -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Boarage · Timeline",
+  "tag": "section",
+  "class": "boarage-timeline",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What to Expect as Your Mitochondria Gets Stronger Over Time" },
+    { "type": "header", "content": "Guarantee card" },
+    { "type": "checkbox", "id": "show_guarantee", "label": "Show the guarantee card at the end", "default": true },
+    { "type": "text", "id": "guarantee_title", "label": "Title", "default": "90-Day Money Back Guarantee" },
+    { "type": "richtext", "id": "guarantee_text", "label": "Text", "default": "<p>Love your results within 90 days or get 100% of your money back, no questions asked.</p>" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_1", "label": "Background gradient start", "default": "#2f8a55" },
+    { "type": "color", "id": "bg_2", "label": "Background gradient end", "default": "#0e3d26" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text and bullets", "default": "#ffffff" },
+    { "type": "color", "id": "bullet_icon_color", "label": "Bullet check icons", "default": "#ffffff" },
+    { "type": "color", "id": "line_color", "label": "Vertical line", "default": "#8fc9a6" },
+    { "type": "color", "id": "marker_color", "label": "Milestone markers", "default": "#ffffff" },
+    { "type": "color", "id": "pill_color", "label": "Milestone pill background", "default": "#ffffff" },
+    { "type": "color", "id": "pill_when_color", "label": "Pill: week label", "default": "#2fbd44" },
+    { "type": "color", "id": "pill_title_color", "label": "Pill: title", "default": "#1d4d36" },
+    { "type": "color", "id": "guarantee_box", "label": "Guarantee card background", "default": "#eef7f1" },
+    { "type": "color", "id": "guarantee_border", "label": "Guarantee card border", "default": "#9fd3b4" },
+    { "type": "color", "id": "guarantee_ink", "label": "Guarantee card text and icon", "default": "#1d4d36" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 28 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Text font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom text font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 500, "max": 1200, "step": 20, "unit": "px", "default": 760 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Milestone",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "when", "label": "Week label", "default": "Week 1-2:" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Mitochondrial Reactivation Begins" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Your mitochondria begins responding as AMPK is activated and cellular energy production starts to improve.</p>" },
+        { "type": "textarea", "id": "points", "label": "Bullets", "info": "One per line. Text before a “ - ” becomes a bold lead.", "default": "The nighttime burning starts to ease\nSleep becomes deeper and more consistent" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Timeline",
+      "blocks": [
+        { "type": "milestone" },
+        { "type": "milestone", "settings": { "when": "Week 3-4:", "title": "Nerve Signaling Improves", "text": "<p>As cellular energy flows back to nerve cells, they can get back to doing their job and supporting healthy signal transmission.</p>", "points": "Tingling and pins-and-needles start to quiet\nBalance and coordination feel more stable" } },
+        { "type": "milestone", "settings": { "when": "Week 5-8:", "title": "Nerve Support Builds", "text": "<p>With sustained mitochondrial support, nerve cells get what they need to maintain their protective coating and keep functioning the way they're meant to.</p>", "points": "Feeling begins returning to numb areas\nConfidence in walking and daily movement improves" } },
+        { "type": "milestone", "settings": { "when": "Week 9-12+:", "title": "Long-Term Nerve Resilience", "text": "<p>With consistent use, your mitochondria stays active and protected from the oxidative stress that shut it down in the first place.</p>", "points": "Sustained reduction in nerve pain symptoms\nGreater independence and return to daily activities" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
