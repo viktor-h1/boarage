@@ -1,0 +1,101 @@
+{%- comment -%}
+  Boarage PDP · Trust rating (theme block for the hero / buy box).
+  Renders snippets/boarage-trust-rating.liquid with the block settings: rating, wording, colours, font, sizes.
+  Add it to any section that accepts theme blocks. For a section that only offers "Custom Liquid", paste
+  the render tag documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  assign rating = s.rating
+  assign max_label = s.max_label
+  assign rv = product.metafields.reviews.rating.value
+  if s.use_metafield and rv != blank
+    assign rating = rv.rating
+    assign max_label = rv.scale_max | times: 1.0 | round: 1
+  endif
+
+  case s.font_source
+    when 'heading'
+      assign font_family = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign font_family = s.font.family | append: ', ' | append: s.font.fallback_families
+    else
+      assign font_family = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+-%}
+{%- if s.font_source == 'custom' and s.font != blank -%}
+  {%- style -%}{{ s.font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- render 'boarage-trust-rating', rating: rating, max_label: max_label, prefix: s.prefix, word: s.word, rounding: s.rounding, url: s.url, star_color: s.star_color, star_ink: s.star_ink, star_empty: s.star_empty, text_color: s.text_color, font_family: font_family, font_weight: s.font_weight, font_size: s.font_size, star_size: s.star_size, star_gap: s.star_gap, align: s.align, attrs: block.shopify_attributes -%}
+
+{% schema %}
+{
+  "name": "Trust rating",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Rating" },
+    { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.1, "default": 4.8 },
+    { "type": "text", "id": "max_label", "label": "Scale shown after the slash", "default": "5.0" },
+    { "type": "checkbox", "id": "use_metafield", "label": "Use the product's review rating when available", "info": "Reads the standard reviews.rating metafield that review apps fill. Falls back to the values above.", "default": false },
+    {
+      "type": "select",
+      "id": "rounding",
+      "label": "Star fill",
+      "options": [
+        { "value": "half", "label": "Nearest half star (Trustpilot rule: 4.8 shows five full stars)" },
+        { "value": "exact", "label": "Exact (4.8 fills the last star 80%)" }
+      ],
+      "default": "half"
+    },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "prefix", "label": "Text before the number", "default": "Rated" },
+    { "type": "text", "id": "word", "label": "Quoted word after the bar", "info": "Leave empty to hide the bar and the word.", "default": "Excellent" },
+    { "type": "url", "id": "url", "label": "Link (optional)", "info": "For example the Trustpilot profile. The whole row becomes a link." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "star_color", "label": "Star box", "default": "#00b67a" },
+    { "type": "color", "id": "star_ink", "label": "Star", "default": "#ffffff" },
+    { "type": "color", "id": "star_empty", "label": "Unfilled part of a box", "default": "#dcdce6" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#191919" },
+    { "type": "header", "content": "Font and size" },
+    {
+      "type": "select",
+      "id": "font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "font", "label": "Custom font", "default": "work_sans_n4" },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Weight of the plain text",
+      "info": "The number and the quoted word are always bold.",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" }
+      ],
+      "default": "400"
+    },
+    { "type": "range", "id": "font_size", "label": "Text size", "min": 12, "max": 32, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "star_size", "label": "Star box size", "min": 14, "max": 40, "step": 1, "unit": "px", "default": 24 },
+    { "type": "range", "id": "star_gap", "label": "Gap between boxes", "min": 0, "max": 12, "step": 1, "unit": "px", "default": 4 },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [{ "name": "Trust rating" }]
+}
+{% endschema %}

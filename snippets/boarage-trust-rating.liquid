@@ -1,0 +1,95 @@
+{%- comment -%}
+  Trustpilot-style rating row: five green square stars, then "Rated 4.8 / 5.0 | ‘Excellent’".
+  Self-contained (own CSS, no dependency on boarage-pdp.css), so it can be rendered from the theme block
+  blocks/boarage-trust-rating.liquid or from any "Custom Liquid" block:
+
+    {% render 'boarage-trust-rating', rating: 4.8, word: 'Excellent', star_color: '#00b67a' %}
+
+  Params (all optional):
+    rating       number 0–5 (default 4.8)              max_label   text after the slash (default '5.0')
+    prefix       text before the number ('Rated')      word        quoted word after the bar ('Excellent'); blank hides it
+    rounding     'half' = Trustpilot rule, stars rounded to the nearest half (default) · 'exact' = fill by the decimal
+    url          optional link (e.g. the Trustpilot profile); the whole row becomes a link
+    star_color   filled star box (#00b67a)              star_ink    the white star glyph (#ffffff)
+    star_empty   unfilled part of a box (#dcdce6)       text_color  the text (#191919)
+    font_family  CSS font-family; default the theme body font    font_weight  weight of the plain text (400)
+    font_size    px (18)   star_size px (24)   star_gap px (4)   align 'left' | 'center' | 'right'
+    attrs        extra attributes on the root element (block.shopify_attributes)
+{%- endcomment -%}
+{%- liquid
+  assign rating = rating | default: 4.8
+  assign max_label = max_label | default: '5.0'
+  if prefix == nil
+    assign prefix = 'Rated'
+  endif
+  if word == nil
+    assign word = 'Excellent'
+  endif
+  assign rounding = rounding | default: 'half'
+  assign star_color = star_color | default: '#00b67a'
+  assign star_ink = star_ink | default: '#ffffff'
+  assign star_empty = star_empty | default: '#dcdce6'
+  assign text_color = text_color | default: '#191919'
+  assign font_family = font_family | default: 'var(--font-body-family, system-ui, sans-serif)'
+  assign font_weight = font_weight | default: 400
+  assign font_size = font_size | default: 18
+  assign star_size = star_size | default: 24
+  assign star_gap = star_gap | default: 4
+  assign align = align | default: 'left'
+
+  assign rating = rating | times: 1.0 | at_least: 0 | at_most: 5
+  if rounding == 'half'
+    assign stars = rating | times: 2 | round | divided_by: 2.0
+  else
+    assign stars = rating
+  endif
+  case align
+    when 'center'
+      assign justify = 'center'
+    when 'right'
+      assign justify = 'flex-end'
+    else
+      assign justify = 'flex-start'
+  endcase
+  assign rating_label = rating | round: 1
+  assign aria = rating_label | append: ' / ' | append: max_label
+  if word != blank
+    assign aria = aria | append: ' – ' | append: word
+  endif
+-%}
+{%- style -%}
+  .btr { display: flex; flex-wrap: wrap; align-items: center; gap: .55em .7em; margin: 0; padding: 0; justify-content: var(--btr-justify, flex-start); font-family: var(--btr-font); font-weight: var(--btr-weight, 400); font-size: var(--btr-size, 18px); line-height: 1.2; color: var(--btr-text, #191919); -webkit-font-smoothing: antialiased; }
+  .btr, .btr:hover, .btr:focus-visible { text-decoration: none; color: var(--btr-text, #191919); }
+  a.btr { cursor: pointer; }
+  a.btr:focus-visible { outline: 2px solid var(--btr-star, #00b67a); outline-offset: 4px; border-radius: 4px; }
+  .btr__stars { display: inline-flex; gap: var(--btr-gap, 4px); flex: none; }
+  .btr__star { position: relative; display: block; flex: none; width: var(--btr-star-size, 24px); height: var(--btr-star-size, 24px); background: linear-gradient(90deg, var(--btr-star, #00b67a) var(--f, 100%), var(--btr-star-empty, #dcdce6) var(--f, 100%)); }
+  .btr__star svg { position: absolute; inset: 0; width: 100%; height: 100%; padding: 13%; box-sizing: border-box; fill: var(--btr-star-ink, #fff); display: block; }
+  .btr__text { white-space: nowrap; }
+  .btr__text b { font-weight: 700; }
+  .btr__sep { margin: 0 .2em; }
+{%- endstyle -%}
+{%- capture star_svg -%}
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1.6l3.1 6.7 7.3.9-5.4 5 1.4 7.2L12 17.9l-6.4 3.5L7 14.2l-5.4-5 7.3-.9z"/></svg>
+{%- endcapture -%}
+{%- capture body -%}
+  <span class="btr__stars" role="img" aria-label="{{ aria | escape }}">
+    {%- for i in (1..5) -%}
+      {%- assign fill = stars | minus: i | plus: 1 | times: 100 | at_least: 0 | at_most: 100 | round -%}
+      <i class="btr__star" style="--f: {{ fill }}%;">{{ star_svg }}</i>
+    {%- endfor -%}
+  </span>
+  <span class="btr__text">
+    {%- if prefix != blank %}{{ prefix | escape }} {% endif -%}
+    <b>{{ rating_label }} / {{ max_label | escape }}</b>
+    {%- if word != blank %}<span class="btr__sep">|</span><b>‘{{ word | escape }}’</b>{% endif -%}
+  </span>
+{%- endcapture -%}
+{%- capture vars -%}
+  --btr-justify: {{ justify }}; --btr-font: {{ font_family }}; --btr-weight: {{ font_weight }}; --btr-size: {{ font_size }}px; --btr-text: {{ text_color }}; --btr-star: {{ star_color }}; --btr-star-ink: {{ star_ink }}; --btr-star-empty: {{ star_empty }}; --btr-star-size: {{ star_size }}px; --btr-gap: {{ star_gap }}px;
+{%- endcapture -%}
+{%- if url != blank -%}
+  <a class="btr" href="{{ url }}" style="{{ vars }}" {{ attrs }}>{{ body }}</a>
+{%- else -%}
+  <div class="btr" style="{{ vars }}" {{ attrs }}>{{ body }}</div>
+{%- endif -%}
