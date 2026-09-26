@@ -1,0 +1,274 @@
+{%- comment -%}
+  Boarage PDP · Problem + mechanism. One long section:
+  rounded image → heading (italic words in the inline rich text render in the highlight colour) → paragraph →
+  check-square bullets (one "Bullet" block each, red icon by default) → dark green inner card: eyebrow, white
+  heading, text, 2×2 grid of line icons + labels (one "Feature" block each) → product image that overhangs
+  the bottom edge of the card. Own CSS, no JavaScript.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign bullets = section.blocks | where: 'type', 'bullet'
+  assign features = section.blocks | where: 'type', 'feature'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign has_card = false
+  if s.card_eyebrow != blank or s.card_heading != blank or s.card_text != blank or features.size > 0 or s.product_image != blank
+    assign has_card = true
+  endif
+  assign overhang = s.overhang
+  if s.product_image == blank and request.design_mode == false
+    assign overhang = 0
+  endif
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- style -%}
+  .bpm { box-sizing: border-box; padding: var(--bpm-pad-top, 40px) 0 calc(var(--bpm-pad-bottom, 40px) + var(--bpm-overhang, 0px)); background: var(--bpm-bg, #fff); font-family: var(--bpm-body-font); font-size: var(--bpm-text-size, 18px); line-height: 1.5; color: var(--bpm-text, #1d4d36); -webkit-font-smoothing: antialiased; }
+  .bpm *, .bpm *::before, .bpm *::after { box-sizing: border-box; }
+  .bpm__wrap { max-width: var(--bpm-max, 760px); margin: 0 auto; padding: 0 20px; }
+  .bpm__image { display: block; width: 100%; height: auto; border-radius: var(--bpm-radius, 10px); margin: 0 0 24px; object-fit: cover; }
+  .bpm__title { margin: 0 0 16px; font-family: var(--bpm-heading-font); font-size: var(--bpm-heading-size, 30px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bpm-heading, #1d4d36); overflow-wrap: anywhere; }
+  .bpm__title em, .bpm__title i { font-style: normal; color: var(--bpm-highlight, #2fbd44); }
+  .bpm__text { margin: 0 0 22px; }
+  .bpm__text p { margin: 0 0 1em; }
+  .bpm__text p:last-child { margin-bottom: 0; }
+  .bpm__text strong { font-weight: 700; }
+  .bpm__bullets { list-style: none; margin: 0 0 32px; padding: 0; color: var(--bpm-bullet-text, #1d4d36); }
+  .bpm__bullet { display: flex; align-items: flex-start; gap: .7em; margin: 0 0 16px; line-height: 1.35; }
+  .bpm__bullet:last-child { margin-bottom: 0; }
+  .bpm__bullet-icon { flex: none; width: 1.3em; height: 1.3em; margin-top: .05em; color: var(--bpm-bullet-icon, #d94f3d); }
+  .bpm__bullet-icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .bpm__card { position: relative; padding: 32px 22px 0; border-radius: var(--bpm-radius, 10px); background: linear-gradient(165deg, var(--bpm-card-1, #2f8a55) 0%, var(--bpm-card-2, #0e3d26) 100%); color: var(--bpm-card-text, #fff); text-align: center; }
+  .bpm__card--no-product { padding-bottom: 32px; }
+  .bpm__eyebrow { display: block; margin: 0 0 12px; font-size: .85em; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--bpm-card-eyebrow, #9be7b6); }
+  .bpm__card-title { margin: 0 0 14px; font-family: var(--bpm-heading-font); font-size: var(--bpm-card-heading-size, 28px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bpm-card-heading, #fff); }
+  .bpm__card-text { margin: 0 auto 28px; max-width: 520px; }
+  .bpm__card-text p { margin: 0 0 1em; }
+  .bpm__card-text p:last-child { margin-bottom: 0; }
+  .bpm__features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; margin: 0; padding: 0 0 8px; list-style: none; }
+  @media (min-width: 750px) { .bpm__features { grid-template-columns: repeat(var(--bpm-cols, 4), minmax(0, 1fr)); } }
+  .bpm__feature { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0; font-size: .95em; font-weight: 500; line-height: 1.3; color: var(--bpm-feature-text, #fff); }
+  .bpm__feature-icon { width: 44px; height: 44px; color: var(--bpm-feature-icon, #9be7b6); }
+  .bpm__feature-icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .bpm__feature-icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .bpm__product { display: block; width: var(--bpm-product-w, 78%); max-width: 100%; height: auto; margin: 24px auto calc(-1 * var(--bpm-overhang, 0px)); filter: drop-shadow(0 18px 24px rgba(0, 0, 0, .28)); }
+  .bpm__ph { margin: 0 0 16px; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(255,255,255,.92); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  #shopify-section-{{ sid }} .bpm { --bpm-bg: {{ s.bg_color }}; --bpm-heading: {{ s.heading_color }}; --bpm-highlight: {{ s.highlight_color }}; --bpm-text: {{ s.text_color }}; --bpm-bullet-icon: {{ s.bullet_icon_color }}; --bpm-bullet-text: {{ s.bullet_text_color }}; --bpm-card-1: {{ s.card_bg_1 }}; --bpm-card-2: {{ s.card_bg_2 }}; --bpm-card-eyebrow: {{ s.card_eyebrow_color }}; --bpm-card-heading: {{ s.card_heading_color }}; --bpm-card-text: {{ s.card_text_color }}; --bpm-feature-icon: {{ s.feature_icon_color }}; --bpm-feature-text: {{ s.feature_text_color }}; --bpm-heading-font: {{ heading_font }}; --bpm-body-font: {{ body_font }}; --bpm-heading-size: {{ s.heading_size }}px; --bpm-card-heading-size: {{ s.card_heading_size }}px; --bpm-text-size: {{ s.text_size }}px; --bpm-radius: {{ s.radius }}px; --bpm-max: {{ s.max_width }}px; --bpm-product-w: {{ s.product_width }}%; --bpm-overhang: {{ overhang }}px; --bpm-cols: {{ features.size | at_most: 4 | at_least: 2 }}; --bpm-pad-top: {{ s.padding_top }}px; --bpm-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="bpm">
+  <div class="bpm__wrap">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 1500 | image_tag: loading: 'lazy', class: 'bpm__image', widths: '400, 600, 800, 1000, 1500', sizes: '(min-width: 800px) 760px, 100vw', alt: s.image_alt | default: s.image.alt }}
+    {%- elsif request.design_mode -%}
+      <p class="bpm__ph">Top image: pick one in the section settings.</p>
+    {%- endif -%}
+
+    {%- if s.heading != blank -%}<h2 class="bpm__title">{{ s.heading }}</h2>{%- endif -%}
+    {%- if s.text != blank -%}<div class="bpm__text">{{ s.text }}</div>{%- endif -%}
+
+    {%- if bullets.size > 0 -%}
+      <ul class="bpm__bullets">
+        {%- for block in bullets -%}
+          {%- if block.settings.text != blank -%}
+            <li class="bpm__bullet" {{ block.shopify_attributes }}>
+              <span class="bpm__bullet-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/><path d="M8 12l3.5 3.5L21 6"/></svg></span>
+              <span>{{ block.settings.text }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if has_card -%}
+      <div class="bpm__card{% if s.product_image == blank %} bpm__card--no-product{% endif %}">
+        {%- if s.card_eyebrow != blank -%}<span class="bpm__eyebrow">{{ s.card_eyebrow | escape }}</span>{%- endif -%}
+        {%- if s.card_heading != blank -%}<h3 class="bpm__card-title">{{ s.card_heading }}</h3>{%- endif -%}
+        {%- if s.card_text != blank -%}<div class="bpm__card-text">{{ s.card_text }}</div>{%- endif -%}
+        {%- if features.size > 0 -%}
+          <ul class="bpm__features">
+            {%- for block in features -%}
+              {%- assign b = block.settings -%}
+              <li class="bpm__feature" {{ block.shopify_attributes }}>
+                <span class="bpm__feature-icon" aria-hidden="true">
+                  {%- if b.custom_icon != blank -%}
+                    {{ b.custom_icon | image_url: width: 88 | image_tag: loading: 'lazy', alt: '', widths: '44, 88' }}
+                  {%- else -%}
+                    {%- case b.icon -%}
+                      {%- when 'cell' -%}
+                        <svg viewBox="0 0 24 24"><path d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z"/><path d="M8 12c0-2.2 1.8-4 4-4"/><path d="M12 16c2.2 0 4-1.8 4-4"/><circle cx="12" cy="12" r="1"/></svg>
+                      {%- when 'nerve' -%}
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5V4M12 14.5V20M9.5 12H4M14.5 12H20"/><path d="M10.2 10.2L6.5 6.5M13.8 13.8l3.7 3.7M13.8 10.2l3.7-3.7M10.2 13.8l-3.7 3.7"/><circle cx="4" cy="12" r="1.2"/><circle cx="20" cy="12" r="1.2"/><circle cx="12" cy="4" r="1.2"/><circle cx="12" cy="20" r="1.2"/></svg>
+                      {%- when 'shield' -%}
+                        <svg viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.6-7.5 9.5-4.3-.9-7.5-5-7.5-9.5V6z"/><path d="M9 12.5l2 2 4-4.5"/></svg>
+                      {%- when 'balance' -%}
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 6.5v6"/><path d="M6 10l6 2.5 6-2.5"/><path d="M12 12.5l-3 8M12 12.5l3 8"/><path d="M4 21h16"/></svg>
+                      {%- when 'leaf' -%}
+                        <svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-.5 9-5.5 14-14 14z"/><path d="M5 19l8-8"/></svg>
+                      {%- when 'bolt' -%}
+                        <svg viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg>
+                      {%- when 'heart' -%}
+                        <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+                      {%- when 'moon' -%}
+                        <svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+                      {%- when 'foot' -%}
+                        <svg viewBox="0 0 24 24"><path d="M9 21c-2.5 0-4-1.5-4-4 0-3 2-5 2-8s1.5-6 4-6 4 2.5 4 6c0 2.5-1 4-1 6.5S12 21 9 21z"/><circle cx="17" cy="6" r="1.2"/><circle cx="19" cy="9.5" r="1"/><circle cx="18.5" cy="13" r=".9"/></svg>
+                      {%- else -%}
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9"/></svg>
+                    {%- endcase -%}
+                  {%- endif -%}
+                </span>
+                {%- if b.label != blank -%}<span>{{ b.label | escape | newline_to_br }}</span>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if s.product_image != blank -%}
+          {{ s.product_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'bpm__product', widths: '400, 600, 800, 1200', sizes: '(min-width: 800px) 600px, 80vw', alt: s.product_alt | default: s.product_image.alt }}
+        {%- elsif request.design_mode -%}
+          <p class="bpm__ph" style="margin: 24px auto calc(-1 * {{ overhang }}px); max-width: 320px;">Product image: pick one in the section settings. It overhangs the bottom of this card.</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Boarage · Problem + fix",
+  "tag": "section",
+  "class": "boarage-problem-mechanism",
+  "settings": [
+    { "type": "header", "content": "Top" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_alt", "label": "Image description (alt)" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Words set to italic render in the highlight colour.", "default": "The Reason Why Your <em>Nerves Are Breaking Down</em> Is Not What You Were Told" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Your nerves are living tissue, and the cells that maintain them are the most energy-hungry cells in your entire body.</p>" },
+    { "type": "header", "content": "Inner card" },
+    { "type": "text", "id": "card_eyebrow", "label": "Eyebrow", "default": "The nurse fruit" },
+    { "type": "inline_richtext", "id": "card_heading", "label": "Heading", "default": "Support your nerves from the core" },
+    { "type": "richtext", "id": "card_text", "label": "Text", "default": "<p>Activates AMPK, your body's master switch for mitochondrial energy, supporting the cellular energy your nerves rely on to do their job.</p>" },
+    { "type": "image_picker", "id": "product_image", "label": "Product image (overhangs the card)", "info": "Use a PNG with a transparent background." },
+    { "type": "text", "id": "product_alt", "label": "Product image description (alt)" },
+    { "type": "range", "id": "product_width", "label": "Product image width", "min": 40, "max": 100, "step": 2, "unit": "%", "default": 78 },
+    { "type": "range", "id": "overhang", "label": "How far the product hangs below the card", "min": 0, "max": 200, "step": 10, "unit": "px", "default": 90 },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1d4d36" },
+    { "type": "color", "id": "highlight_color", "label": "Heading highlight", "default": "#2fbd44" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1d4d36" },
+    { "type": "color", "id": "bullet_icon_color", "label": "Bullet icon", "default": "#d94f3d" },
+    { "type": "color", "id": "bullet_text_color", "label": "Bullet text", "default": "#1d4d36" },
+    { "type": "color", "id": "card_bg_1", "label": "Card gradient start", "default": "#2f8a55" },
+    { "type": "color", "id": "card_bg_2", "label": "Card gradient end", "default": "#0e3d26" },
+    { "type": "color", "id": "card_eyebrow_color", "label": "Card eyebrow", "default": "#9be7b6" },
+    { "type": "color", "id": "card_heading_color", "label": "Card heading", "default": "#ffffff" },
+    { "type": "color", "id": "card_text_color", "label": "Card text", "default": "#ffffff" },
+    { "type": "color", "id": "feature_icon_color", "label": "Feature icons", "default": "#9be7b6" },
+    { "type": "color", "id": "feature_text_color", "label": "Feature labels", "default": "#ffffff" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 30 },
+    { "type": "range", "id": "card_heading_size", "label": "Card heading size", "min": 18, "max": 48, "step": 1, "unit": "px", "default": 28 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Text font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom text font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "radius", "label": "Corner radius (image and card)", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 10 },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 500, "max": 1200, "step": 20, "unit": "px", "default": 760 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below (added to the overhang)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "bullet",
+      "name": "Bullet",
+      "limit": 8,
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Burning and tingling that worsens at night" }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "cell", "label": "Cell" },
+            { "value": "nerve", "label": "Nerve" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "balance", "label": "Balance" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "bolt", "label": "Bolt" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "moon", "label": "Moon" },
+            { "value": "foot", "label": "Foot" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "cell"
+        },
+        { "type": "image_picker", "id": "custom_icon", "label": "Custom icon (replaces the one above)", "info": "SVG or PNG, about 88×88 px." },
+        { "type": "textarea", "id": "label", "label": "Label", "info": "A line break forces a new line.", "default": "Supports\nCell Health" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Problem + fix",
+      "blocks": [
+        { "type": "bullet", "settings": { "text": "Burning and tingling that worsens at night" } },
+        { "type": "bullet", "settings": { "text": "Numbness spreading through your feet, toes, and hands" } },
+        { "type": "bullet", "settings": { "text": "Loss of balance and fear of falling" } },
+        { "type": "bullet", "settings": { "text": "Sleep destroyed by pain your doctor says is \"permanent\"" } },
+        { "type": "feature", "settings": { "icon": "cell", "label": "Supports\nCell Health" } },
+        { "type": "feature", "settings": { "icon": "nerve", "label": "Supports\nNerve Tissue" } },
+        { "type": "feature", "settings": { "icon": "shield", "label": "Nerve\nProtection" } },
+        { "type": "feature", "settings": { "icon": "balance", "label": "Supports\nFeeling & Balance" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
