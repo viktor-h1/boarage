@@ -19,6 +19,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | `sections/boarage-reviews-slider.liquid` | Standalone reviews band (same customisable colours/fonts, own CSS + inline script): green gradient, heading, rating line, scroll-snap carousel of `review` blocks (title, stars, rich text, avatar, name, badge, date), progress bar and arrows |
 | `sections/boarage-faq.liquid` | Standalone FAQ: eyebrow, heading, one accordion row per `qa` block (rows via `boarage-accordion-item`), FAQPage JSON-LD |
 | `sections/boarage-problem-mechanism.liquid` | Standalone problem + mechanism: image, highlighted heading, text, red check `bullet` blocks, dark green inner card (eyebrow, heading, text, `feature` icon grid) with the product image overhanging its bottom edge |
+| `sections/boarage-stages.liquid` | Standalone stages: centered heading, one `stage` block per card (image left, pale green panel with label, title, text); side-by-side row or stacked on desktop |
 | `assets/boarage-pdp.css`, `assets/boarage-pdp.js` | **Built** assets (under 25 KB / 10 KB). Edit the sources in `dev/src/` and run `npm run build` |
 | `config/settings_schema.json` | Shrine's file + the *Boarage PDP* settings group |
 | `locales/en.default.schema.json`, `locales/de.schema.json` | Shrine's files + the `boarage` namespace (English / German editor labels) |
