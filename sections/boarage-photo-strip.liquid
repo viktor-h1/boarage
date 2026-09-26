@@ -1,0 +1,139 @@
+{%- comment -%}
+  Boarage PDP · Photo strip ("Real Stories, Real Results"). Centered Trustpilot-style star boxes, a heading
+  whose italic words render in the highlight colour, then a swipeable strip of customer photos (one "Photo"
+  block each, rounded corners). Scroll-snap, no JavaScript; on desktop more photos fit per view.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign photos = section.blocks | where: 'type', 'photo'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- style -%}
+  .bps { box-sizing: border-box; padding: var(--bps-pad-top, 40px) 0 var(--bps-pad-bottom, 40px); background: var(--bps-bg, #fff); -webkit-font-smoothing: antialiased; overflow: hidden; }
+  .bps *, .bps *::before, .bps *::after { box-sizing: border-box; }
+  .bps__wrap { max-width: var(--bps-max, 1200px); margin: 0 auto; padding: 0 20px; }
+  .bps__head { text-align: center; margin: 0 0 24px; }
+  .bps__stars { display: inline-flex; gap: 3px; margin: 0 0 12px; }
+  .bps__stars i { position: relative; display: block; width: var(--bps-star, 22px); height: var(--bps-star, 22px); background: var(--bps-star-color, #00b67a); }
+  .bps__stars svg { position: absolute; inset: 0; width: 100%; height: 100%; padding: 13%; fill: var(--bps-star-ink, #fff); }
+  .bps__title { margin: 0; font-family: var(--bps-heading-font); font-size: var(--bps-heading-size, 28px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bps-heading, #1d4d36); overflow-wrap: anywhere; }
+  .bps__title em, .bps__title i { font-style: normal; color: var(--bps-highlight, #2fbd44); }
+  .bps__track { display: flex; gap: var(--bps-gap, 12px); margin: 0 -20px; padding: 4px 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .bps__track::-webkit-scrollbar { display: none; }
+  .bps__item { flex: 0 0 var(--bps-w-mobile, 44%); scroll-snap-align: start; aspect-ratio: var(--bps-ratio, 1 / 1.2); border-radius: var(--bps-radius, 8px); overflow: hidden; background: #e6efe9; }
+  .bps__item img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @media (min-width: 750px) { .bps__item { flex-basis: var(--bps-w, 240px); } }
+  .bps--center .bps__track { justify-content: safe center; }
+  .bps__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  #shopify-section-{{ sid }} .bps { --bps-bg: {{ s.bg_color }}; --bps-heading: {{ s.heading_color }}; --bps-highlight: {{ s.highlight_color }}; --bps-star-color: {{ s.star_color }}; --bps-star-ink: {{ s.star_ink }}; --bps-star: {{ s.star_size }}px; --bps-heading-font: {{ heading_font }}; --bps-heading-size: {{ s.heading_size }}px; --bps-w: {{ s.photo_width }}px; --bps-w-mobile: {{ s.photo_width_mobile }}%; --bps-ratio: {{ s.ratio }}; --bps-radius: {{ s.radius }}px; --bps-gap: {{ s.gap }}px; --bps-max: {{ s.max_width }}px; --bps-pad-top: {{ s.padding_top }}px; --bps-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="bps{% if s.center_desktop %} bps--center{% endif %}">
+  <div class="bps__wrap">
+    {%- if s.show_stars or s.heading != blank -%}
+      <div class="bps__head">
+        {%- if s.show_stars -%}
+          <span class="bps__stars" role="img" aria-label="5 / 5">
+            {%- for i in (1..5) -%}<i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.6l3.1 6.7 7.3.9-5.4 5 1.4 7.2L12 17.9l-6.4 3.5L7 14.2l-5.4-5 7.3-.9z"/></svg></i>{%- endfor -%}
+          </span>
+        {%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="bps__title">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if photos.size > 0 -%}
+      <div class="bps__track" aria-label="{{ s.heading | strip_html | default: 'Customer photos' | escape }}">
+        {%- for block in photos -%}
+          <div class="bps__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 360, 480, 720', sizes: '(min-width: 750px) 240px, 44vw', alt: block.settings.alt | default: block.settings.image.alt }}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="bps__ph">Photo strip: add “Photo” blocks to this section.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Boarage · Photo strip",
+  "tag": "section",
+  "class": "boarage-photo-strip",
+  "settings": [
+    { "type": "checkbox", "id": "show_stars", "label": "Show the five stars", "default": true },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Italic words render in the highlight colour.", "default": "Real Stories, <em>Real Results</em>" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1d4d36" },
+    { "type": "color", "id": "highlight_color", "label": "Heading highlight", "default": "#2fbd44" },
+    { "type": "color", "id": "star_color", "label": "Star boxes", "default": "#00b67a" },
+    { "type": "color", "id": "star_ink", "label": "Stars", "default": "#ffffff" },
+    { "type": "header", "content": "Font and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 28 },
+    { "type": "range", "id": "star_size", "label": "Star box size", "min": 14, "max": 36, "step": 1, "unit": "px", "default": 22 },
+    { "type": "header", "content": "Photos" },
+    { "type": "range", "id": "photo_width_mobile", "label": "Photo width on mobile", "min": 30, "max": 90, "step": 2, "unit": "%", "default": 44 },
+    { "type": "range", "id": "photo_width", "label": "Photo width on desktop", "min": 140, "max": 420, "step": 10, "unit": "px", "default": 240 },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Photo shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "1 / 1.2", "label": "Slightly tall" },
+        { "value": "4 / 5", "label": "Portrait 4:5" },
+        { "value": "3 / 4", "label": "Portrait 3:4" }
+      ],
+      "default": "1 / 1.2"
+    },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "gap", "label": "Space between photos", "min": 4, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "checkbox", "id": "center_desktop", "label": "Center the strip when all photos fit", "default": true },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1200 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "limit": 16,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "alt", "label": "Description (alt)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Photo strip",
+      "blocks": [{ "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }]
+    }
+  ]
+}
+{% endschema %}
