@@ -23,6 +23,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | `sections/boarage-science.liquid` | Standalone science chart: eyebrow, heading, text, inline SVG two-curve chart (labels, colours, curve end heights as settings, or an uploaded image); text/chart columns on desktop |
 | `sections/boarage-timeline.liquid` | Standalone timeline: green gradient, heading, one static vertical line with a marker per `milestone` block (week pill, text, check bullets via `boarage-bullets`), guarantee card via `boarage-guarantee` |
 | `sections/boarage-photo-strip.liquid` | Standalone photo strip: centered star boxes, highlighted heading, scroll-snap strip of `photo` blocks |
+| `sections/boarage-comparison.liquid` | Standalone comparison: eyebrow, heading, green "us" column (white checks) / centered labels / grey "them" column (red crosses), product images overhanging the column tops, one `row` block per line |
 | `assets/boarage-pdp.css`, `assets/boarage-pdp.js` | **Built** assets (under 25 KB / 10 KB). Edit the sources in `dev/src/` and run `npm run build` |
 | `config/settings_schema.json` | Shrine's file + the *Boarage PDP* settings group |
 | `locales/en.default.schema.json`, `locales/de.schema.json` | Shrine's files + the `boarage` namespace (English / German editor labels) |

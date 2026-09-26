@@ -1,0 +1,201 @@
+{%- comment -%}
+  Boarage PDP · Comparison ("Nerve support from the source vs. other approaches"). Green uppercase eyebrow,
+  bold heading, then a three-column table: a green gradient "us" column with white check-squares, centered
+  row labels separated by hairlines, and a light grey "them" column with red x-squares. Each product image
+  sits above its column and overhangs the column's top edge. One "Row" block per line (label + yes/no for
+  each side). Own CSS, no JavaScript.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign rows = section.blocks | where: 'type', 'row'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign has_images = false
+  if s.image_us != blank or s.image_them != blank
+    assign has_images = true
+  endif
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- capture icon_yes -%}<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/><path d="M8 12l3.5 3.5L21 6"/></svg>{%- endcapture -%}
+{%- capture icon_no -%}<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9l6 6M15 9l-6 6"/></svg>{%- endcapture -%}
+{%- style -%}
+  .bcp { box-sizing: border-box; padding: var(--bcp-pad-top, 40px) 0 var(--bcp-pad-bottom, 40px); background: var(--bcp-bg, #fff); font-family: var(--bcp-body-font); font-size: var(--bcp-text-size, 18px); line-height: 1.3; color: var(--bcp-text, #1d4d36); -webkit-font-smoothing: antialiased; }
+  .bcp *, .bcp *::before, .bcp *::after { box-sizing: border-box; }
+  .bcp__wrap { max-width: var(--bcp-max, 760px); margin: 0 auto; padding: 0 20px; }
+  .bcp__eyebrow { display: block; margin: 0 0 10px; font-size: .8em; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--bcp-eyebrow, #2fbd44); }
+  .bcp__title { margin: 0 0 28px; font-family: var(--bcp-heading-font); font-size: var(--bcp-heading-size, 30px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bcp-heading, #1d4d36); overflow-wrap: anywhere; }
+  .bcp__title em, .bcp__title i { font-style: normal; color: var(--bcp-eyebrow, #2fbd44); }
+  .bcp__table { position: relative; display: grid; grid-template-columns: var(--bcp-col, 26%) 1fr var(--bcp-col, 26%); }
+  .bcp__panel { position: absolute; top: var(--bcp-overlap, 0px); bottom: 0; border-radius: var(--bcp-radius, 8px); z-index: 0; }
+  .bcp__panel--us { left: 0; width: var(--bcp-col, 26%); background: linear-gradient(170deg, var(--bcp-us-1, #2f8a55) 0%, var(--bcp-us-2, #0e3d26) 100%); }
+  .bcp__panel--them { right: 0; width: var(--bcp-col, 26%); background: var(--bcp-them, #eeeeee); }
+  .bcp__cell { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: var(--bcp-row, 92px); padding: 10px 6px; text-align: center; }
+  .bcp__cell--label { padding: 12px 8px; border-bottom: 1px solid var(--bcp-line, #dfe6e2); color: var(--bcp-text, #1d4d36); }
+  .bcp__cell--label.is-last { border-bottom: 0; }
+  .bcp__icon { width: var(--bcp-icon, 32px); height: var(--bcp-icon, 32px); }
+  .bcp__icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .bcp__cell--us { color: var(--bcp-us-icon, #fff); }
+  .bcp__cell--them { color: var(--bcp-them-icon, #c0392b); }
+  .bcp__cell--us .bcp__icon--no { color: rgba(255, 255, 255, .6); }
+  .bcp__cell--them .bcp__icon--yes { color: var(--bcp-text, #1d4d36); }
+  .bcp__head { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; height: calc(var(--bcp-img, 100px) + var(--bcp-overlap, 50px) * 0); min-height: var(--bcp-img, 100px); padding: 0 6px; }
+  .bcp__head img { display: block; max-width: 100%; max-height: var(--bcp-img, 100px); width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .18)); }
+  .bcp__head--label { align-items: flex-end; font-size: .85em; font-weight: 600; color: var(--bcp-text, #1d4d36); padding-bottom: 8px; }
+  .bcp__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .bcp__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  @media (min-width: 750px) { .bcp__table { grid-template-columns: var(--bcp-col-d, 160px) 1fr var(--bcp-col-d, 160px); } .bcp__panel--us, .bcp__panel--them { width: var(--bcp-col-d, 160px); } }
+  #shopify-section-{{ sid }} .bcp { --bcp-bg: {{ s.bg_color }}; --bcp-eyebrow: {{ s.eyebrow_color }}; --bcp-heading: {{ s.heading_color }}; --bcp-text: {{ s.text_color }}; --bcp-line: {{ s.line_color }}; --bcp-us-1: {{ s.us_bg_1 }}; --bcp-us-2: {{ s.us_bg_2 }}; --bcp-us-icon: {{ s.us_icon_color }}; --bcp-them: {{ s.them_bg }}; --bcp-them-icon: {{ s.them_icon_color }}; --bcp-heading-font: {{ heading_font }}; --bcp-body-font: {{ body_font }}; --bcp-heading-size: {{ s.heading_size }}px; --bcp-text-size: {{ s.text_size }}px; --bcp-icon: {{ s.icon_size }}px; --bcp-col: {{ s.col_width }}%; --bcp-col-d: {{ s.col_width_desktop }}px; --bcp-row: {{ s.row_height }}px; --bcp-img: {{ s.image_height }}px; --bcp-overlap: {% if has_images %}{{ s.image_height | times: s.overlap | divided_by: 100 }}px{% else %}0px{% endif %}; --bcp-radius: {{ s.radius }}px; --bcp-max: {{ s.max_width }}px; --bcp-pad-top: {{ s.padding_top }}px; --bcp-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="bcp">
+  <div class="bcp__wrap">
+    {%- if s.eyebrow != blank -%}<span class="bcp__eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="bcp__title">{{ s.heading }}</h2>{%- endif -%}
+    {%- if rows.size > 0 -%}
+      <div class="bcp__table" role="table" aria-label="{{ s.heading | strip_html | default: 'Comparison' | escape }}">
+        <div class="bcp__panel bcp__panel--us" aria-hidden="true"></div>
+        <div class="bcp__panel bcp__panel--them" aria-hidden="true"></div>
+        {%- if has_images or s.label_us != blank or s.label_them != blank -%}
+          <div class="bcp__head" role="columnheader">
+            {%- if s.image_us != blank -%}
+              {{ s.image_us | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_us }}
+            {%- endif -%}
+            {%- if s.label_us != blank -%}<span class="bcp__sr">{{ s.label_us | escape }}</span>{%- endif -%}
+          </div>
+          <div class="bcp__head" role="columnheader" aria-hidden="true"></div>
+          <div class="bcp__head" role="columnheader">
+            {%- if s.image_them != blank -%}
+              {{ s.image_them | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_them }}
+            {%- endif -%}
+            {%- if s.label_them != blank -%}<span class="bcp__sr">{{ s.label_them | escape }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- for block in rows -%}
+          {%- assign b = block.settings -%}
+          <div class="bcp__cell bcp__cell--us" role="cell" {{ block.shopify_attributes }}>
+            {%- if b.us -%}<span class="bcp__icon bcp__icon--yes">{{ icon_yes }}</span><span class="bcp__sr">{{ s.sr_yes | escape }}</span>{%- else -%}<span class="bcp__icon bcp__icon--no">{{ icon_no }}</span><span class="bcp__sr">{{ s.sr_no | escape }}</span>{%- endif -%}
+          </div>
+          <div class="bcp__cell bcp__cell--label{% if forloop.last %} is-last{% endif %}" role="rowheader">{{ b.label | escape }}</div>
+          <div class="bcp__cell bcp__cell--them" role="cell">
+            {%- if b.them -%}<span class="bcp__icon bcp__icon--yes">{{ icon_yes }}</span><span class="bcp__sr">{{ s.sr_yes | escape }}</span>{%- else -%}<span class="bcp__icon bcp__icon--no">{{ icon_no }}</span><span class="bcp__sr">{{ s.sr_no | escape }}</span>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="bcp__ph">Comparison: add “Row” blocks to this section.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Boarage · Comparison",
+  "tag": "section",
+  "class": "boarage-comparison",
+  "settings": [
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why us?" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Italic words render in the eyebrow colour.", "default": "Nerve support from the source vs. Other approaches" },
+    { "type": "header", "content": "Columns" },
+    { "type": "image_picker", "id": "image_us", "label": "Our product image", "info": "PNG with a transparent background. It overhangs the top of the green column." },
+    { "type": "text", "id": "label_us", "label": "Our column name (screen readers)", "default": "Our product" },
+    { "type": "image_picker", "id": "image_them", "label": "Other product image" },
+    { "type": "text", "id": "label_them", "label": "Other column name (screen readers)", "default": "Other approaches" },
+    { "type": "text", "id": "sr_yes", "label": "Word for a check (screen readers)", "default": "Yes" },
+    { "type": "text", "id": "sr_no", "label": "Word for a cross (screen readers)", "default": "No" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow and highlight", "default": "#2fbd44" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1d4d36" },
+    { "type": "color", "id": "text_color", "label": "Row labels", "default": "#1d4d36" },
+    { "type": "color", "id": "line_color", "label": "Row dividers", "default": "#dfe6e2" },
+    { "type": "color", "id": "us_bg_1", "label": "Our column gradient start", "default": "#2f8a55" },
+    { "type": "color", "id": "us_bg_2", "label": "Our column gradient end", "default": "#0e3d26" },
+    { "type": "color", "id": "us_icon_color", "label": "Our column icons", "default": "#ffffff" },
+    { "type": "color", "id": "them_bg", "label": "Other column background", "default": "#eeeeee" },
+    { "type": "color", "id": "them_icon_color", "label": "Other column icons", "default": "#c0392b" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 30 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Row font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom row font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Row text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "col_width", "label": "Side column width (mobile)", "min": 18, "max": 36, "step": 1, "unit": "%", "default": 26 },
+    { "type": "range", "id": "col_width_desktop", "label": "Side column width (desktop)", "min": 100, "max": 260, "step": 10, "unit": "px", "default": 160 },
+    { "type": "range", "id": "row_height", "label": "Row height", "min": 56, "max": 140, "step": 4, "unit": "px", "default": 92 },
+    { "type": "range", "id": "image_height", "label": "Product image height", "min": 60, "max": 200, "step": 10, "unit": "px", "default": 100 },
+    { "type": "range", "id": "overlap", "label": "How much of the image sits above the column", "min": 0, "max": 100, "step": 10, "unit": "%", "default": 50 },
+    { "type": "range", "id": "radius", "label": "Column corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 500, "max": 1100, "step": 20, "unit": "px", "default": 760 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "limit": 10,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Powers Up Your Mitochondria" },
+        { "type": "checkbox", "id": "us", "label": "Our product: check", "default": true },
+        { "type": "checkbox", "id": "them", "label": "Other approaches: check", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Comparison",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Powers Up Your Mitochondria" } },
+        { "type": "row", "settings": { "label": "Clinically Studied Potency" } },
+        { "type": "row", "settings": { "label": "100% Active Ingredient" } },
+        { "type": "row", "settings": { "label": "Supports Nerve Function" } },
+        { "type": "row", "settings": { "label": "Backed By History & Science" } },
+        { "type": "row", "settings": { "label": "Verified & Tested" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
