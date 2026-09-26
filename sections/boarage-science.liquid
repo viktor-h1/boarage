@@ -1,0 +1,177 @@
+{%- comment -%}
+  Boarage PDP · Science chart. Small uppercase green eyebrow, bold heading, paragraph, then a chart: two
+  declining curves (green "with", pale fill underneath; red "without") on a plain axis pair, legend top right,
+  axis labels. The chart is an inline SVG driven by settings (colours, labels, curve steepness); an uploaded
+  image can replace it. On desktop the text and chart sit side by side (or stack, per setting). Own CSS.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  comment
+    Plot area: x 42–382, y 22–232 (viewBox 0 0 400 260). Each curve starts top-left and ends at a height set
+    by its "end" setting (0 = axis line, 100 = top). Bezier control points give the gentle / steep shapes.
+  endcomment
+  assign y_top = 22
+  assign y_base = 232
+  assign span = y_base | minus: y_top
+  assign end_1 = y_base | minus: span | times: 1.0
+  assign end_1 = span | times: s.curve_1_end | divided_by: 100.0
+  assign end_1 = y_base | minus: end_1 | round: 1
+  assign end_2 = span | times: s.curve_2_end | divided_by: 100.0
+  assign end_2 = y_base | minus: end_2 | round: 1
+  assign c1a = end_1 | minus: y_top | times: 0.3 | plus: y_top | round: 1
+  assign c1b = end_1 | minus: y_top | times: 0.75 | plus: y_top | round: 1
+  assign c2a = end_2 | minus: y_top | times: 0.6 | plus: y_top | round: 1
+  assign c2b = end_2 | minus: y_top | times: 0.92 | plus: y_top | round: 1
+  assign path_1 = 'M42,' | append: y_top | append: ' C 150,' | append: c1a | append: ' 260,' | append: c1b | append: ' 382,' | append: end_1
+  assign path_2 = 'M42,' | append: y_top | append: ' C 120,' | append: c2a | append: ' 230,' | append: c2b | append: ' 382,' | append: end_2
+  assign fill_1 = path_1 | append: ' L382,' | append: y_base | append: ' L42,' | append: y_base | append: ' Z'
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- style -%}
+  .bsc { box-sizing: border-box; padding: var(--bsc-pad-top, 40px) 0 var(--bsc-pad-bottom, 40px); background: var(--bsc-bg, #fff); font-family: var(--bsc-body-font); font-size: var(--bsc-text-size, 18px); line-height: 1.5; color: var(--bsc-text, #1d4d36); -webkit-font-smoothing: antialiased; }
+  .bsc *, .bsc *::before, .bsc *::after { box-sizing: border-box; }
+  .bsc__wrap { max-width: var(--bsc-max, 760px); margin: 0 auto; padding: 0 20px; }
+  .bsc__eyebrow { display: block; margin: 0 0 10px; font-size: .8em; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--bsc-eyebrow, #2fbd44); }
+  .bsc__title { margin: 0 0 14px; font-family: var(--bsc-heading-font); font-size: var(--bsc-heading-size, 28px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bsc-heading, #1d4d36); overflow-wrap: anywhere; }
+  .bsc__title em, .bsc__title i { font-style: normal; color: var(--bsc-eyebrow, #2fbd44); }
+  .bsc__text { margin: 0 0 24px; }
+  .bsc__text p { margin: 0 0 1em; }
+  .bsc__text p:last-child { margin-bottom: 0; }
+  .bsc__text strong { font-weight: 700; }
+  .bsc__chart { display: block; width: 100%; height: auto; border-radius: var(--bsc-radius, 8px); background: var(--bsc-chart-bg, #fff); }
+  .bsc__chart text { font-family: var(--bsc-body-font); }
+  .bsc__chart-img { display: block; width: 100%; height: auto; border-radius: var(--bsc-radius, 8px); }
+  @media (min-width: 900px) {
+    .bsc--columns .bsc__wrap { max-width: max(var(--bsc-max, 760px), 1040px); display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .bsc--columns .bsc__text { margin-bottom: 0; }
+  }
+  #shopify-section-{{ sid }} .bsc { --bsc-bg: {{ s.bg_color }}; --bsc-eyebrow: {{ s.eyebrow_color }}; --bsc-heading: {{ s.heading_color }}; --bsc-text: {{ s.text_color }}; --bsc-chart-bg: {{ s.chart_bg }}; --bsc-heading-font: {{ heading_font }}; --bsc-body-font: {{ body_font }}; --bsc-heading-size: {{ s.heading_size }}px; --bsc-text-size: {{ s.text_size }}px; --bsc-radius: {{ s.radius }}px; --bsc-max: {{ s.max_width }}px; --bsc-pad-top: {{ s.padding_top }}px; --bsc-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="bsc bsc--{{ s.desktop_layout | default: 'columns' }}">
+  <div class="bsc__wrap">
+    <div class="bsc__copy">
+      {%- if s.eyebrow != blank -%}<span class="bsc__eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+      {%- if s.heading != blank -%}<h2 class="bsc__title">{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="bsc__text">{{ s.text }}</div>{%- endif -%}
+    </div>
+    <div class="bsc__visual">
+      {%- if s.image != blank -%}
+        {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'bsc__chart-img', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 520px, 100vw', alt: s.chart_alt }}
+      {%- else -%}
+        <svg class="bsc__chart" viewBox="0 0 400 260" role="img" aria-label="{{ s.chart_alt | escape }}">
+          <path d="{{ fill_1 }}" fill="{{ s.fill_color }}" fill-opacity="{{ s.fill_opacity | divided_by: 100.0 }}"/>
+          <path d="{{ path_1 }}" fill="none" stroke="{{ s.line_1_color }}" stroke-width="2" stroke-linecap="round"/>
+          <path d="{{ path_2 }}" fill="none" stroke="{{ s.line_2_color }}" stroke-width="2" stroke-linecap="round"/>
+          <path d="M42,{{ y_top }} V{{ y_base }} H382" fill="none" stroke="{{ s.axis_color }}" stroke-width="1.5" stroke-linecap="round"/>
+          <g font-size="11" font-weight="500" fill="{{ s.text_color }}">
+            <rect x="196" y="16" width="6" height="6" fill="{{ s.line_1_color }}"/>
+            <text x="208" y="22.5">{{ s.legend_1 | escape }}</text>
+            <rect x="196" y="34" width="6" height="6" fill="{{ s.line_2_color }}"/>
+            <text x="208" y="40.5">{{ s.legend_2 | escape }}</text>
+            <text x="212" y="252" text-anchor="middle">{{ s.axis_x | escape }}</text>
+            <text x="14" y="127" text-anchor="middle" transform="rotate(-90 14 127)">{{ s.axis_y | escape }}</text>
+          </g>
+        </svg>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Boarage · Science chart",
+  "tag": "section",
+  "class": "boarage-science",
+  "settings": [
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Mitochondrial energy output declines with age" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Italic words render in the eyebrow colour.", "default": "The Hidden Reason Nothing Has Worked" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The cells in your nerves need more cellular energy than almost any other cell in your body. As you age, your mitochondria slows down and stops producing it. Your nerves are the first to starve.</p>" },
+    { "type": "header", "content": "Chart" },
+    { "type": "text", "id": "legend_1", "label": "Green line label", "default": "With our Amla" },
+    { "type": "text", "id": "legend_2", "label": "Red line label", "default": "Modern Life" },
+    { "type": "text", "id": "axis_y", "label": "Vertical axis label", "default": "Mitochondria" },
+    { "type": "text", "id": "axis_x", "label": "Horizontal axis label", "default": "Age" },
+    { "type": "range", "id": "curve_1_end", "label": "Green line: height at the right end", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 45 },
+    { "type": "range", "id": "curve_2_end", "label": "Red line: height at the right end", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 0 },
+    { "type": "text", "id": "chart_alt", "label": "Chart description (alt text)", "default": "Mitochondrial energy declines gently with age when supported, and steeply without support." },
+    { "type": "image_picker", "id": "image", "label": "Replace the chart with an image (optional)" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow and highlight", "default": "#2fbd44" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1d4d36" },
+    { "type": "color", "id": "text_color", "label": "Text and chart labels", "default": "#1d4d36" },
+    { "type": "color", "id": "chart_bg", "label": "Chart background", "default": "#ffffff" },
+    { "type": "color", "id": "line_1_color", "label": "Green line", "default": "#2fbd44" },
+    { "type": "color", "id": "fill_color", "label": "Fill under the green line", "default": "#2fbd44" },
+    { "type": "range", "id": "fill_opacity", "label": "Fill opacity", "min": 0, "max": 60, "step": 2, "unit": "%", "default": 10 },
+    { "type": "color", "id": "line_2_color", "label": "Red line", "default": "#a83a2a" },
+    { "type": "color", "id": "axis_color", "label": "Axes", "default": "#9aa8a0" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 28 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Text font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom text font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "columns", "label": "Text left, chart right" },
+        { "value": "stack", "label": "Chart under the text" }
+      ],
+      "default": "columns"
+    },
+    { "type": "range", "id": "radius", "label": "Chart corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 500, "max": 1200, "step": 20, "unit": "px", "default": 760 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [{ "name": "Boarage · Science chart" }]
+}
+{% endschema %}
