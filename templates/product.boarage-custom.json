@@ -1,0 +1,138 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": { "type": "title", "settings": {} },
+        "price": { "type": "price", "settings": {} },
+        "custom_liquid": { "type": "custom_liquid", "settings": { "custom_liquid": "" } },
+        "variant_picker": { "type": "variant_picker", "settings": {} },
+        "buy_buttons": { "type": "buy_buttons", "settings": {} }
+      },
+      "block_order": ["title", "price", "custom_liquid", "variant_picker", "buy_buttons"],
+      "settings": {}
+    },
+    "boarage_reviews_slider": {
+      "type": "boarage-reviews-slider",
+      "blocks": {
+        "review_1": { "type": "review", "settings": {} },
+        "review_2": { "type": "review", "settings": {} },
+        "review_3": { "type": "review", "settings": {} }
+      },
+      "block_order": ["review_1", "review_2", "review_3"],
+      "settings": {}
+    },
+    "boarage_faq": {
+      "type": "boarage-faq",
+      "blocks": {
+        "qa_1": { "type": "qa", "settings": { "question": "How do I take it?" } },
+        "qa_2": { "type": "qa", "settings": { "question": "When will I see results?" } },
+        "qa_3": { "type": "qa", "settings": { "question": "What if it doesn't work for me?" } },
+        "qa_4": { "type": "qa", "settings": { "question": "Is this a natural formula?" } },
+        "qa_5": { "type": "qa", "settings": { "question": "How is this different from other supplements?" } },
+        "qa_6": { "type": "qa", "settings": { "question": "How fast is shipping?" } }
+      },
+      "block_order": ["qa_1", "qa_2", "qa_3", "qa_4", "qa_5", "qa_6"],
+      "settings": {}
+    },
+    "boarage_problem_mechanism": {
+      "type": "boarage-problem-mechanism",
+      "blocks": {
+        "bullet_1": { "type": "bullet", "settings": { "text": "Burning and tingling that worsens at night" } },
+        "bullet_2": { "type": "bullet", "settings": { "text": "Numbness spreading through your feet, toes, and hands" } },
+        "bullet_3": { "type": "bullet", "settings": { "text": "Loss of balance and fear of falling" } },
+        "bullet_4": { "type": "bullet", "settings": { "text": "Sleep destroyed by pain your doctor says is \"permanent\"" } },
+        "feature_1": { "type": "feature", "settings": { "icon": "cell", "label": "Supports\nCell Health" } },
+        "feature_2": { "type": "feature", "settings": { "icon": "nerve", "label": "Supports\nNerve Tissue" } },
+        "feature_3": { "type": "feature", "settings": { "icon": "shield", "label": "Nerve\nProtection" } },
+        "feature_4": { "type": "feature", "settings": { "icon": "balance", "label": "Supports\nFeeling & Balance" } }
+      },
+      "block_order": ["bullet_1", "bullet_2", "bullet_3", "bullet_4", "feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {}
+    },
+    "boarage_stages": {
+      "type": "boarage-stages",
+      "blocks": {
+        "stage_1": { "type": "stage", "settings": { "label": "Stage 1", "title": "Early Warning Signs" } },
+        "stage_2": { "type": "stage", "settings": { "label": "Stage 2", "title": "The Pain Sets In", "text": "<p>The tingling turns to burning. Your feet feel like fire at night. Sleep becomes a battle, numbness creeps in, and your balance starts to feel unreliable.</p>" } },
+        "stage_3": { "type": "stage", "settings": { "label": "Stage 3", "title": "Your World Shrinks", "text": "<p>You cannot walk barefoot. You have stopped gardening, traveling, playing with your grandchildren.</p>" } }
+      },
+      "block_order": ["stage_1", "stage_2", "stage_3"],
+      "settings": {}
+    },
+    "boarage_science": {
+      "type": "boarage-science",
+      "settings": {}
+    },
+    "boarage_timeline": {
+      "type": "boarage-timeline",
+      "blocks": {
+        "milestone_1": { "type": "milestone", "settings": {} },
+        "milestone_2": { "type": "milestone", "settings": { "when": "Week 3-4:", "title": "Nerve Signaling Improves", "text": "<p>As cellular energy flows back to nerve cells, they can get back to doing their job and supporting healthy signal transmission.</p>", "points": "Tingling and pins-and-needles start to quiet\nBalance and coordination feel more stable" } },
+        "milestone_3": { "type": "milestone", "settings": { "when": "Week 5-8:", "title": "Nerve Support Builds", "text": "<p>With sustained mitochondrial support, nerve cells get what they need to maintain their protective coating and keep functioning the way they're meant to.</p>", "points": "Feeling begins returning to numb areas\nConfidence in walking and daily movement improves" } },
+        "milestone_4": { "type": "milestone", "settings": { "when": "Week 9-12+:", "title": "Long-Term Nerve Resilience", "text": "<p>With consistent use, your mitochondria stays active and protected from the oxidative stress that shut it down in the first place.</p>", "points": "Sustained reduction in nerve pain symptoms\nGreater independence and return to daily activities" } }
+      },
+      "block_order": ["milestone_1", "milestone_2", "milestone_3", "milestone_4"],
+      "settings": {}
+    },
+    "boarage_photo_strip": {
+      "type": "boarage-photo-strip",
+      "blocks": {
+        "photo_1": { "type": "photo", "settings": {} },
+        "photo_2": { "type": "photo", "settings": {} },
+        "photo_3": { "type": "photo", "settings": {} },
+        "photo_4": { "type": "photo", "settings": {} },
+        "photo_5": { "type": "photo", "settings": {} },
+        "photo_6": { "type": "photo", "settings": {} }
+      },
+      "block_order": ["photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "photo_6"],
+      "settings": {}
+    },
+    "boarage_comparison": {
+      "type": "boarage-comparison",
+      "blocks": {
+        "row_1": { "type": "row", "settings": { "label": "Powers Up Your Mitochondria" } },
+        "row_2": { "type": "row", "settings": { "label": "Clinically Studied Potency" } },
+        "row_3": { "type": "row", "settings": { "label": "100% Active Ingredient" } },
+        "row_4": { "type": "row", "settings": { "label": "Supports Nerve Function" } },
+        "row_5": { "type": "row", "settings": { "label": "Backed By History & Science" } },
+        "row_6": { "type": "row", "settings": { "label": "Verified & Tested" } }
+      },
+      "block_order": ["row_1", "row_2", "row_3", "row_4", "row_5", "row_6"],
+      "settings": {}
+    },
+    "boarage_results": {
+      "type": "boarage-results",
+      "blocks": {
+        "stat_1": { "type": "stat", "settings": {} },
+        "stat_2": { "type": "stat", "settings": { "value": "11%", "label": "Reported improved feeling in hands and feet", "text": "Numbness began receding as nerve cells got back the energy to do their job." } },
+        "stat_3": { "type": "stat", "settings": { "value": "8%", "label": "Slept through the night within 3 weeks", "text": "Deep sleep returned once the burning that woke them for years finally calmed." } }
+      },
+      "block_order": ["stat_1", "stat_2", "stat_3"],
+      "settings": {}
+    },
+    "boarage_reviews_list": {
+      "type": "boarage-reviews-list",
+      "blocks": {
+        "review_1": { "type": "review", "settings": {} },
+        "review_2": { "type": "review", "settings": { "name": "Mike K" } },
+        "review_3": { "type": "review", "settings": { "name": "Robert R" } }
+      },
+      "block_order": ["review_1", "review_2", "review_3"],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "boarage_reviews_slider",
+    "boarage_faq",
+    "boarage_problem_mechanism",
+    "boarage_stages",
+    "boarage_science",
+    "boarage_timeline",
+    "boarage_photo_strip",
+    "boarage_comparison",
+    "boarage_results",
+    "boarage_reviews_list"
+  ]
+}

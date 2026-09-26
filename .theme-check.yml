@@ -5,6 +5,10 @@ extends: theme-check:recommended
 ignore:
   - node_modules/**
   - dev/**
+# The second template uses the theme's own main-product section, which lives in Shrine, not in this repo.
+JSONMissingSection:
+  ignore:
+    - templates/product.boarage-custom.json
 AssetSizeCSS:
   enabled: true
   severity: error

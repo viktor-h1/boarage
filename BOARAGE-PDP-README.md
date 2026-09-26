@@ -13,6 +13,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | Path | Purpose |
 |---|---|
 | `templates/product.boarage-pdp.json` | The template: 14 sections in the reference order, all blank |
+| `templates/product.boarage-custom.json` | The second template built section by section: the theme's `main-product` (with an empty Custom Liquid block for the hero pieces) followed by the ten standalone `boarage-*` sections in build order. Assign as *boarage-custom* |
 | `sections/boarage-pdp-01-sale-bar.liquid` … `14-legal.liquid` | The sections (schemas use `t:boarage.*` keys) |
 | `snippets/boarage-*.liquid` | Shared pieces: tokens/asset loader, gallery, icon set, stars, rating line, guarantee box, review card, accordion, section head, editor placeholder |
 | `blocks/boarage-trust-rating.liquid`, `blocks/boarage-hero-text.liquid`, `blocks/boarage-bullets.liquid`, `blocks/boarage-guarantee.liquid`, `blocks/boarage-accordion.liquid` + the snippets of the same name (`boarage-accordion-item` for the accordion) | Hero pieces, built one by one: a theme block (editor settings for content, colours, font, sizes) over a self-contained snippet that a "Custom Liquid" block can also `render` with the same parameters. Trust rating row; title + paragraph; benefit bullets in a soft box (one "Lead - text" line per bullet); guarantee card (shield icon, title, text); accordion (up to 6 rich-text rows, native `<details>`, bullet lists render as check-square bullets) |
