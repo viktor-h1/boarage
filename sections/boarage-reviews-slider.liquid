@@ -79,7 +79,7 @@
   #shopify-section-{{ sid }} .brs { --brs-bg-1: {{ s.bg_1 }}; --brs-bg-2: {{ s.bg_2 }}; --brs-heading: {{ s.heading_color }}; --brs-rating: {{ s.rating_color }}; --brs-card: {{ s.card_color }}; --brs-card-title: {{ s.card_title_color }}; --brs-text: {{ s.text_color }}; --brs-star: {{ s.star_color }}; --brs-name: {{ s.name_color }}; --brs-badge: {{ s.badge_color }}; --brs-date: {{ s.date_color }}; --brs-bar: {{ s.bar_color }}; --brs-bar-track: {{ s.bar_color }}; --brs-btn: {{ s.button_color }}; --brs-heading-font: {{ heading_font }}; --brs-body-font: {{ body_font }}; --brs-heading-size: {{ s.heading_size }}px; --brs-card-title-size: {{ s.card_title_size }}px; --brs-text-size: {{ s.text_size }}px; --brs-radius: {{ s.radius }}px; --brs-card-w: {{ s.card_width }}px; --brs-card-w-mobile: {{ s.card_width_mobile }}%; --brs-pad-top: {{ s.padding_top }}px; --brs-pad-bottom: {{ s.padding_bottom }}px; }
 {%- endstyle -%}
 {%- capture star_path -%}<path d="M12 1.6l3.1 6.7 7.3.9-5.4 5 1.4 7.2L12 17.9l-6.4 3.5L7 14.2l-5.4-5 7.3-.9z"/>{%- endcapture -%}
-<div class="brs" data-brs>
+<div class="brs" data-brs id="{{ s.anchor | default: 'boarage-reviews-slider' | handleize }}">
   <div class="brs__wrap">
     {%- if s.heading != blank or s.show_rating -%}
       <div class="brs__head">
@@ -185,6 +185,7 @@
   "settings": [
     { "type": "header", "content": "Heading" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Hear from customers who trust us" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "info": "Links such as the “Load more reviews” link in the reviews list scroll here. Default: boarage-reviews-slider.", "default": "boarage-reviews-slider" },
     { "type": "checkbox", "id": "show_rating", "label": "Show the rating line", "default": true },
     { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.1, "default": 4.8 },
     { "type": "text", "id": "max_label", "label": "Scale shown after the slash", "default": "5.0" },

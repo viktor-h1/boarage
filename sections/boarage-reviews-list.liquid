@@ -1,0 +1,212 @@
+{%- comment -%}
+  Boarage PDP · Reviews list. Green eyebrow, bold heading, the Trustpilot-style rating row
+  (snippets/boarage-trust-rating.liquid), a hairline, then one "Review" block after another: small star boxes
+  + score, text, round avatar, name • green badge. The "Load more reviews" link scrolls back to the reviews
+  slider section (its anchor id, default #boarage-reviews-slider); a tiny inline script smooths the scroll.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign reviews = section.blocks | where: 'type', 'review'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign more_href = s.more_target | default: 'boarage-reviews-slider' | handleize | prepend: '#'
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- capture star_path -%}<path d="M12 1.6l3.1 6.7 7.3.9-5.4 5 1.4 7.2L12 17.9l-6.4 3.5L7 14.2l-5.4-5 7.3-.9z"/>{%- endcapture -%}
+{%- style -%}
+  .brl { box-sizing: border-box; padding: var(--brl-pad-top, 40px) 0 var(--brl-pad-bottom, 40px); background: var(--brl-bg, #fff); font-family: var(--brl-body-font); font-size: var(--brl-text-size, 17px); line-height: 1.5; color: var(--brl-text, #1d4d36); -webkit-font-smoothing: antialiased; }
+  .brl *, .brl *::before, .brl *::after { box-sizing: border-box; }
+  .brl__wrap { max-width: var(--brl-max, 760px); margin: 0 auto; padding: 0 20px; }
+  .brl__eyebrow { display: block; margin: 0 0 8px; font-size: .85em; font-weight: 500; color: var(--brl-eyebrow, #2fbd44); }
+  .brl__title { margin: 0 0 14px; font-family: var(--brl-heading-font); font-size: var(--brl-heading-size, 28px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--brl-heading, #1d4d36); overflow-wrap: anywhere; }
+  .brl__rule { height: 1px; margin: 22px 0 4px; background: var(--brl-line, #dfe6e2); border: 0; }
+  .brl__item { padding: 22px 0; border-bottom: 1px solid var(--brl-line, #dfe6e2); }
+  .brl__item:last-of-type { border-bottom: 0; }
+  .brl__stars { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 12px; font-weight: 500; }
+  .brl__boxes { display: inline-flex; gap: 2px; }
+  .brl__boxes i { position: relative; display: block; width: 16px; height: 16px; background: linear-gradient(90deg, var(--brl-star, #00b67a) var(--f, 100%), #dcdce6 var(--f, 100%)); }
+  .brl__boxes svg { position: absolute; inset: 0; width: 100%; height: 100%; padding: 13%; fill: #fff; }
+  .brl__text { margin: 0 0 14px; }
+  .brl__text p { margin: 0 0 .8em; }
+  .brl__text p:last-child { margin-bottom: 0; }
+  .brl__text strong { font-weight: 700; }
+  .brl__author { display: flex; align-items: center; gap: 10px; font-size: .92em; }
+  .brl__avatar { flex: none; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; background: #e6efe9; }
+  .brl__name { font-weight: 500; color: var(--brl-name, #1d4d36); }
+  .brl__dot { margin: 0 .35em; color: var(--brl-name, #1d4d36); opacity: .6; }
+  .brl__badge { font-weight: 500; color: var(--brl-badge, #2fbd44); }
+  .brl__more { display: inline-block; margin: 20px 0 0; font-weight: 500; color: var(--brl-link, #1d4d36); text-decoration: underline; text-underline-offset: .2em; }
+  .brl__more:hover { opacity: .8; }
+  .brl__more:focus-visible { outline: 2px solid var(--brl-eyebrow, #2fbd44); outline-offset: 3px; border-radius: 3px; }
+  .brl__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  #shopify-section-{{ sid }} .brl { --brl-bg: {{ s.bg_color }}; --brl-eyebrow: {{ s.eyebrow_color }}; --brl-heading: {{ s.heading_color }}; --brl-text: {{ s.text_color }}; --brl-line: {{ s.line_color }}; --brl-star: {{ s.star_color }}; --brl-name: {{ s.name_color }}; --brl-badge: {{ s.badge_color }}; --brl-link: {{ s.link_color }}; --brl-heading-font: {{ heading_font }}; --brl-body-font: {{ body_font }}; --brl-heading-size: {{ s.heading_size }}px; --brl-text-size: {{ s.text_size }}px; --brl-max: {{ s.max_width }}px; --brl-pad-top: {{ s.padding_top }}px; --brl-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="brl" data-brl>
+  <div class="brl__wrap">
+    {%- if s.eyebrow != blank -%}<span class="brl__eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="brl__title">{{ s.heading | escape }}</h2>{%- endif -%}
+    {%- if s.show_rating -%}
+      {%- render 'boarage-trust-rating', rating: s.rating, max_label: s.max_label, prefix: s.rating_prefix, word: s.rating_word, star_color: s.star_color, text_color: s.text_color, font_family: body_font, font_size: s.text_size, star_size: 20, star_gap: 3 -%}
+    {%- endif -%}
+    {%- if reviews.size > 0 -%}
+      <hr class="brl__rule">
+      {%- for block in reviews -%}
+        {%- liquid
+          assign b = block.settings
+          assign r = b.rating | times: 1.0 | at_least: 0 | at_most: 5
+          assign r_label = r | round: 1
+        -%}
+        <article class="brl__item" {{ block.shopify_attributes }}>
+          <p class="brl__stars">
+            <span class="brl__boxes" role="img" aria-label="{{ r_label }} / 5">
+              {%- for i in (1..5) -%}
+                {%- assign fill = r | minus: i | plus: 1 | times: 100 | at_least: 0 | at_most: 100 | round -%}
+                <i style="--f: {{ fill }}%;"><svg viewBox="0 0 24 24" aria-hidden="true">{{ star_path }}</svg></i>
+              {%- endfor -%}
+            </span>
+            <span>{{ r_label }}</span>
+          </p>
+          {%- if b.text != blank -%}<div class="brl__text">{{ b.text }}</div>{%- endif -%}
+          {%- if b.name != blank or b.image != blank -%}
+            <p class="brl__author">
+              {%- if b.image != blank -%}
+                {{ b.image | image_url: width: 68 | image_tag: loading: 'lazy', class: 'brl__avatar', alt: b.name, widths: '34, 68' }}
+              {%- endif -%}
+              <span>
+                {%- if b.name != blank -%}<span class="brl__name">{{ b.name | escape }}</span>{%- endif -%}
+                {%- if b.name != blank and s.badge_text != blank -%}<span class="brl__dot" aria-hidden="true">•</span>{%- endif -%}
+                {%- if s.badge_text != blank -%}<span class="brl__badge">{{ s.badge_text | escape }}</span>{%- endif -%}
+              </span>
+            </p>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+      {%- if s.more_label != blank -%}
+        <a class="brl__more" href="{{ more_href }}" data-brl-more>{{ s.more_label | escape }}</a>
+      {%- endif -%}
+    {%- elsif request.design_mode -%}
+      <p class="brl__ph">Reviews list: add “Review” blocks to this section.</p>
+    {%- endif -%}
+  </div>
+</div>
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    var link = root && root.querySelector('[data-brl-more]');
+    if (!link) return;
+    link.addEventListener('click', function (e) {
+      var id = (link.getAttribute('href') || '').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Boarage · Reviews list",
+  "tag": "section",
+  "class": "boarage-reviews-list",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Verified Customer Reviews" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show the rating line", "default": true },
+    { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.1, "default": 4.8 },
+    { "type": "text", "id": "max_label", "label": "Scale shown after the slash", "default": "5.0" },
+    { "type": "text", "id": "rating_prefix", "label": "Text before the number", "default": "Rated" },
+    { "type": "text", "id": "rating_word", "label": "Quoted word after the bar", "default": "Excellent" },
+    { "type": "text", "id": "badge_text", "label": "Badge after every name", "default": "Verified Customer" },
+    { "type": "header", "content": "Load more link" },
+    { "type": "text", "id": "more_label", "label": "Link text", "info": "Leave empty to hide the link.", "default": "Load More Reviews" },
+    { "type": "text", "id": "more_target", "label": "Scrolls to (anchor id)", "info": "The reviews slider's anchor id. Default: boarage-reviews-slider.", "default": "boarage-reviews-slider" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow", "default": "#2fbd44" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1d4d36" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1d4d36" },
+    { "type": "color", "id": "star_color", "label": "Star boxes", "default": "#00b67a" },
+    { "type": "color", "id": "line_color", "label": "Dividers", "default": "#dfe6e2" },
+    { "type": "color", "id": "name_color", "label": "Name", "default": "#1d4d36" },
+    { "type": "color", "id": "badge_color", "label": "Badge", "default": "#2fbd44" },
+    { "type": "color", "id": "link_color", "label": "Load more link", "default": "#1d4d36" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 28 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Text font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom text font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 500, "max": 1200, "step": 20, "unit": "px", "default": 760 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 24,
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 0.5, "default": 5 },
+        { "type": "richtext", "id": "text", "label": "Review text", "default": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>" },
+        { "type": "image_picker", "id": "image", "label": "Photo (round avatar)" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Sara T" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Reviews list",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review", "settings": { "name": "Mike K" } },
+        { "type": "review", "settings": { "name": "Robert R" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -25,6 +25,7 @@ except for three shared files that carry the theme's content plus the Boarage ad
 | `sections/boarage-photo-strip.liquid` | Standalone photo strip: centered star boxes, highlighted heading, scroll-snap strip of `photo` blocks |
 | `sections/boarage-comparison.liquid` | Standalone comparison: eyebrow, heading, green "us" column (white checks) / centered labels / grey "them" column (red crosses), product images overhanging the column tops, one `row` block per line |
 | `sections/boarage-results.liquid` | Standalone results: green card with photo, heading, subtitle and `stat` blocks (mint number, label, text), plus a green guarantee card (product image, shield, big label, title, text, check bullets via `boarage-bullets`) |
+| `sections/boarage-reviews-list.liquid` | Standalone reviews list: eyebrow, heading, rating row via `boarage-trust-rating`, one `review` block per entry (stars, text, avatar, name • badge), "Load more" link that scrolls to the reviews slider's anchor id (`boarage-reviews-slider`, a setting on both sections) |
 | `assets/boarage-pdp.css`, `assets/boarage-pdp.js` | **Built** assets (under 25 KB / 10 KB). Edit the sources in `dev/src/` and run `npm run build` |
 | `config/settings_schema.json` | Shrine's file + the *Boarage PDP* settings group |
 | `locales/en.default.schema.json`, `locales/de.schema.json` | Shrine's files + the `boarage` namespace (English / German editor labels) |
