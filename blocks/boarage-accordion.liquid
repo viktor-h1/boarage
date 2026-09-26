@@ -1,0 +1,180 @@
+{%- comment -%}
+  Boarage PDP · Accordion (theme block for the hero / buy box). Up to 6 rows in one block so colours and
+  fonts are set once. Each row: title + rich text (bold via the toolbar, bullet lists render as green
+  check-square bullets). Rows with an empty title or body are skipped.
+  Renders snippets/boarage-accordion-item.liquid per row. For a section that only offers "Custom Liquid",
+  paste the render tag documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  case s.title_font_source
+    when 'heading'
+      assign title_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign title_font = s.title_font.family | append: ', ' | append: s.title_font.fallback_families
+    else
+      assign title_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  case s.text_font_source
+    when 'heading'
+      assign text_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign text_font = s.text_font.family | append: ', ' | append: s.text_font.fallback_families
+    else
+      assign text_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign line_height = s.line_height | times: 1.0 | divided_by: 100
+  assign border_width = s.border_width
+  assign filled = 0
+  for i in (1..6)
+    assign tk = 'title_' | append: i
+    assign ck = 'content_' | append: i
+    if s[tk] != blank and s[ck] != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+-%}
+{%- if s.title_font_source == 'custom' and s.title_font != blank -%}
+  {%- style -%}{{ s.title_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.text_font_source == 'custom' and s.text_font != blank -%}
+  {%- style -%}{{ s.text_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if filled == 0 -%}
+  {%- if request.design_mode -%}
+    <p style="margin:0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif;" {{ block.shopify_attributes }}>Accordion: fill in a title and a text for at least one row in the block settings.</p>
+  {%- endif -%}
+{%- else -%}
+  <div class="bac-group" style="{% if s.max_width > 0 %}max-width: {{ s.max_width }}px;{% if s.align == 'center' %} margin-left: auto; margin-right: auto;{% endif %}{% endif %}" {{ block.shopify_attributes }}>
+    {%- for i in (1..6) -%}
+      {%- liquid
+        assign tk = 'title_' | append: i
+        assign ck = 'content_' | append: i
+        assign ok = 'open_' | append: i
+        assign row_id = 'bac-' | append: block.id | append: '-' | append: i
+      -%}
+      {%- if s[tk] != blank and s[ck] != blank -%}
+        {%- render 'boarage-accordion-item', title: s[tk], content: s[ck], open: s[ok], id: row_id, indicator: s.indicator, icon_color: s.icon_color, box_color: s.box_color, border_color: s.border_color, border_width: border_width, radius: s.radius, padding: s.padding, title_color: s.title_color, title_weight: s.title_weight, title_size: s.title_size, title_font: title_font, text_color: s.text_color, text_weight: s.text_weight, text_size: s.text_size, text_font: text_font, line_height: line_height, bullet_color: s.bullet_color, gap: s.gap -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Accordion",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Up to 6 rows. A row shows only when both its title and its text are filled. In the text, use the toolbar for bold and for bullet lists: each list item renders as a green check-square bullet, a bold lead followed by regular text matches the reference." },
+    { "type": "header", "content": "Row 1" },
+    { "type": "text", "id": "title_1", "label": "Title", "default": "Description" },
+    { "type": "richtext", "id": "content_1", "label": "Text", "default": "<p><strong>Subheading that sums up the section.</strong></p><p>First paragraph. Use the toolbar to make words <strong>bold</strong>.</p><ul><li><strong>Lead:</strong> bullet text</li></ul>" },
+    { "type": "checkbox", "id": "open_1", "label": "Open on page load", "default": false },
+    { "type": "header", "content": "Row 2" },
+    { "type": "text", "id": "title_2", "label": "Title", "default": "The Results" },
+    { "type": "richtext", "id": "content_2", "label": "Text" },
+    { "type": "checkbox", "id": "open_2", "label": "Open on page load", "default": false },
+    { "type": "header", "content": "Row 3" },
+    { "type": "text", "id": "title_3", "label": "Title", "default": "90 Day Guarantee" },
+    { "type": "richtext", "id": "content_3", "label": "Text" },
+    { "type": "checkbox", "id": "open_3", "label": "Open on page load", "default": false },
+    { "type": "header", "content": "Row 4" },
+    { "type": "text", "id": "title_4", "label": "Title", "default": "Shipping & Returns" },
+    { "type": "richtext", "id": "content_4", "label": "Text" },
+    { "type": "checkbox", "id": "open_4", "label": "Open on page load", "default": false },
+    { "type": "header", "content": "Row 5" },
+    { "type": "text", "id": "title_5", "label": "Title" },
+    { "type": "richtext", "id": "content_5", "label": "Text" },
+    { "type": "checkbox", "id": "open_5", "label": "Open on page load", "default": false },
+    { "type": "header", "content": "Row 6" },
+    { "type": "text", "id": "title_6", "label": "Title" },
+    { "type": "richtext", "id": "content_6", "label": "Text" },
+    { "type": "checkbox", "id": "open_6", "label": "Open on page load", "default": false },
+    { "type": "header", "content": "Box" },
+    { "type": "color", "id": "box_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Border colour", "default": "#dfe6e2" },
+    { "type": "range", "id": "border_width", "label": "Border width", "info": "0 = no border.", "min": 0, "max": 4, "step": 1, "unit": "px", "default": 1 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding", "label": "Inner padding", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 22 },
+    { "type": "range", "id": "gap", "label": "Space between rows", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "header", "content": "Icons" },
+    {
+      "type": "select",
+      "id": "indicator",
+      "label": "Open / close indicator",
+      "options": [
+        { "value": "plus", "label": "Plus / minus" },
+        { "value": "chevron", "label": "Chevron" }
+      ],
+      "default": "plus"
+    },
+    { "type": "color", "id": "icon_color", "label": "Indicator colour", "default": "#1d4d36" },
+    { "type": "color", "id": "bullet_color", "label": "Bullet check colour", "default": "#2fbd44" },
+    { "type": "header", "content": "Title" },
+    { "type": "color", "id": "title_color", "label": "Colour", "default": "#1d4d36" },
+    {
+      "type": "select",
+      "id": "title_font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "title_font", "label": "Custom font", "default": "work_sans_n6" },
+    { "type": "range", "id": "title_size", "label": "Size", "min": 14, "max": 30, "step": 1, "unit": "px", "default": 19 },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    { "type": "header", "content": "Text" },
+    { "type": "color", "id": "text_color", "label": "Colour", "default": "#1d4d36" },
+    {
+      "type": "select",
+      "id": "text_font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "text_font", "label": "Custom font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Size", "min": 12, "max": 26, "step": 1, "unit": "px", "default": 17 },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    { "type": "range", "id": "line_height", "label": "Line height", "min": 120, "max": 190, "step": 5, "unit": "%", "default": 150 },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Placement",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "info": "0 = full width of the column.", "min": 0, "max": 900, "step": 20, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Accordion" }]
+}
+{% endschema %}
