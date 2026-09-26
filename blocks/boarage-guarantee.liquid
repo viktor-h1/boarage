@@ -1,0 +1,137 @@
+{%- comment -%}
+  Boarage PDP · Guarantee card (theme block for the hero / buy box).
+  Renders snippets/boarage-guarantee.liquid with the block settings.
+  For a section that only offers "Custom Liquid", paste the render tag documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  case s.title_font_source
+    when 'body'
+      assign title_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign title_font = s.title_font.family | append: ', ' | append: s.title_font.fallback_families
+    else
+      assign title_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.text_font_source
+    when 'heading'
+      assign text_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign text_font = s.text_font.family | append: ', ' | append: s.text_font.fallback_families
+    else
+      assign text_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign line_height = s.line_height | times: 1.0 | divided_by: 100
+  assign border_width = s.border_width
+  unless s.show_border
+    assign border_width = 0
+  endunless
+-%}
+{%- if s.title_font_source == 'custom' and s.title_font != blank -%}
+  {%- style -%}{{ s.title_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.text_font_source == 'custom' and s.text_font != blank -%}
+  {%- style -%}{{ s.text_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- render 'boarage-guarantee', title: s.title, text: s.text, icon: s.icon, icon_color: s.icon_color, icon_size: s.icon_size, box_color: s.box_color, border_color: s.border_color, border_width: border_width, radius: s.radius, padding: s.padding, title_color: s.title_color, title_weight: s.title_weight, title_size: s.title_size, title_font: title_font, text_color: s.text_color, text_weight: s.text_weight, text_size: s.text_size, text_font: text_font, line_height: line_height, gap: s.gap, max_width: s.max_width, align: s.align, attrs: block.shopify_attributes -%}
+
+{% schema %}
+{
+  "name": "Guarantee card",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "title", "label": "Title", "default": "90-Day Money Back Guarantee" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Love your results within 90 days or get 100% of your money back, no questions asked.</p>" },
+    { "type": "header", "content": "Icon" },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "options": [
+        { "value": "shield-check", "label": "Shield with check" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check-circle", "label": "Check in a circle" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "shield-check"
+    },
+    { "type": "color", "id": "icon_color", "label": "Icon colour", "default": "#1d4d36" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 40, "step": 1, "unit": "px", "default": 26 },
+    { "type": "header", "content": "Box" },
+    { "type": "color", "id": "box_color", "label": "Background", "default": "#eef7f1" },
+    { "type": "checkbox", "id": "show_border", "label": "Show border", "default": true },
+    { "type": "color", "id": "border_color", "label": "Border colour", "default": "#9fd3b4" },
+    { "type": "range", "id": "border_width", "label": "Border width", "min": 1, "max": 4, "step": 1, "unit": "px", "default": 1 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding", "label": "Inner padding", "min": 8, "max": 48, "step": 2, "unit": "px", "default": 20 },
+    { "type": "header", "content": "Title" },
+    { "type": "color", "id": "title_color", "label": "Colour", "default": "#1d4d36" },
+    {
+      "type": "select",
+      "id": "title_font_source",
+      "label": "Font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "title_font", "label": "Custom font", "default": "outfit_n7" },
+    { "type": "range", "id": "title_size", "label": "Size", "min": 14, "max": 36, "step": 1, "unit": "px", "default": 22 },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    { "type": "header", "content": "Text" },
+    { "type": "color", "id": "text_color", "label": "Colour", "default": "#1d4d36" },
+    {
+      "type": "select",
+      "id": "text_font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "text_font", "label": "Custom font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Size", "min": 12, "max": 28, "step": 1, "unit": "px", "default": 18 },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    { "type": "range", "id": "line_height", "label": "Line height", "min": 110, "max": 180, "step": 5, "unit": "%", "default": 140 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap", "label": "Space between title and text", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 10 },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Box placement",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "info": "0 = full width of the column.", "min": 0, "max": 900, "step": 20, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Guarantee card" }]
+}
+{% endschema %}
