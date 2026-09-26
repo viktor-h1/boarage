@@ -1,0 +1,265 @@
+{%- comment -%}
+  Boarage PDP · Reviews slider. Dark green gradient band: white heading, rating row, swipeable white review
+  cards (title, small Trustpilot stars + score, text, avatar + name / verified badge / date), then a progress
+  bar and round prev/next buttons. One "Review" block per card. Scroll-snap carousel, arrows and progress
+  bar via a small inline script; without JavaScript the cards still swipe.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign reviews = section.blocks | where: 'type', 'review'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign rating = s.rating | times: 1.0 | at_least: 0 | at_most: 5
+  assign rating_stars = rating | times: 2 | round | divided_by: 2.0
+  assign rating_label = rating | round: 1
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- style -%}
+  .brs { box-sizing: border-box; padding: var(--brs-pad-top, 48px) 0 var(--brs-pad-bottom, 40px); background: linear-gradient(160deg, var(--brs-bg-1, #2f8a55) 0%, var(--brs-bg-2, #0e3d26) 100%); font-family: var(--brs-body-font); color: var(--brs-text, #1d4d36); -webkit-font-smoothing: antialiased; overflow: hidden; }
+  .brs *, .brs *::before, .brs *::after { box-sizing: border-box; }
+  .brs__wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  .brs__head { text-align: center; margin: 0 auto 28px; max-width: 720px; }
+  .brs__title { margin: 0; font-family: var(--brs-heading-font); font-size: var(--brs-heading-size, 30px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--brs-heading, #fff); }
+  .brs__rating { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 12px; margin: 18px 0 0; font-size: var(--brs-text-size, 17px); font-weight: 600; line-height: 1.3; color: var(--brs-rating, #fff); }
+  .brs__rating-stars { display: inline-flex; gap: 3px; flex: none; }
+  .brs__rating-stars i { position: relative; display: block; width: 18px; height: 18px; }
+  .brs__rating-stars svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .brs__rating-stars svg.is-bg { opacity: .35; }
+  .brs__rating-stars svg.is-fill { clip-path: inset(0 calc(100% - var(--f, 100%)) 0 0); }
+  .brs__track { display: flex; gap: 16px; padding: 4px 20px 8px; margin: 0 -20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .brs__track::-webkit-scrollbar { display: none; }
+  .brs__card { flex: 0 0 var(--brs-card-w-mobile, 78%); max-width: var(--brs-card-w, 360px); scroll-snap-align: start; display: flex; flex-direction: column; padding: 22px 20px 20px; background: var(--brs-card, #fff); border-radius: var(--brs-radius, 6px); box-shadow: 0 2px 10px rgba(0, 0, 0, .12); }
+  @media (min-width: 750px) { .brs__card { flex-basis: var(--brs-card-w, 360px); } .brs__track { padding-bottom: 12px; } }
+  .brs__card-title { margin: 0 0 12px; font-family: var(--brs-body-font); font-size: var(--brs-card-title-size, 20px); font-weight: 700; line-height: 1.25; color: var(--brs-card-title, #1d4d36); }
+  .brs__stars { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 14px; font-size: var(--brs-text-size, 17px); font-weight: 500; color: var(--brs-card-title, #1d4d36); }
+  .brs__stars-boxes { display: inline-flex; gap: 2px; }
+  .brs__stars-boxes i { position: relative; display: block; width: 16px; height: 16px; background: linear-gradient(90deg, var(--brs-star, #00b67a) var(--f, 100%), #dcdce6 var(--f, 100%)); }
+  .brs__stars-boxes svg { position: absolute; inset: 0; width: 100%; height: 100%; padding: 13%; fill: #fff; }
+  .brs__text { flex: 1 1 auto; margin: 0 0 18px; font-size: var(--brs-text-size, 17px); line-height: 1.5; color: var(--brs-text, #1d4d36); }
+  .brs__text p { margin: 0 0 .8em; }
+  .brs__text p:last-child { margin-bottom: 0; }
+  .brs__text strong { font-weight: 700; }
+  .brs__author { display: flex; align-items: center; gap: 12px; font-size: calc(var(--brs-text-size, 17px) * .95); line-height: 1.35; }
+  .brs__avatar { flex: none; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #e6efe9; }
+  .brs__name { display: block; font-weight: 500; color: var(--brs-name, #1d4d36); }
+  .brs__badge { display: block; font-weight: 500; color: var(--brs-badge, #2fbd44); }
+  .brs__date { display: block; font-size: .85em; color: var(--brs-date, #4a6a5a); }
+  .brs__nav { margin: 22px auto 0; max-width: 300px; }
+  .brs__bar { position: relative; height: 3px; border-radius: 2px; overflow: hidden; }
+  .brs__bar::before { content: ""; position: absolute; inset: 0; background: var(--brs-bar-track, #fff); opacity: .25; }
+  .brs__bar i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--p, 33%); transform: translateX(var(--x, 0%)); background: var(--brs-bar, #fff); border-radius: 2px; transition: transform .25s cubic-bezier(.23, 1, .32, 1), width .25s cubic-bezier(.23, 1, .32, 1); }
+  .brs__btns { display: flex; justify-content: center; gap: 22px; margin-top: 18px; }
+  .brs__btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--brs-btn, #fff); border-radius: 50%; background: transparent; color: var(--brs-btn, #fff); cursor: pointer; transition: transform .15s cubic-bezier(.23, 1, .32, 1), opacity .15s; }
+  .brs__btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .brs__btn:active { transform: scale(.94); }
+  .brs__btn:focus-visible { outline: 2px solid var(--brs-btn, #fff); outline-offset: 3px; }
+  .brs__btn[disabled] { opacity: .4; cursor: default; }
+  @media (prefers-reduced-motion: reduce) { .brs__bar i, .brs__btn { transition: none; } .brs__track { scroll-behavior: auto; } }
+  .brs__ph { margin: 0 auto; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(255,255,255,.9); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  #shopify-section-{{ sid }} .brs { --brs-bg-1: {{ s.bg_1 }}; --brs-bg-2: {{ s.bg_2 }}; --brs-heading: {{ s.heading_color }}; --brs-rating: {{ s.rating_color }}; --brs-card: {{ s.card_color }}; --brs-card-title: {{ s.card_title_color }}; --brs-text: {{ s.text_color }}; --brs-star: {{ s.star_color }}; --brs-name: {{ s.name_color }}; --brs-badge: {{ s.badge_color }}; --brs-date: {{ s.date_color }}; --brs-bar: {{ s.bar_color }}; --brs-bar-track: {{ s.bar_color }}; --brs-btn: {{ s.button_color }}; --brs-heading-font: {{ heading_font }}; --brs-body-font: {{ body_font }}; --brs-heading-size: {{ s.heading_size }}px; --brs-card-title-size: {{ s.card_title_size }}px; --brs-text-size: {{ s.text_size }}px; --brs-radius: {{ s.radius }}px; --brs-card-w: {{ s.card_width }}px; --brs-card-w-mobile: {{ s.card_width_mobile }}%; --brs-pad-top: {{ s.padding_top }}px; --brs-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+{%- capture star_path -%}<path d="M12 1.6l3.1 6.7 7.3.9-5.4 5 1.4 7.2L12 17.9l-6.4 3.5L7 14.2l-5.4-5 7.3-.9z"/>{%- endcapture -%}
+<div class="brs" data-brs>
+  <div class="brs__wrap">
+    {%- if s.heading != blank or s.show_rating -%}
+      <div class="brs__head">
+        {%- if s.heading != blank -%}<h2 class="brs__title">{{ s.heading | escape }}</h2>{%- endif -%}
+        {%- if s.show_rating -%}
+          <p class="brs__rating">
+            <span class="brs__rating-stars" role="img" aria-label="{{ rating_label }} / {{ s.max_label | escape }}">
+              {%- for i in (1..5) -%}
+                {%- assign fill = rating_stars | minus: i | plus: 1 | times: 100 | at_least: 0 | at_most: 100 | round -%}
+                <i style="--f: {{ fill }}%;"><svg class="is-bg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{{ star_path }}</svg><svg class="is-fill" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{{ star_path }}</svg></i>
+              {%- endfor -%}
+            </span>
+            <span>{% if s.rating_prefix != blank %}{{ s.rating_prefix | escape }} {% endif %}{{ rating_label }} / {{ s.max_label | escape }}{% if s.rating_word != blank %} | ‘{{ s.rating_word | escape }}’{% endif %}</span>
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if reviews.size > 0 -%}
+      <div class="brs__track" data-brs-track tabindex="0" aria-label="{{ s.heading | default: 'Reviews' | escape }}">
+        {%- for block in reviews -%}
+          {%- liquid
+            assign b = block.settings
+            assign r = b.rating | times: 1.0 | at_least: 0 | at_most: 5
+            assign r_label = r | round: 1
+          -%}
+          <article class="brs__card" {{ block.shopify_attributes }}>
+            {%- if b.title != blank -%}<h3 class="brs__card-title">{{ b.title | escape }}</h3>{%- endif -%}
+            <p class="brs__stars">
+              <span class="brs__stars-boxes" role="img" aria-label="{{ r_label }} / 5">
+                {%- for i in (1..5) -%}
+                  {%- assign fill = r | minus: i | plus: 1 | times: 100 | at_least: 0 | at_most: 100 | round -%}
+                  <i style="--f: {{ fill }}%;"><svg viewBox="0 0 24 24" aria-hidden="true">{{ star_path }}</svg></i>
+                {%- endfor -%}
+              </span>
+              <span>{{ r_label }}</span>
+            </p>
+            {%- if b.text != blank -%}<div class="brs__text">{{ b.text }}</div>{%- endif -%}
+            {%- if b.name != blank or b.image != blank or b.date != blank -%}
+              <div class="brs__author">
+                {%- if b.image != blank -%}
+                  {{ b.image | image_url: width: 88 | image_tag: loading: 'lazy', class: 'brs__avatar', alt: b.name, widths: '44, 88' }}
+                {%- endif -%}
+                <span>
+                  {%- if b.name != blank -%}<span class="brs__name">{{ b.name | escape }}</span>{%- endif -%}
+                  {%- if s.badge_text != blank -%}<span class="brs__badge">{{ s.badge_text | escape }}</span>{%- endif -%}
+                  {%- if b.date != blank -%}<span class="brs__date">{{ b.date | escape }}</span>{%- endif -%}
+                </span>
+              </div>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+      <div class="brs__nav">
+        <div class="brs__bar" aria-hidden="true"><i data-brs-bar></i></div>
+        <div class="brs__btns">
+          <button type="button" class="brs__btn" data-brs-prev aria-label="Previous review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" class="brs__btn" data-brs-next aria-label="Next review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="brs__ph">Reviews slider: add “Review” blocks to this section.</p>
+    {%- endif -%}
+  </div>
+</div>
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root || root.dataset.brsInit) return;
+    root.dataset.brsInit = '1';
+    var track = root.querySelector('[data-brs-track]');
+    var bar = root.querySelector('[data-brs-bar]');
+    var prev = root.querySelector('[data-brs-prev]');
+    var next = root.querySelector('[data-brs-next]');
+    if (!track || !bar) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function step() { var c = track.querySelector('.brs__card'); return c ? c.getBoundingClientRect().width + 16 : track.clientWidth; }
+    var nav = root.querySelector('.brs__nav');
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      if (nav) nav.hidden = max <= 2;
+      var p = max > 0 ? track.clientWidth / track.scrollWidth : 1;
+      var x = max > 0 ? track.scrollLeft / max : 0;
+      bar.style.setProperty('--p', (p * 100) + '%');
+      bar.style.setProperty('--x', (x * (1 / p - 1) * 100) + '%');
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= max - 2;
+    }
+    function go(dir) { track.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' }); }
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Boarage · Reviews slider",
+  "tag": "section",
+  "class": "boarage-reviews-slider",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hear from customers who trust us" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show the rating line", "default": true },
+    { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.1, "default": 4.8 },
+    { "type": "text", "id": "max_label", "label": "Scale shown after the slash", "default": "5.0" },
+    { "type": "text", "id": "rating_prefix", "label": "Text before the number", "default": "Rated" },
+    { "type": "text", "id": "rating_word", "label": "Quoted word after the bar", "default": "Excellent" },
+    { "type": "text", "id": "badge_text", "label": "Badge under every name", "default": "Verified Customer" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_1", "label": "Background gradient start", "default": "#2f8a55" },
+    { "type": "color", "id": "bg_2", "label": "Background gradient end", "default": "#0e3d26" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#ffffff" },
+    { "type": "color", "id": "rating_color", "label": "Rating line (stars and text)", "default": "#ffffff" },
+    { "type": "color", "id": "card_color", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "card_title_color", "label": "Card title and score", "default": "#1d4d36" },
+    { "type": "color", "id": "text_color", "label": "Card text", "default": "#1d4d36" },
+    { "type": "color", "id": "star_color", "label": "Card stars", "default": "#00b67a" },
+    { "type": "color", "id": "name_color", "label": "Name", "default": "#1d4d36" },
+    { "type": "color", "id": "badge_color", "label": "Badge", "default": "#2fbd44" },
+    { "type": "color", "id": "date_color", "label": "Date", "default": "#4a6a5a" },
+    { "type": "color", "id": "bar_color", "label": "Progress bar", "default": "#ffffff" },
+    { "type": "color", "id": "button_color", "label": "Arrow buttons", "default": "#ffffff" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 30 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Card font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom card font", "default": "work_sans_n4" },
+    { "type": "range", "id": "card_title_size", "label": "Card title size", "min": 14, "max": 30, "step": 1, "unit": "px", "default": 20 },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "card_width", "label": "Card width (desktop)", "min": 260, "max": 520, "step": 10, "unit": "px", "default": 360 },
+    { "type": "range", "id": "card_width_mobile", "label": "Card width (mobile)", "min": 60, "max": 100, "step": 2, "unit": "%", "default": 78 },
+    { "type": "range", "id": "radius", "label": "Card corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 6 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 12,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "I can walk without fear again" },
+        { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 0.5, "default": 5 },
+        { "type": "richtext", "id": "text", "label": "Review text", "default": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>" },
+        { "type": "image_picker", "id": "image", "label": "Photo (round avatar)" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Elaine" },
+        { "type": "text", "id": "date", "label": "Date", "default": "August 15th 2025" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Reviews slider",
+      "blocks": [{ "type": "review" }, { "type": "review" }, { "type": "review" }]
+    }
+  ]
+}
+{% endschema %}
