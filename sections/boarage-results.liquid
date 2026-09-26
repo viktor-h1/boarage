@@ -1,0 +1,236 @@
+{%- comment -%}
+  Boarage PDP · Results + big guarantee. Two dark green gradient cards:
+  1) photo across the top (rounded), white heading, subtitle, then one "Stat" block after another
+     (big mint number, bold white label, small text);
+  2) product image, mint shield icon, big mint label ("90 Day"), white title, text and white check bullets
+     (one per line, rendered by snippets/boarage-bullets.liquid). Own CSS, no JavaScript.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign stats = section.blocks | where: 'type', 'stat'
+  case s.heading_font_source
+    when 'body'
+      assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
+    when 'custom'
+      assign heading_font = s.heading_font.family | append: ', ' | append: s.heading_font.fallback_families
+    else
+      assign heading_font = 'var(--font-heading-family, system-ui, sans-serif)'
+  endcase
+  case s.body_font_source
+    when 'heading'
+      assign body_font = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign body_font = s.body_font.family | append: ', ' | append: s.body_font.fallback_families
+    else
+      assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+  assign has_results = false
+  if s.image != blank or s.heading != blank or s.subtitle != blank or stats.size > 0
+    assign has_results = true
+  endif
+  assign has_guarantee = false
+  if s.show_guarantee
+    if s.product_image != blank or s.guarantee_big != blank or s.guarantee_title != blank or s.guarantee_text != blank or s.guarantee_points != blank
+      assign has_guarantee = true
+    endif
+  endif
+-%}
+{%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
+  {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if s.body_font_source == 'custom' and s.body_font != blank -%}
+  {%- style -%}{{ s.body_font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- style -%}
+  .brt { box-sizing: border-box; padding: var(--brt-pad-top, 24px) 0 var(--brt-pad-bottom, 24px); background: var(--brt-bg, #fff); font-family: var(--brt-body-font); font-size: var(--brt-text-size, 17px); line-height: 1.45; color: var(--brt-text, #fff); -webkit-font-smoothing: antialiased; }
+  .brt *, .brt *::before, .brt *::after { box-sizing: border-box; }
+  .brt__wrap { max-width: var(--brt-max, 760px); margin: 0 auto; padding: 0 20px; }
+  .brt__card { overflow: hidden; border-radius: var(--brt-radius, 10px); background: linear-gradient(165deg, var(--brt-card-1, #2f8a55) 0%, var(--brt-card-2, #0e3d26) 100%); }
+  .brt__card + .brt__card { margin-top: var(--brt-gap, 16px); }
+  .brt__photo { display: block; width: 100%; height: auto; aspect-ratio: var(--brt-photo-ratio, 4 / 3); object-fit: cover; }
+  .brt__body { padding: 26px 22px 30px; }
+  .brt__title { margin: 0 0 8px; font-family: var(--brt-heading-font); font-size: var(--brt-heading-size, 26px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--brt-heading, #fff); overflow-wrap: anywhere; }
+  .brt__sub { margin: 0 0 8px; font-size: .95em; }
+  .brt__sub p { margin: 0 0 .6em; }
+  .brt__sub p:last-child { margin-bottom: 0; }
+  .brt__stat { margin: 26px 0 0; }
+  .brt__stat-value { display: block; font-family: var(--brt-heading-font); font-size: var(--brt-stat-size, 44px); font-weight: 600; line-height: 1; letter-spacing: -.02em; color: var(--brt-accent, #8ff0a4); }
+  .brt__stat-label { display: block; margin: 6px 0 8px; font-family: var(--brt-heading-font); font-size: var(--brt-label-size, 21px); font-weight: 700; line-height: 1.2; color: var(--brt-heading, #fff); }
+  .brt__stat-text { margin: 0; font-size: .95em; }
+  .brt__product { display: block; width: var(--brt-product-w, 70%); max-width: 100%; height: auto; margin: 0 auto 4px; filter: drop-shadow(0 14px 20px rgba(0, 0, 0, .28)); }
+  .brt__shield { display: block; width: 44px; height: 44px; margin: 0 0 10px; color: var(--brt-accent, #8ff0a4); }
+  .brt__shield svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+  .brt__big { display: block; margin: 0; font-family: var(--brt-heading-font); font-size: var(--brt-stat-size, 44px); font-weight: 600; line-height: 1.05; letter-spacing: -.02em; color: var(--brt-accent, #8ff0a4); }
+  .brt__gtitle { margin: 4px 0 14px; font-family: var(--brt-heading-font); font-size: var(--brt-heading-size, 26px); font-weight: 700; line-height: 1.2; color: var(--brt-heading, #fff); }
+  .brt__gtext { margin: 0 0 18px; }
+  .brt__gtext p { margin: 0 0 .8em; }
+  .brt__gtext p:last-child { margin-bottom: 0; }
+  .brt__gtext strong { font-weight: 700; }
+  .brt__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(255,255,255,.92); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
+  @media (min-width: 900px) {
+    .brt--columns .brt__wrap { max-width: max(var(--brt-max, 760px), 1040px); display: grid; grid-template-columns: 1fr 1fr; gap: var(--brt-gap, 16px); align-items: start; }
+    .brt--columns .brt__card + .brt__card { margin-top: 0; }
+    .brt__body { padding: 32px 30px 36px; }
+  }
+  #shopify-section-{{ sid }} .brt { --brt-bg: {{ s.bg_color }}; --brt-card-1: {{ s.card_bg_1 }}; --brt-card-2: {{ s.card_bg_2 }}; --brt-heading: {{ s.heading_color }}; --brt-text: {{ s.text_color }}; --brt-accent: {{ s.accent_color }}; --brt-heading-font: {{ heading_font }}; --brt-body-font: {{ body_font }}; --brt-heading-size: {{ s.heading_size }}px; --brt-stat-size: {{ s.stat_size }}px; --brt-label-size: {{ s.label_size }}px; --brt-text-size: {{ s.text_size }}px; --brt-photo-ratio: {{ s.photo_ratio }}; --brt-product-w: {{ s.product_width }}%; --brt-radius: {{ s.radius }}px; --brt-gap: {{ s.gap }}px; --brt-max: {{ s.max_width }}px; --brt-pad-top: {{ s.padding_top }}px; --brt-pad-bottom: {{ s.padding_bottom }}px; }
+{%- endstyle -%}
+<div class="brt brt--{{ s.desktop_layout | default: 'stack' }}">
+  <div class="brt__wrap">
+    {%- if has_results -%}
+      <div class="brt__card">
+        {%- if s.image != blank -%}
+          {{ s.image | image_url: width: 1500 | image_tag: loading: 'lazy', class: 'brt__photo', widths: '400, 600, 800, 1000, 1500', sizes: '(min-width: 900px) 520px, 100vw', alt: s.image_alt | default: s.image.alt }}
+        {%- endif -%}
+        <div class="brt__body">
+          {%- if s.heading != blank -%}<h2 class="brt__title">{{ s.heading | escape }}</h2>{%- endif -%}
+          {%- if s.subtitle != blank -%}<div class="brt__sub">{{ s.subtitle }}</div>{%- endif -%}
+          {%- for block in stats -%}
+            {%- assign b = block.settings -%}
+            {%- if b.value != blank or b.label != blank -%}
+              <div class="brt__stat" {{ block.shopify_attributes }}>
+                {%- if b.value != blank -%}<span class="brt__stat-value">{{ b.value | escape }}</span>{%- endif -%}
+                {%- if b.label != blank -%}<span class="brt__stat-label">{{ b.label | escape }}</span>{%- endif -%}
+                {%- if b.text != blank -%}<p class="brt__stat-text">{{ b.text }}</p>{%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if has_guarantee -%}
+      <div class="brt__card">
+        <div class="brt__body">
+          {%- if s.product_image != blank -%}
+            {{ s.product_image | image_url: width: 1000 | image_tag: loading: 'lazy', class: 'brt__product', widths: '400, 600, 800, 1000', sizes: '(min-width: 900px) 360px, 70vw', alt: s.product_alt | default: s.product_image.alt }}
+          {%- elsif request.design_mode -%}
+            <p class="brt__ph" style="margin-bottom: 16px;">Guarantee: pick a product image (PNG with transparent background).</p>
+          {%- endif -%}
+          {%- if s.show_shield -%}
+            <span class="brt__shield" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 1.8l8 3.2v6.4c0 5-3.4 9.3-8 10.8-4.6-1.5-8-5.8-8-10.8V5z"/><path d="M12 16.6s-4-2.6-4-5.6a2.3 2.3 0 0 1 4-1.5 2.3 2.3 0 0 1 4 1.5c0 3-4 5.6-4 5.6z" fill="var(--brt-card-2, #0e3d26)"/></svg></span>
+          {%- endif -%}
+          {%- if s.guarantee_big != blank -%}<span class="brt__big">{{ s.guarantee_big | escape }}</span>{%- endif -%}
+          {%- if s.guarantee_title != blank -%}<h3 class="brt__gtitle">{{ s.guarantee_title | escape }}</h3>{%- endif -%}
+          {%- if s.guarantee_text != blank -%}<div class="brt__gtext">{{ s.guarantee_text }}</div>{%- endif -%}
+          {%- if s.guarantee_points != blank -%}
+            {%- render 'boarage-bullets', items: s.guarantee_points, box_color: 'transparent', padding: 0, radius: 0, icon_color: s.text_color, lead_color: s.text_color, text_color: s.text_color, lead_weight: 600, text_weight: 500, font_family: body_font, font_size: s.text_size, line_height: 1.35, gap: 12, icon_size: 20 -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if has_results == false and has_guarantee == false and request.design_mode -%}
+      <p class="brt__ph">Results: fill in the heading, add “Stat” blocks, and fill in the guarantee.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Boarage · Results",
+  "tag": "section",
+  "class": "boarage-results",
+  "settings": [
+    { "type": "header", "content": "Results card" },
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "text", "id": "image_alt", "label": "Photo description (alt)" },
+    {
+      "type": "select",
+      "id": "photo_ratio",
+      "label": "Photo shape",
+      "options": [
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" }
+      ],
+      "default": "4 / 3"
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Results felt by those who tried it" },
+    { "type": "richtext", "id": "subtitle", "label": "Subtitle", "default": "<p>We surveyed daily users to see how it changed their lives.</p>" },
+    { "type": "header", "content": "Guarantee card" },
+    { "type": "checkbox", "id": "show_guarantee", "label": "Show the guarantee card", "default": true },
+    { "type": "image_picker", "id": "product_image", "label": "Product image", "info": "PNG with a transparent background." },
+    { "type": "text", "id": "product_alt", "label": "Product image description (alt)" },
+    { "type": "range", "id": "product_width", "label": "Product image width", "min": 40, "max": 100, "step": 2, "unit": "%", "default": 70 },
+    { "type": "checkbox", "id": "show_shield", "label": "Show the shield icon", "default": true },
+    { "type": "text", "id": "guarantee_big", "label": "Big label", "default": "90 Day" },
+    { "type": "text", "id": "guarantee_title", "label": "Title", "default": "Money Back Guarantee" },
+    { "type": "richtext", "id": "guarantee_text", "label": "Text", "default": "<p>If you don't notice a real improvement within 90 days of the product being delivered, return it within 90 days for a full refund.</p>" },
+    { "type": "textarea", "id": "guarantee_points", "label": "Bullets", "info": "One per line.", "default": "100% Money-Back Guarantee\nNo Questions Asked" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "card_bg_1", "label": "Card gradient start", "default": "#2f8a55" },
+    { "type": "color", "id": "card_bg_2", "label": "Card gradient end", "default": "#0e3d26" },
+    { "type": "color", "id": "heading_color", "label": "Headings and stat labels", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text and bullets", "default": "#ffffff" },
+    { "type": "color", "id": "accent_color", "label": "Stat numbers, big label and shield", "default": "#8ff0a4" },
+    { "type": "header", "content": "Fonts and sizes" },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "body", "label": "Theme body font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "heading"
+    },
+    { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 18, "max": 48, "step": 1, "unit": "px", "default": 26 },
+    { "type": "range", "id": "stat_size", "label": "Stat number and big label size", "min": 28, "max": 80, "step": 1, "unit": "px", "default": 44 },
+    { "type": "range", "id": "label_size", "label": "Stat label size", "min": 14, "max": 32, "step": 1, "unit": "px", "default": 21 },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Text font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "body_font", "label": "Custom text font", "default": "work_sans_n4" },
+    { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "stack", "label": "Cards stacked" },
+        { "value": "columns", "label": "Cards side by side" }
+      ],
+      "default": "stack"
+    },
+    { "type": "range", "id": "radius", "label": "Card corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 10 },
+    { "type": "range", "id": "gap", "label": "Space between the cards", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "max_width", "label": "Maximum width", "min": 500, "max": 1200, "step": 20, "unit": "px", "default": 760 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "value", "label": "Number", "default": "32%" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Reported reduced burning and tingling" },
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Nighttime nerve pain eased as cellular energy returned to damaged nerves." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Boarage · Results",
+      "blocks": [
+        { "type": "stat" },
+        { "type": "stat", "settings": { "value": "11%", "label": "Reported improved feeling in hands and feet", "text": "Numbness began receding as nerve cells got back the energy to do their job." } },
+        { "type": "stat", "settings": { "value": "8%", "label": "Slept through the night within 3 weeks", "text": "Deep sleep returned once the burning that woke them for years finally calmed." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
