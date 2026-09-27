@@ -5,6 +5,7 @@
       "blocks": {
         "title": {
           "type": "title",
+          "disabled": true,
           "settings": {
             "uppercase_title": false,
             "desktop_size": 39,
@@ -13,8 +14,13 @@
             "mobile_alignment": "mobile-left",
             "margin_top": 15,
             "margin_bottom": 15
-          },
-          "disabled": true
+          }
+        },
+        "hero_title": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'boarage-hero-text', title: product.title, tag: 'h1', text: '', title_color: '#1d4d36', title_size: 34 %}"
+          }
         },
         "price": {
           "type": "price",
@@ -30,29 +36,6 @@
             "margin_bottom": 15
           }
         },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": false,
-            "skip_cart": false,
-            "atc_custom_label": "",
-            "display_price": true,
-            "uppercase_text": true,
-            "enable_custom_color": true,
-            "custom_color": "#FF6B35",
-            "custom_text_color": "#ffffff",
-            "icon_scale": 120,
-            "icon_spacing": 10,
-            "margin_top": 24,
-            "margin_bottom": 24
-          }
-        },
-        "hero_title": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "{% render 'boarage-hero-text', title: product.title, tag: 'h1', text: '', title_color: '#1d4d36', title_size: 34 %}"
-          }
-        },
         "hero_text": {
           "type": "custom_liquid",
           "settings": {
@@ -65,10 +48,39 @@
             "custom_liquid": "{% capture items %}\nMitochondria - Reactivated to support nerve repair\nNerve Pain - Helps reduce burning, tingling, numbness\nSleep - Supports the nighttime burn stealing rest\nBalance - Helps brain-to-feet signaling\n{% endcapture %}\n{% render 'boarage-bullets', items: items, box_color: '#eef7f1', icon_color: '#2fbd44', lead_color: '#1d4d36', text_color: '#1d4d36', font_size: 18 %}"
           }
         },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "skip_cart": false,
+            "atc_custom_label": "",
+            "display_price": true,
+            "uppercase_text": true,
+            "enable_custom_color": true,
+            "custom_color": "#ff6b35",
+            "custom_text_color": "#ffffff",
+            "icon_scale": 120,
+            "icon_spacing": 10,
+            "margin_top": 24,
+            "margin_bottom": 24
+          }
+        },
         "hero_note": {
           "type": "custom_liquid",
           "settings": {
             "custom_liquid": "{% capture items %}\nrefresh: Refills Ship Every Month\nclock: Stop or Cancel Anytime\n{% endcapture %}\n{% render 'boarage-note-line', items: items, font_size: 16, text_color: '#333333', icon_color: '#333333', divider_color: '#c9c9c9' %}"
+          }
+        },
+        "hero_trust": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% capture items %}\nbox: Fast Delivery\nlock: Secure Checkout\n{% endcapture %}\n{% render 'boarage-trust-box', items: items, show_payment: true, box_color: '#f6f6f6', text_color: '#1d4d36', icon_color: '#1d4d36', divider_color: '#1d4d36', font_size: 18 %}"
+          }
+        },
+        "hero_guarantee": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'boarage-guarantee', title: '90-Day Money Back Guarantee', text: '<p>Love your results within 90 days or get 100% of your money back, no questions asked.</p>', icon: 'shield-check', box_color: '#eef7f1', border_color: '#9fd3b4', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', text_size: 17 %}"
           }
         }
       },
@@ -79,7 +91,9 @@
         "hero_text",
         "hero_bullets",
         "buy_buttons",
-        "hero_note"
+        "hero_note",
+        "hero_trust",
+        "hero_guarantee"
       ],
       "settings": {
         "enable_sticky_info": true,
@@ -162,14 +176,14 @@
         "rating_prefix": "Rated",
         "rating_word": "Excellent",
         "badge_text": "Verified Customer",
-        "bg_1": "#0E4D4E",
+        "bg_1": "#0e4d4e",
         "bg_2": "#0e3d26",
         "heading_color": "#ffffff",
         "rating_color": "#ffffff",
         "card_color": "#ffffff",
         "card_title_color": "#1d4d36",
         "text_color": "#1d4d36",
-        "star_color": "#0E4D4E",
+        "star_color": "#0e4d4e",
         "name_color": "#1d4d36",
         "badge_color": "#2fbd44",
         "date_color": "#4a6a5a",
@@ -350,7 +364,7 @@
       ],
       "settings": {
         "image_alt": "",
-        "heading": "The Reason Why Your <em>Nerves Are Breaking Down</em> Is Not What You Were Told",
+        "heading": "The reason your <em>knees get stiffer</em> every year is not what you were told&nbsp;",
         "text": "<p>Your nerves are living tissue, and the cells that maintain them are the most energy-hungry cells in your entire body.</p>",
         "card_eyebrow": "The nurse fruit",
         "card_heading": "Support your nerves from the core",
@@ -359,8 +373,8 @@
         "product_width": 78,
         "overhang": 90,
         "bg_color": "#ffffff",
-        "heading_color": "#0E4D4E",
-        "highlight_color": "#FF6B35",
+        "heading_color": "#0e4d4e",
+        "highlight_color": "#ff6b35",
         "text_color": "#1d4d36",
         "bullet_icon_color": "#d94f3d",
         "bullet_text_color": "#1d4d36",

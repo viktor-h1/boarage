@@ -16,6 +16,7 @@
     font_family  CSS font-family (default the theme body font)   font_size px (16, keep ≥ 16 for readability)
     font_weight  (400)   icon_size px (20)   gap px between icon and text (8)   spacing px around the divider (18)
     align        'center' (default) | 'left'
+    divider      'line' (default) | 'dot'   stack_mobile  true (default): one pair per line under 600px; false keeps them inline
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
@@ -29,6 +30,10 @@
   assign gap = gap | default: 8
   assign spacing = spacing | default: 18
   assign align = align | default: 'center'
+  assign divider = divider | default: 'line'
+  if stack_mobile == nil
+    assign stack_mobile = true
+  endif
   assign lines = items | default: '' | newline_to_br | split: '<br />'
   assign filled = 0
   for line in lines
@@ -43,11 +48,13 @@
   .bnl { display: flex; flex-wrap: wrap; align-items: center; justify-content: var(--bnl-justify, center); gap: 6px 0; margin: 0; padding: 0; list-style: none; font-family: var(--bnl-font); font-size: var(--bnl-size, 16px); font-weight: var(--bnl-weight, 400); line-height: 1.3; color: var(--bnl-text, #333); -webkit-font-smoothing: antialiased; }
   .bnl__item { display: inline-flex; align-items: center; gap: var(--bnl-gap, 8px); margin: 0; padding: 0 var(--bnl-space, 18px); border-left: 1px solid var(--bnl-divider, #c9c9c9); }
   .bnl__item:first-child { border-left: 0; }
+  .bnl--dot .bnl__item { border-left: 0; }
+  .bnl--dot .bnl__item + .bnl__item::before { content: "\2022"; margin-right: var(--bnl-space, 18px); color: var(--bnl-divider, #c9c9c9); }
   .bnl__icon { flex: none; width: var(--bnl-icon, 20px); height: var(--bnl-icon, 20px); color: var(--bnl-icon-color, #333); }
   .bnl__icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-  @media (max-width: 599px) { .bnl { flex-direction: column; align-items: var(--bnl-align-m, center); gap: 8px 0; } .bnl__item { padding: 0; border-left: 0; } }
+  @media (max-width: 599px) { .bnl--stack { flex-direction: column; align-items: var(--bnl-align-m, center); gap: 8px 0; } .bnl--stack .bnl__item { padding: 0; border-left: 0; } .bnl--stack .bnl__item::before { display: none; } }
 {%- endstyle -%}
-<ul class="bnl" style="--bnl-justify: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-align-m: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-font: {{ font_family }}; --bnl-size: {{ font_size }}px; --bnl-weight: {{ font_weight }}; --bnl-text: {{ text_color }}; --bnl-icon-color: {{ icon_color }}; --bnl-divider: {{ divider_color }}; --bnl-icon: {{ icon_size }}px; --bnl-gap: {{ gap }}px; --bnl-space: {{ spacing }}px;" {{ attrs }}>
+<ul class="bnl{% if divider == 'dot' %} bnl--dot{% endif %}{% if stack_mobile %} bnl--stack{% endif %}" style="--bnl-justify: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-align-m: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-font: {{ font_family }}; --bnl-size: {{ font_size }}px; --bnl-weight: {{ font_weight }}; --bnl-text: {{ text_color }}; --bnl-icon-color: {{ icon_color }}; --bnl-divider: {{ divider_color }}; --bnl-icon: {{ icon_size }}px; --bnl-gap: {{ gap }}px; --bnl-space: {{ spacing }}px;" {{ attrs }}>
   {%- for line in lines -%}
     {%- liquid
       assign l = line | strip_html | strip

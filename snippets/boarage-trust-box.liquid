@@ -1,0 +1,63 @@
+{%- comment -%}
+  Trust box under the buy button: light grey rounded box with icon + text pairs separated by a dot
+  ("Fast Delivery • Secure Checkout") and the shop's enabled payment icons underneath. Under 600px the
+  pairs stack one per line (no dots) so nothing wraps mid-line.
+  Self-contained (own CSS); the text row comes from snippets/boarage-note-line.liquid.
+  Rendered by blocks/boarage-trust-box.liquid or from a "Custom Liquid" block:
+
+    {% capture items %}
+    box: Fast Delivery
+    lock: Secure Checkout
+    {% endcapture %}
+    {% render 'boarage-trust-box', items: items %}
+
+  Params (all optional):
+    items          one pair per line, "icon: text" (icons: box, lock, truck, shield, check, refresh, clock, heart, leaf, none)
+    show_payment   true (default) shows the payment icons   payment_size px height of each icon (24)
+    box_color      (#f6f6f6)   radius px (8)   padding px (16)
+    text_color     (#1d4d36)   icon_color (#1d4d36)   divider_color (#1d4d36)
+    font_family    CSS font-family (default the theme body font)   font_size px (18)   font_weight (500)   icon_size px (22)
+    attrs          extra attributes on the root element (block.shopify_attributes)
+{%- endcomment -%}
+{%- liquid
+  if show_payment == nil
+    assign show_payment = true
+  endif
+  assign payment_size = payment_size | default: 24
+  assign box_color = box_color | default: '#f6f6f6'
+  assign radius = radius | default: 8
+  assign padding = padding | default: 16
+  assign text_color = text_color | default: '#1d4d36'
+  assign icon_color = icon_color | default: '#1d4d36'
+  assign divider_color = divider_color | default: '#1d4d36'
+  assign font_family = font_family | default: 'var(--font-body-family, system-ui, sans-serif)'
+  assign font_size = font_size | default: 18
+  assign font_weight = font_weight | default: 500
+  assign icon_size = icon_size | default: 22
+  assign pay_types = shop.enabled_payment_types
+  assign has_items = false
+  if items != blank
+    assign plain = items | strip
+    if plain != blank
+      assign has_items = true
+    endif
+  endif
+-%}
+{%- if has_items or show_payment -%}
+{%- style -%}
+  .btb { box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0; padding: var(--btb-pad, 16px); background: var(--btb-box, #f6f6f6); border-radius: var(--btb-radius, 8px); text-align: center; }
+  .btb__pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .btb__pay li { display: block; margin: 0; }
+  .btb__pay svg { display: block; width: auto; height: var(--btb-pay, 24px); border-radius: 4px; }
+{%- endstyle -%}
+<div class="btb" style="--btb-pad: {{ padding }}px; --btb-box: {{ box_color }}; --btb-radius: {{ radius }}px; --btb-pay: {{ payment_size }}px;" {{ attrs }}>
+  {%- if has_items -%}
+    {%- render 'boarage-note-line', items: items, divider: 'dot', stack_mobile: true, text_color: text_color, icon_color: icon_color, divider_color: divider_color, font_family: font_family, font_size: font_size, font_weight: font_weight, icon_size: icon_size, spacing: 14 -%}
+  {%- endif -%}
+  {%- if show_payment and pay_types.size > 0 -%}
+    <ul class="btb__pay" aria-label="{{ 'sections.footer.payment' | t }}">
+      {%- for type in pay_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+{%- endif -%}

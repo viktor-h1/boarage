@@ -1,0 +1,134 @@
+{%- comment -%}
+  Boarage PDP · Trust box (theme block for under the add-to-cart button).
+  Renders snippets/boarage-trust-box.liquid: grey box, icon + text pairs with a dot between them, and the
+  shop's enabled payment icons. For a section that only offers "Custom Liquid", paste the render tag
+  documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  case s.font_source
+    when 'heading'
+      assign font_family = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign font_family = s.font.family | append: ', ' | append: s.font.fallback_families
+    else
+      assign font_family = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+-%}
+{%- capture items -%}
+{% if s.text_1 != blank %}{{ s.icon_1 }}: {{ s.text_1 }}
+{% endif %}{% if s.text_2 != blank %}{{ s.icon_2 }}: {{ s.text_2 }}
+{% endif %}{% if s.text_3 != blank %}{{ s.icon_3 }}: {{ s.text_3 }}
+{% endif %}
+{%- endcapture -%}
+{%- if s.font_source == 'custom' and s.font != blank -%}
+  {%- style -%}{{ s.font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- render 'boarage-trust-box', items: items, show_payment: s.show_payment, payment_size: s.payment_size, box_color: s.box_color, radius: s.radius, padding: s.padding, text_color: s.text_color, icon_color: s.icon_color, divider_color: s.divider_color, font_family: font_family, font_size: s.font_size, font_weight: s.font_weight, icon_size: s.icon_size, attrs: block.shopify_attributes -%}
+
+{% schema %}
+{
+  "name": "Trust box",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Item 1" },
+    {
+      "type": "select",
+      "id": "icon_1",
+      "label": "Icon",
+      "options": [
+        { "value": "box", "label": "Box" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check", "label": "Check" },
+        { "value": "refresh", "label": "Refresh" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "box"
+    },
+    { "type": "text", "id": "text_1", "label": "Text", "default": "Fast Delivery" },
+    { "type": "header", "content": "Item 2" },
+    {
+      "type": "select",
+      "id": "icon_2",
+      "label": "Icon",
+      "options": [
+        { "value": "box", "label": "Box" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check", "label": "Check" },
+        { "value": "refresh", "label": "Refresh" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "lock"
+    },
+    { "type": "text", "id": "text_2", "label": "Text", "default": "Secure Checkout" },
+    { "type": "header", "content": "Item 3" },
+    {
+      "type": "select",
+      "id": "icon_3",
+      "label": "Icon",
+      "options": [
+        { "value": "box", "label": "Box" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check", "label": "Check" },
+        { "value": "refresh", "label": "Refresh" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "shield"
+    },
+    { "type": "text", "id": "text_3", "label": "Text", "info": "Leave empty to show two items only." },
+    { "type": "header", "content": "Payment icons" },
+    { "type": "checkbox", "id": "show_payment", "label": "Show the shop's payment icons", "info": "Uses the payment methods enabled in Settings › Payments.", "default": true },
+    { "type": "range", "id": "payment_size", "label": "Icon height", "min": 18, "max": 36, "step": 1, "unit": "px", "default": 24 },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "box_color", "label": "Box", "default": "#f6f6f6" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1d4d36" },
+    { "type": "color", "id": "icon_color", "label": "Icons", "default": "#1d4d36" },
+    { "type": "color", "id": "divider_color", "label": "Dot", "default": "#1d4d36" },
+    { "type": "header", "content": "Font and size" },
+    {
+      "type": "select",
+      "id": "font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "font", "label": "Custom font", "default": "work_sans_n5" },
+    { "type": "range", "id": "font_size", "label": "Text size", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" }
+      ],
+      "default": "500"
+    },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 30, "step": 1, "unit": "px", "default": 22 },
+    { "type": "header", "content": "Box" },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding", "label": "Inner padding", "min": 8, "max": 32, "step": 2, "unit": "px", "default": 16 }
+  ],
+  "presets": [{ "name": "Trust box" }]
+}
+{% endschema %}
