@@ -17,9 +17,12 @@
     font_weight  (400)   icon_size px (20)   gap px between icon and text (8)   spacing px around the divider (18)
     align        'center' (default) | 'left'
     divider      'line' (default) | 'dot'   stack_mobile  true (default): one pair per line under 600px; false keeps them inline
+    margin_top   px of space above the root element (0)   margin_bottom  px of space below (0)
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   assign text_color = text_color | default: '#333333'
   assign icon_color = icon_color | default: '#333333'
   assign divider_color = divider_color | default: '#c9c9c9'
@@ -45,7 +48,7 @@
 -%}
 {%- if filled > 0 -%}
 {%- style -%}
-  .bnl { display: flex; flex-wrap: wrap; align-items: center; justify-content: var(--bnl-justify, center); gap: 6px 0; margin: 0; padding: 0; list-style: none; font-family: var(--bnl-font); font-size: var(--bnl-size, 16px); font-weight: var(--bnl-weight, 400); line-height: 1.3; color: var(--bnl-text, #333); -webkit-font-smoothing: antialiased; }
+  .bnl { display: flex; flex-wrap: wrap; align-items: center; justify-content: var(--bnl-justify, center); gap: 6px 0; margin: var(--bnl-mt, 0) 0 var(--bnl-mb, 0); padding: 0; list-style: none; font-family: var(--bnl-font); font-size: var(--bnl-size, 16px); font-weight: var(--bnl-weight, 400); line-height: 1.3; color: var(--bnl-text, #333); -webkit-font-smoothing: antialiased; }
   .bnl__item { display: inline-flex; align-items: center; gap: var(--bnl-gap, 8px); margin: 0; padding: 0 var(--bnl-space, 18px); border-left: 1px solid var(--bnl-divider, #c9c9c9); }
   .bnl__item:first-child { border-left: 0; }
   .bnl--dot .bnl__item { border-left: 0; }
@@ -54,7 +57,7 @@
   .bnl__icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   @media (max-width: 599px) { .bnl--stack { flex-direction: column; align-items: var(--bnl-align-m, center); gap: 8px 0; } .bnl--stack .bnl__item { padding: 0; border-left: 0; } .bnl--stack .bnl__item::before { display: none; } }
 {%- endstyle -%}
-<ul class="bnl{% if divider == 'dot' %} bnl--dot{% endif %}{% if stack_mobile %} bnl--stack{% endif %}" style="--bnl-justify: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-align-m: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-font: {{ font_family }}; --bnl-size: {{ font_size }}px; --bnl-weight: {{ font_weight }}; --bnl-text: {{ text_color }}; --bnl-icon-color: {{ icon_color }}; --bnl-divider: {{ divider_color }}; --bnl-icon: {{ icon_size }}px; --bnl-gap: {{ gap }}px; --bnl-space: {{ spacing }}px;" {{ attrs }}>
+<ul class="bnl{% if divider == 'dot' %} bnl--dot{% endif %}{% if stack_mobile %} bnl--stack{% endif %}" style="--bnl-mt: {{ margin_top }}px; --bnl-mb: {{ margin_bottom }}px; --bnl-justify: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-align-m: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-font: {{ font_family }}; --bnl-size: {{ font_size }}px; --bnl-weight: {{ font_weight }}; --bnl-text: {{ text_color }}; --bnl-icon-color: {{ icon_color }}; --bnl-divider: {{ divider_color }}; --bnl-icon: {{ icon_size }}px; --bnl-gap: {{ gap }}px; --bnl-space: {{ spacing }}px;" {{ attrs }}>
   {%- for line in lines -%}
     {%- liquid
       assign l = line | strip_html | strip

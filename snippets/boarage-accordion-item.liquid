@@ -21,9 +21,12 @@
     title_color  (#1d4d36)   title_weight (600)   title_size px (19)   title_font   CSS font-family (default the theme body font)
     text_color   (#1d4d36)   text_weight  (400)   text_size  px (17)   text_font    CSS font-family (default the theme body font)
     line_height  (1.5)   bullet_color  colour of the check-square bullets (#2fbd44)   gap px below the row (12)
+    margin_top   px of space above the root element (0)   margin_bottom  px below (0; the accordion row keeps its gap when 0)
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   assign indicator = indicator | default: 'plus'
   assign icon_color = icon_color | default: '#1d4d36'
   assign box_color = box_color | default: '#ffffff'
@@ -55,7 +58,7 @@
 -%}
 {%- if title != blank and has_text -%}
 {%- style -%}
-  .bac { box-sizing: border-box; margin: 0 0 var(--bac-gap, 12px); padding: 0; background: var(--bac-box, #fff); border: var(--bac-border-w, 1px) solid var(--bac-border, #dfe6e2); border-radius: var(--bac-radius, 8px); font-family: var(--bac-text-font); font-size: var(--bac-text-size, 17px); font-weight: var(--bac-text-weight, 400); line-height: var(--bac-line, 1.5); color: var(--bac-text, #1d4d36); text-align: left; -webkit-font-smoothing: antialiased; }
+  .bac { box-sizing: border-box; margin: var(--bac-mt, 0) 0 var(--bac-mb, var(--bac-gap, 12px)); padding: 0; background: var(--bac-box, #fff); border: var(--bac-border-w, 1px) solid var(--bac-border, #dfe6e2); border-radius: var(--bac-radius, 8px); font-family: var(--bac-text-font); font-size: var(--bac-text-size, 17px); font-weight: var(--bac-text-weight, 400); line-height: var(--bac-line, 1.5); color: var(--bac-text, #1d4d36); text-align: left; -webkit-font-smoothing: antialiased; }
   .bac__summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0; padding: var(--bac-pad, 22px); list-style: none; cursor: pointer; font-family: var(--bac-title-font); font-size: var(--bac-title-size, 19px); font-weight: var(--bac-title-weight, 600); line-height: 1.25; color: var(--bac-title, #1d4d36); -webkit-tap-highlight-color: transparent; }
   .bac__summary::-webkit-details-marker { display: none; }
   .bac__summary::marker { content: ""; }
@@ -86,7 +89,7 @@
   .bac__body ol { counter-reset: bac; }
   .bac__body ol li::before { counter-increment: bac; content: counter(bac) "."; position: absolute; left: 0; top: 0; font-weight: 600; color: var(--bac-bullet, #2fbd44); }
 {%- endstyle -%}
-<details class="bac" id="{{ id }}"{% if open %} open{% endif %} style="--bac-gap: {{ gap }}px; --bac-box: {{ box_color }}; --bac-border: {{ border_color }}; --bac-border-w: {{ border_width }}px; --bac-radius: {{ radius }}px; --bac-pad: {{ padding }}px; --bac-icon: {{ icon_color }}; --bac-title-font: {{ title_font }}; --bac-title-size: {{ title_size }}px; --bac-title-weight: {{ title_weight }}; --bac-title: {{ title_color }}; --bac-text-font: {{ text_font }}; --bac-text-size: {{ text_size }}px; --bac-text-weight: {{ text_weight }}; --bac-text: {{ text_color }}; --bac-line: {{ line_height }}; --bac-bullet: {{ bullet_color }};" {{ attrs }}>
+<details class="bac" id="{{ id }}"{% if open %} open{% endif %} style="--bac-mt: {{ margin_top }}px;{% if margin_bottom > 0 %} --bac-mb: {{ margin_bottom }}px;{% endif %} --bac-gap: {{ gap }}px; --bac-box: {{ box_color }}; --bac-border: {{ border_color }}; --bac-border-w: {{ border_width }}px; --bac-radius: {{ radius }}px; --bac-pad: {{ padding }}px; --bac-icon: {{ icon_color }}; --bac-title-font: {{ title_font }}; --bac-title-size: {{ title_size }}px; --bac-title-weight: {{ title_weight }}; --bac-title: {{ title_color }}; --bac-text-font: {{ text_font }}; --bac-text-size: {{ text_size }}px; --bac-text-weight: {{ text_weight }}; --bac-text: {{ text_color }}; --bac-line: {{ line_height }}; --bac-bullet: {{ bullet_color }};" {{ attrs }}>
   <summary class="bac__summary" aria-controls="{{ id }}-body"><span>{{ title | escape }}</span><span class="bac__icon bac__icon--{{ indicator }}" aria-hidden="true"></span></summary>
   <div class="bac__body" id="{{ id }}-body">{% if content contains '<p' or content contains '<ul' or content contains '<ol' or content contains '<h' or content contains '<div' %}{{ content }}{% else %}<p>{{ content }}</p>{% endif %}</div>
 </details>

@@ -17,9 +17,12 @@
     box_color      (#f6f6f6)   radius px (8)   padding px (16)
     text_color     (#1d4d36)   icon_color (#1d4d36)   divider_color (#1d4d36)
     font_family    CSS font-family (default the theme body font)   font_size px (18)   font_weight (500)   icon_size px (22)
+    margin_top   px of space above the root element (0)   margin_bottom  px of space below (0)
     attrs          extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   if show_payment == nil
     assign show_payment = true
   endif
@@ -45,12 +48,12 @@
 -%}
 {%- if has_items or show_payment -%}
 {%- style -%}
-  .btb { box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0; padding: var(--btb-pad, 16px); background: var(--btb-box, #f6f6f6); border-radius: var(--btb-radius, 8px); text-align: center; }
+  .btb { box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 12px; margin: var(--btb-mt, 0) 0 var(--btb-mb, 0); padding: var(--btb-pad, 16px); background: var(--btb-box, #f6f6f6); border-radius: var(--btb-radius, 8px); text-align: center; }
   .btb__pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0; padding: 0; list-style: none; }
   .btb__pay li { display: block; margin: 0; }
   .btb__pay svg { display: block; width: auto; height: var(--btb-pay, 24px); border-radius: 4px; }
 {%- endstyle -%}
-<div class="btb" style="--btb-pad: {{ padding }}px; --btb-box: {{ box_color }}; --btb-radius: {{ radius }}px; --btb-pay: {{ payment_size }}px;" {{ attrs }}>
+<div class="btb" style="--btb-mt: {{ margin_top }}px; --btb-mb: {{ margin_bottom }}px; --btb-pad: {{ padding }}px; --btb-box: {{ box_color }}; --btb-radius: {{ radius }}px; --btb-pay: {{ payment_size }}px;" {{ attrs }}>
   {%- if has_items -%}
     {%- render 'boarage-note-line', items: items, divider: 'dot', stack_mobile: true, text_color: text_color, icon_color: icon_color, divider_color: divider_color, font_family: font_family, font_size: font_size, font_weight: font_weight, icon_size: icon_size, spacing: 14 -%}
   {%- endif -%}

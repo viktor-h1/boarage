@@ -15,9 +15,12 @@
     lead_color   (#1d4d36)   lead_weight (500)   text_color (#1d4d36)   text_weight (400)   separator shown between lead and text (' - ')
     font_family  CSS font-family (default the theme body font)   font_size px (18)   line_height (1.35)   gap px between bullets (18)
     max_width    px of the box, 0 = none (0)   align 'left' | 'center' (box placement, text stays left)
+    margin_top   px of space above the root element (0)   margin_bottom  px of space below (0)
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   assign icon = icon | default: 'check-square'
   assign icon_size = icon_size | default: 22
   assign icon_color = icon_color | default: '#2fbd44'
@@ -49,7 +52,7 @@
 -%}
 {%- if filled > 0 -%}
 {%- style -%}
-  .bbl { box-sizing: border-box; margin: 0; padding: var(--bbl-pad, 24px); list-style: none; background: var(--bbl-box, #eef7f1); border-radius: var(--bbl-radius, 8px); max-width: var(--bbl-max, none); font-family: var(--bbl-font); font-size: var(--bbl-size, 18px); line-height: var(--bbl-line, 1.35); color: var(--bbl-text, #1d4d36); font-weight: var(--bbl-text-weight, 400); text-align: left; -webkit-font-smoothing: antialiased; }
+  .bbl { box-sizing: border-box; margin: var(--bbl-mt, 0) 0 var(--bbl-mb, 0); padding: var(--bbl-pad, 24px); list-style: none; background: var(--bbl-box, #eef7f1); border-radius: var(--bbl-radius, 8px); max-width: var(--bbl-max, none); font-family: var(--bbl-font); font-size: var(--bbl-size, 18px); line-height: var(--bbl-line, 1.35); color: var(--bbl-text, #1d4d36); font-weight: var(--bbl-text-weight, 400); text-align: left; -webkit-font-smoothing: antialiased; }
   .bbl--center { margin-left: auto; margin-right: auto; }
   .bbl__item { display: flex; align-items: flex-start; gap: .65em; margin: 0; padding: 0; }
   .bbl__item + .bbl__item { margin-top: var(--bbl-gap, 18px); }
@@ -67,7 +70,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/><path d="M8 12l3.5 3.5L21 6"/></svg>
   {%- endcase -%}
 {%- endcapture -%}
-<ul class="bbl bbl--{{ align }}" style="--bbl-pad: {{ padding }}px; --bbl-box: {{ box_color }}; --bbl-radius: {{ radius }}px; --bbl-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bbl-font: {{ font_family }}; --bbl-size: {{ font_size }}px; --bbl-line: {{ line_height }}; --bbl-gap: {{ gap }}px; --bbl-icon: {{ icon_size }}px; --bbl-icon-color: {{ icon_color }}; --bbl-lead: {{ lead_color }}; --bbl-lead-weight: {{ lead_weight }}; --bbl-text: {{ text_color }}; --bbl-text-weight: {{ text_weight }};" {{ attrs }}>
+<ul class="bbl bbl--{{ align }}" style="--bbl-mt: {{ margin_top }}px; --bbl-mb: {{ margin_bottom }}px; --bbl-pad: {{ padding }}px; --bbl-box: {{ box_color }}; --bbl-radius: {{ radius }}px; --bbl-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bbl-font: {{ font_family }}; --bbl-size: {{ font_size }}px; --bbl-line: {{ line_height }}; --bbl-gap: {{ gap }}px; --bbl-icon: {{ icon_size }}px; --bbl-icon-color: {{ icon_color }}; --bbl-lead: {{ lead_color }}; --bbl-lead-weight: {{ lead_weight }}; --bbl-text: {{ text_color }}; --bbl-text-weight: {{ text_weight }};" {{ attrs }}>
   {%- for line in lines -%}
     {%- liquid
       assign l = line | strip_html | strip

@@ -11,9 +11,12 @@
     title_color  (#1d4d36)   title_weight (700)   title_size px (22)   title_font  CSS font-family (default the theme heading font)
     text_color   (#1d4d36)   text_weight  (400)   text_size  px (18)   text_font   CSS font-family (default the theme body font)
     line_height  (1.4)   gap px between title and text (10)   max_width px, 0 = none (0)   align 'left' | 'center'
+    margin_top   px of space above the root element (0)   margin_bottom  px of space below (0)
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   if title == nil
     assign title = '90-Day Money Back Guarantee'
   endif
@@ -47,7 +50,7 @@
 -%}
 {%- if title != blank or has_text -%}
 {%- style -%}
-  .bgt { box-sizing: border-box; margin: 0; padding: var(--bgt-pad, 20px); background: var(--bgt-box, #eef7f1); border: var(--bgt-border-w, 1px) solid var(--bgt-border, #9fd3b4); border-radius: var(--bgt-radius, 8px); max-width: var(--bgt-max, none); text-align: left; line-height: var(--bgt-line, 1.4); -webkit-font-smoothing: antialiased; }
+  .bgt { box-sizing: border-box; margin: var(--bgt-mt, 0) 0 var(--bgt-mb, 0); padding: var(--bgt-pad, 20px); background: var(--bgt-box, #eef7f1); border: var(--bgt-border-w, 1px) solid var(--bgt-border, #9fd3b4); border-radius: var(--bgt-radius, 8px); max-width: var(--bgt-max, none); text-align: left; line-height: var(--bgt-line, 1.4); -webkit-font-smoothing: antialiased; }
   .bgt--center { margin-left: auto; margin-right: auto; }
   .bgt__head { display: flex; align-items: center; gap: .5em; margin: 0; padding: 0; font-family: var(--bgt-title-font); font-size: var(--bgt-title-size, 22px); font-weight: var(--bgt-title-weight, 700); line-height: 1.2; color: var(--bgt-title, #1d4d36); letter-spacing: -.01em; }
   .bgt__icon { flex: none; width: var(--bgt-icon, 26px); height: var(--bgt-icon, 26px); color: var(--bgt-icon-color, #1d4d36); }
@@ -68,7 +71,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path fill-rule="evenodd" d="M12 1.8l8 3.2v6.4c0 5-3.4 9.3-8 10.8-4.6-1.5-8-5.8-8-10.8V5zm-1.3 13.9l6-6-1.7-1.7-4.3 4.3-2-2L7 12z"/></svg>
   {%- endcase -%}
 {%- endcapture -%}
-<div class="bgt bgt--{{ align }}" style="--bgt-pad: {{ padding }}px; --bgt-box: {{ box_color }}; --bgt-border: {{ border_color }}; --bgt-border-w: {{ border_width }}px; --bgt-radius: {{ radius }}px; --bgt-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bgt-line: {{ line_height }}; --bgt-title-font: {{ title_font }}; --bgt-title-size: {{ title_size }}px; --bgt-title-weight: {{ title_weight }}; --bgt-title: {{ title_color }}; --bgt-icon: {{ icon_size }}px; --bgt-icon-color: {{ icon_color }}; --bgt-text-font: {{ text_font }}; --bgt-text-size: {{ text_size }}px; --bgt-text-weight: {{ text_weight }}; --bgt-text: {{ text_color }}; --bgt-gap: {{ gap }}px;" {{ attrs }}>
+<div class="bgt bgt--{{ align }}" style="--bgt-mt: {{ margin_top }}px; --bgt-mb: {{ margin_bottom }}px; --bgt-pad: {{ padding }}px; --bgt-box: {{ box_color }}; --bgt-border: {{ border_color }}; --bgt-border-w: {{ border_width }}px; --bgt-radius: {{ radius }}px; --bgt-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bgt-line: {{ line_height }}; --bgt-title-font: {{ title_font }}; --bgt-title-size: {{ title_size }}px; --bgt-title-weight: {{ title_weight }}; --bgt-title: {{ title_color }}; --bgt-icon: {{ icon_size }}px; --bgt-icon-color: {{ icon_color }}; --bgt-text-font: {{ text_font }}; --bgt-text-size: {{ text_size }}px; --bgt-text-weight: {{ text_weight }}; --bgt-text: {{ text_color }}; --bgt-gap: {{ gap }}px;" {{ attrs }}>
   {%- if title != blank -%}
     <p class="bgt__head">{% if svg != blank %}<span class="bgt__icon">{{ svg }}</span>{% endif %}<span>{{ title | escape }}</span></p>
   {%- endif -%}

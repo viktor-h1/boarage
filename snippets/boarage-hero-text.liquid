@@ -12,9 +12,12 @@
     title_size   px (34)   title_weight (700)   title_line  line-height (1.15)
     text_size    px (18)   text_weight  (400)   text_line   line-height (1.5)
     gap          px between title and paragraph (12)   align  'left' | 'center' | 'right'   max_width  px of the text column, 0 = none (0)
+    margin_top   px of space above the root element (0)   margin_bottom  px of space below (0)
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   if title == nil
     assign title = product.title
   endif
@@ -48,7 +51,7 @@
 -%}
 {%- if title != blank or has_text -%}
 {%- style -%}
-  .bht { margin: 0; padding: 0; text-align: var(--bht-align, left); max-width: var(--bht-max, none); }
+  .bht { margin: var(--bht-mt, 0) 0 var(--bht-mb, 0); padding: 0; text-align: var(--bht-align, left); max-width: var(--bht-max, none); }
   .bht--center { margin-left: auto; margin-right: auto; }
   .bht--right { margin-left: auto; }
   .bht__title { margin: 0; padding: 0; font-family: var(--bht-title-font); font-size: var(--bht-title-size, 34px); font-weight: var(--bht-title-weight, 700); line-height: var(--bht-title-line, 1.15); letter-spacing: -.01em; color: var(--bht-title-color, #1d4d36); overflow-wrap: anywhere; -webkit-font-smoothing: antialiased; }
@@ -57,7 +60,7 @@
   .bht__text p + p { margin-top: .6em; }
   .bht__text a { color: inherit; text-decoration: underline; text-underline-offset: .15em; }
 {%- endstyle -%}
-<div class="bht bht--{{ align }}" style="--bht-align: {{ align }}; --bht-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bht-title-font: {{ title_font }}; --bht-title-size: {{ title_size }}px; --bht-title-weight: {{ title_weight }}; --bht-title-line: {{ title_line }}; --bht-title-color: {{ title_color }}; --bht-text-font: {{ text_font }}; --bht-text-size: {{ text_size }}px; --bht-text-weight: {{ text_weight }}; --bht-text-line: {{ text_line }}; --bht-text-color: {{ text_color }}; --bht-gap: {{ gap }}px;" {{ attrs }}>
+<div class="bht bht--{{ align }}" style="--bht-mt: {{ margin_top }}px; --bht-mb: {{ margin_bottom }}px; --bht-align: {{ align }}; --bht-max: {% if max_width > 0 %}{{ max_width }}px{% else %}none{% endif %}; --bht-title-font: {{ title_font }}; --bht-title-size: {{ title_size }}px; --bht-title-weight: {{ title_weight }}; --bht-title-line: {{ title_line }}; --bht-title-color: {{ title_color }}; --bht-text-font: {{ text_font }}; --bht-text-size: {{ text_size }}px; --bht-text-weight: {{ text_weight }}; --bht-text-line: {{ text_line }}; --bht-text-color: {{ text_color }}; --bht-gap: {{ gap }}px;" {{ attrs }}>
   {%- if title != blank -%}
     <{{ tag }} class="bht__title">{{ title | escape }}</{{ tag }}>
   {%- endif -%}
