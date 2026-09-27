@@ -64,6 +64,12 @@
           "settings": {
             "custom_liquid": "{% capture items %}\nMitochondria - Reactivated to support nerve repair\nNerve Pain - Helps reduce burning, tingling, numbness\nSleep - Supports the nighttime burn stealing rest\nBalance - Helps brain-to-feet signaling\n{% endcapture %}\n{% render 'boarage-bullets', items: items, box_color: '#eef7f1', icon_color: '#2fbd44', lead_color: '#1d4d36', text_color: '#1d4d36', font_size: 18 %}"
           }
+        },
+        "hero_note": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% capture items %}\nrefresh: Refills Ship Every Month\nclock: Stop or Cancel Anytime\n{% endcapture %}\n{% render 'boarage-note-line', items: items, font_size: 16, text_color: '#333333', icon_color: '#333333', divider_color: '#c9c9c9' %}"
+          }
         }
       },
       "block_order": [
@@ -72,7 +78,8 @@
         "price",
         "hero_text",
         "hero_bullets",
-        "buy_buttons"
+        "buy_buttons",
+        "hero_note"
       ],
       "settings": {
         "enable_sticky_info": true,

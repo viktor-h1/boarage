@@ -1,0 +1,141 @@
+{%- comment -%}
+  Boarage PDP · Note line (theme block for under the add-to-cart button).
+  Renders snippets/boarage-note-line.liquid with up to three icon + text pairs.
+  For a section that only offers "Custom Liquid", paste the render tag documented in the snippet instead.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  case s.font_source
+    when 'heading'
+      assign font_family = 'var(--font-heading-family, system-ui, sans-serif)'
+    when 'custom'
+      assign font_family = s.font.family | append: ', ' | append: s.font.fallback_families
+    else
+      assign font_family = 'var(--font-body-family, system-ui, sans-serif)'
+  endcase
+-%}
+{%- capture items -%}
+{% if s.text_1 != blank %}{{ s.icon_1 }}: {{ s.text_1 }}
+{% endif %}{% if s.text_2 != blank %}{{ s.icon_2 }}: {{ s.text_2 }}
+{% endif %}{% if s.text_3 != blank %}{{ s.icon_3 }}: {{ s.text_3 }}
+{% endif %}
+{%- endcapture -%}
+{%- if s.font_source == 'custom' and s.font != blank -%}
+  {%- style -%}{{ s.font | font_face: font_display: 'swap' }}{%- endstyle -%}
+{%- endif -%}
+{%- if items == blank -%}
+  {%- if request.design_mode -%}
+    <p style="margin:0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif;" {{ block.shopify_attributes }}>Note line: fill in at least one text in the block settings.</p>
+  {%- endif -%}
+{%- else -%}
+  {%- render 'boarage-note-line', items: items, text_color: s.text_color, icon_color: s.icon_color, divider_color: s.divider_color, font_family: font_family, font_size: s.font_size, font_weight: s.font_weight, icon_size: s.icon_size, align: s.align, attrs: block.shopify_attributes -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Note line",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Item 1" },
+    {
+      "type": "select",
+      "id": "icon_1",
+      "label": "Icon",
+      "options": [
+        { "value": "refresh", "label": "Refresh" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check", "label": "Check" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "box", "label": "Box" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "refresh"
+    },
+    { "type": "text", "id": "text_1", "label": "Text", "default": "Refills Ship Every Month" },
+    { "type": "header", "content": "Item 2" },
+    {
+      "type": "select",
+      "id": "icon_2",
+      "label": "Icon",
+      "options": [
+        { "value": "refresh", "label": "Refresh" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check", "label": "Check" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "box", "label": "Box" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "clock"
+    },
+    { "type": "text", "id": "text_2", "label": "Text", "default": "Stop or Cancel Anytime" },
+    { "type": "header", "content": "Item 3" },
+    {
+      "type": "select",
+      "id": "icon_3",
+      "label": "Icon",
+      "options": [
+        { "value": "refresh", "label": "Refresh" },
+        { "value": "clock", "label": "Clock" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "check", "label": "Check" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "box", "label": "Box" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "none", "label": "No icon" }
+      ],
+      "default": "truck"
+    },
+    { "type": "text", "id": "text_3", "label": "Text", "info": "Leave empty to show two items only." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#333333" },
+    { "type": "color", "id": "icon_color", "label": "Icons", "default": "#333333" },
+    { "type": "color", "id": "divider_color", "label": "Divider", "default": "#c9c9c9" },
+    { "type": "header", "content": "Font and size" },
+    {
+      "type": "select",
+      "id": "font_source",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Theme body font" },
+        { "value": "heading", "label": "Theme heading font" },
+        { "value": "custom", "label": "Custom (picker below)" }
+      ],
+      "default": "body"
+    },
+    { "type": "font_picker", "id": "font", "label": "Custom font", "default": "work_sans_n4" },
+    { "type": "range", "id": "font_size", "label": "Text size", "info": "Keep 16 px or more so it stays readable.", "min": 14, "max": 22, "step": 1, "unit": "px", "default": 16 },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 14, "max": 28, "step": 1, "unit": "px", "default": 20 },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [{ "name": "Note line" }]
+}
+{% endschema %}

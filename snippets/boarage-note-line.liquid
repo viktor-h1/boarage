@@ -1,0 +1,88 @@
+{%- comment -%}
+  Note line under the add-to-cart button: small icon + short text pairs, centered, separated by a thin
+  vertical divider ("Refills Ship Every Month | Stop or Cancel Anytime"). Wraps to one pair per line on
+  narrow screens. Self-contained (own CSS). Rendered by blocks/boarage-note-line.liquid or from a
+  "Custom Liquid" block:
+
+    {% capture items %}
+    refresh: Refills Ship Every Month
+    clock: Stop or Cancel Anytime
+    {% endcapture %}
+    {% render 'boarage-note-line', items: items, font_size: 16 %}
+
+  Params (all optional):
+    items        one pair per line, "icon: text". Icons: refresh, clock, truck, shield, check, lock, box, heart, leaf, none
+    text_color   (#333333)   icon_color (#333333)   divider_color (#c9c9c9)
+    font_family  CSS font-family (default the theme body font)   font_size px (16, keep ≥ 16 for readability)
+    font_weight  (400)   icon_size px (20)   gap px between icon and text (8)   spacing px around the divider (18)
+    align        'center' (default) | 'left'
+    attrs        extra attributes on the root element (block.shopify_attributes)
+{%- endcomment -%}
+{%- liquid
+  assign text_color = text_color | default: '#333333'
+  assign icon_color = icon_color | default: '#333333'
+  assign divider_color = divider_color | default: '#c9c9c9'
+  assign font_family = font_family | default: 'var(--font-body-family, system-ui, sans-serif)'
+  assign font_size = font_size | default: 16
+  assign font_weight = font_weight | default: 400
+  assign icon_size = icon_size | default: 20
+  assign gap = gap | default: 8
+  assign spacing = spacing | default: 18
+  assign align = align | default: 'center'
+  assign lines = items | default: '' | newline_to_br | split: '<br />'
+  assign filled = 0
+  for line in lines
+    assign l = line | strip_html | strip
+    if l != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+-%}
+{%- if filled > 0 -%}
+{%- style -%}
+  .bnl { display: flex; flex-wrap: wrap; align-items: center; justify-content: var(--bnl-justify, center); gap: 6px 0; margin: 0; padding: 0; list-style: none; font-family: var(--bnl-font); font-size: var(--bnl-size, 16px); font-weight: var(--bnl-weight, 400); line-height: 1.3; color: var(--bnl-text, #333); -webkit-font-smoothing: antialiased; }
+  .bnl__item { display: inline-flex; align-items: center; gap: var(--bnl-gap, 8px); margin: 0; padding: 0 var(--bnl-space, 18px); border-left: 1px solid var(--bnl-divider, #c9c9c9); }
+  .bnl__item:first-child { border-left: 0; }
+  .bnl__icon { flex: none; width: var(--bnl-icon, 20px); height: var(--bnl-icon, 20px); color: var(--bnl-icon-color, #333); }
+  .bnl__icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  @media (max-width: 599px) { .bnl { flex-direction: column; align-items: var(--bnl-align-m, center); gap: 8px 0; } .bnl__item { padding: 0; border-left: 0; } }
+{%- endstyle -%}
+<ul class="bnl" style="--bnl-justify: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-align-m: {% if align == 'left' %}flex-start{% else %}center{% endif %}; --bnl-font: {{ font_family }}; --bnl-size: {{ font_size }}px; --bnl-weight: {{ font_weight }}; --bnl-text: {{ text_color }}; --bnl-icon-color: {{ icon_color }}; --bnl-divider: {{ divider_color }}; --bnl-icon: {{ icon_size }}px; --bnl-gap: {{ gap }}px; --bnl-space: {{ spacing }}px;" {{ attrs }}>
+  {%- for line in lines -%}
+    {%- liquid
+      assign l = line | strip_html | strip
+      if l == blank
+        continue
+      endif
+      assign icon = 'none'
+      assign text = l
+      if l contains ':'
+        assign parts = l | split: ':'
+        assign candidate = parts[0] | strip | downcase
+        if candidate == 'refresh' or candidate == 'clock' or candidate == 'truck' or candidate == 'shield' or candidate == 'check' or candidate == 'lock' or candidate == 'box' or candidate == 'heart' or candidate == 'leaf' or candidate == 'none'
+          assign icon = candidate
+          assign text = l | remove_first: parts[0] | remove_first: ':' | strip
+        endif
+      endif
+    -%}
+    <li class="bnl__item">
+      {%- unless icon == 'none' -%}
+        <span class="bnl__icon" aria-hidden="true">
+          {%- case icon -%}
+            {%- when 'refresh' -%}<svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-13.7 5.6"/><path d="M4 12a8 8 0 0 1 13.7-5.6"/><path d="M17.7 3v3.4h-3.4"/><path d="M6.3 21v-3.4h3.4"/></svg>
+            {%- when 'clock' -%}<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+            {%- when 'truck' -%}<svg viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+            {%- when 'shield' -%}<svg viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.6-7.5 9.5-4.3-.9-7.5-5-7.5-9.5V6z"/><path d="M9 12.5l2 2 4-4.5"/></svg>
+            {%- when 'check' -%}<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
+            {%- when 'lock' -%}<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+            {%- when 'box' -%}<svg viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg>
+            {%- when 'heart' -%}<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            {%- when 'leaf' -%}<svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-.5 9-5.5 14-14 14z"/><path d="M5 19l8-8"/></svg>
+          {%- endcase -%}
+        </span>
+      {%- endunless -%}
+      <span>{{ text | escape }}</span>
+    </li>
+  {%- endfor -%}
+</ul>
+{%- endif -%}
