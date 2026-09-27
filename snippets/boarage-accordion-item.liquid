@@ -14,7 +14,7 @@
     {% render 'boarage-accordion-item', title: 'Description', content: body, open: true %}
 
   Params (all optional):
-    title        row title                       content   HTML body (richtext) — blank hides the row
+    title        row title                       content   body: richtext HTML, or plain text where one line break = new line and an empty line = new paragraph — blank hides the row
     open         true = open on load (false)     id        unique id (default: derived from the title)
     indicator    'plus' (default) | 'chevron'    icon_color  colour of the + / − (#1d4d36)
     box_color    background (#ffffff)   border_color (#dfe6e2)   border_width px (1)   radius px (8)   padding px (22)
@@ -91,6 +91,54 @@
 {%- endstyle -%}
 <details class="bac" id="{{ id }}"{% if open %} open{% endif %} style="--bac-mt: {{ margin_top }}px;{% if margin_bottom > 0 %} --bac-mb: {{ margin_bottom }}px;{% endif %} --bac-gap: {{ gap }}px; --bac-box: {{ box_color }}; --bac-border: {{ border_color }}; --bac-border-w: {{ border_width }}px; --bac-radius: {{ radius }}px; --bac-pad: {{ padding }}px; --bac-icon: {{ icon_color }}; --bac-title-font: {{ title_font }}; --bac-title-size: {{ title_size }}px; --bac-title-weight: {{ title_weight }}; --bac-title: {{ title_color }}; --bac-text-font: {{ text_font }}; --bac-text-size: {{ text_size }}px; --bac-text-weight: {{ text_weight }}; --bac-text: {{ text_color }}; --bac-line: {{ line_height }}; --bac-bullet: {{ bullet_color }};" {{ attrs }}>
   <summary class="bac__summary" aria-controls="{{ id }}-body"><span>{{ title | escape }}</span><span class="bac__icon bac__icon--{{ indicator }}" aria-hidden="true"></span></summary>
-  <div class="bac__body" id="{{ id }}-body">{% if content contains '<p' or content contains '<ul' or content contains '<ol' or content contains '<h' or content contains '<div' %}{{ content }}{% else %}<p>{{ content }}</p>{% endif %}</div>
+  <div class="bac__body" id="{{ id }}-body">
+    {%- comment -%}
+      Plain text is welcome: one line break = <br>, an empty line = new paragraph. Lines that start with a
+      block tag (<ul>, <ol>, <h2>…, <div>, <table>, <blockquote>) pass through as HTML; richtext that is
+      already wrapped in <p> passes through unchanged.
+    {%- endcomment -%}
+    {%- capture nl %}
+{% endcapture -%}
+    {%- assign lines = content | split: nl -%}
+    {%- assign para = '' -%}
+    {%- assign raw = false -%}
+    {%- for line in lines -%}
+      {%- liquid
+        assign l = line | strip
+        if l == blank
+          if para != ''
+            assign head = para | slice: 0, 2
+            if raw or head == '<p'
+              echo para
+            else
+              echo '<p>' | append: para | append: '</p>'
+            endif
+            assign para = ''
+            assign raw = false
+          endif
+        elsif para == ''
+          assign para = l
+          assign head = l | slice: 0, 3 | downcase
+          if head == '<ul' or head == '<ol' or head == '<h2' or head == '<h3' or head == '<h4' or head == '<di' or head == '<ta' or head == '<bl' or head == '<li' or head == '<im'
+            assign raw = true
+          endif
+        elsif raw
+          assign para = para | append: ' ' | append: l
+        else
+          assign para = para | append: '<br>' | append: l
+        endif
+      -%}
+    {%- endfor -%}
+    {%- liquid
+      if para != ''
+        assign head = para | slice: 0, 2
+        if raw or head == '<p'
+          echo para
+        else
+          echo '<p>' | append: para | append: '</p>'
+        endif
+      endif
+    -%}
+  </div>
 </details>
 {%- endif -%}
