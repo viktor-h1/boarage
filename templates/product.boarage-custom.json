@@ -3,123 +3,852 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "title": { "type": "title", "settings": {} },
-        "price": { "type": "price", "settings": {} },
-        "custom_liquid": { "type": "custom_liquid", "settings": { "custom_liquid": "" } },
-        "variant_picker": { "type": "variant_picker", "settings": {} },
-        "buy_buttons": { "type": "buy_buttons", "settings": {} }
+        "title": {
+          "type": "title",
+          "settings": {
+            "uppercase_title": false,
+            "desktop_size": 39,
+            "alignment": "left",
+            "mobile_size": 28,
+            "mobile_alignment": "mobile-left",
+            "margin_top": 15,
+            "margin_bottom": 15
+          },
+          "disabled": true
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_layout": "price-first",
+            "price_color": "accent-1",
+            "compare_price_color": "text",
+            "regular_price_size": 25,
+            "sale_price_size": 20,
+            "compare_price_size": 16,
+            "hide_sale_badge": false,
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "skip_cart": false,
+            "atc_custom_label": "",
+            "display_price": true,
+            "uppercase_text": true,
+            "enable_custom_color": true,
+            "custom_color": "#FF6B35",
+            "custom_text_color": "#ffffff",
+            "icon_scale": 120,
+            "icon_spacing": 10,
+            "margin_top": 24,
+            "margin_bottom": 24
+          }
+        },
+        "hero_title": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'boarage-hero-text', title: product.title, tag: 'h1', text: '', title_color: '#1d4d36', title_size: 34 %}"
+          }
+        },
+        "hero_text": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'boarage-hero-text', title: '', text: '<p>Reactivates mitochondrial function to help support nerve repair, reduce burning and tingling, and support the protective coating your nerves have been losing for years.</p>', text_color: '#1d4d36', text_size: 18 %}"
+          }
+        },
+        "hero_bullets": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% capture items %}\nMitochondria - Reactivated to support nerve repair\nNerve Pain - Helps reduce burning, tingling, numbness\nSleep - Supports the nighttime burn stealing rest\nBalance - Helps brain-to-feet signaling\n{% endcapture %}\n{% render 'boarage-bullets', items: items, box_color: '#eef7f1', icon_color: '#2fbd44', lead_color: '#1d4d36', text_color: '#1d4d36', font_size: 18 %}"
+          }
+        }
       },
-      "block_order": ["title", "price", "custom_liquid", "variant_picker", "buy_buttons"],
-      "settings": {}
+      "block_order": [
+        "title",
+        "hero_title",
+        "price",
+        "hero_text",
+        "hero_bullets",
+        "buy_buttons"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "background-1",
+        "display_variant_image_first": false,
+        "disable_prepend": false,
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "none",
+        "hide_variants": false,
+        "desktop_thumbnails_count": 5,
+        "video_player": "play_btn",
+        "enable_video_looping": false,
+        "autoplay_videos_pause_btn": false,
+        "play_btn_color_scheme": "accent-1",
+        "mobile_thumbnails": "hide",
+        "mobile_media_corner_radius": 0,
+        "mobile_spacing": false,
+        "mobile_preview_media": true,
+        "mobile_thumbnails_count": 5,
+        "mobile_pagination": "dots_overlay",
+        "hide_arrows": true,
+        "dots_color_scheme": "inverse",
+        "trust_badge_position": "top-right",
+        "trust_badge_size": "medium",
+        "mobile_padding_top": 0,
+        "mobile_padding_bottom": 16,
+        "desktop_padding_top": 36,
+        "desktop_padding_bottom": 36
+      }
     },
     "boarage_reviews_slider": {
       "type": "boarage-reviews-slider",
       "blocks": {
-        "review_1": { "type": "review", "settings": {} },
-        "review_2": { "type": "review", "settings": {} },
-        "review_3": { "type": "review", "settings": {} }
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "title": "I can walk without fear again",
+            "rating": 5,
+            "text": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>",
+            "name": "Elaine",
+            "date": "August 15th 2025"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "title": "I can walk without fear again",
+            "rating": 5,
+            "text": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>",
+            "name": "Elaine",
+            "date": "August 15th 2025"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "title": "I can walk without fear again",
+            "rating": 5,
+            "text": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>",
+            "name": "Elaine",
+            "date": "August 15th 2025"
+          }
+        }
       },
-      "block_order": ["review_1", "review_2", "review_3"],
-      "settings": {}
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "heading": "Hear from customers who trust us",
+        "anchor": "boarage-reviews-slider",
+        "show_rating": true,
+        "rating": 4.8,
+        "max_label": "5.0",
+        "rating_prefix": "Rated",
+        "rating_word": "Excellent",
+        "badge_text": "Verified Customer",
+        "bg_1": "#0E4D4E",
+        "bg_2": "#0e3d26",
+        "heading_color": "#ffffff",
+        "rating_color": "#ffffff",
+        "card_color": "#ffffff",
+        "card_title_color": "#1d4d36",
+        "text_color": "#1d4d36",
+        "star_color": "#0E4D4E",
+        "name_color": "#1d4d36",
+        "badge_color": "#2fbd44",
+        "date_color": "#4a6a5a",
+        "bar_color": "#ffffff",
+        "button_color": "#ffffff",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 30,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "card_title_size": 20,
+        "text_size": 17,
+        "card_width": 360,
+        "card_width_mobile": 78,
+        "radius": 6,
+        "padding_top": 48,
+        "padding_bottom": 40
+      }
     },
     "boarage_faq": {
       "type": "boarage-faq",
       "blocks": {
-        "qa_1": { "type": "qa", "settings": { "question": "How do I take it?" } },
-        "qa_2": { "type": "qa", "settings": { "question": "When will I see results?" } },
-        "qa_3": { "type": "qa", "settings": { "question": "What if it doesn't work for me?" } },
-        "qa_4": { "type": "qa", "settings": { "question": "Is this a natural formula?" } },
-        "qa_5": { "type": "qa", "settings": { "question": "How is this different from other supplements?" } },
-        "qa_6": { "type": "qa", "settings": { "question": "How fast is shipping?" } }
+        "qa_1": {
+          "type": "qa",
+          "settings": {
+            "question": "How do I take it?",
+            "answer": "<p>Write the answer here.</p>",
+            "open": false
+          }
+        },
+        "qa_2": {
+          "type": "qa",
+          "settings": {
+            "question": "When will I see results?",
+            "answer": "<p>Write the answer here.</p>",
+            "open": false
+          }
+        },
+        "qa_3": {
+          "type": "qa",
+          "settings": {
+            "question": "What if it doesn't work for me?",
+            "answer": "<p>Write the answer here.</p>",
+            "open": false
+          }
+        },
+        "qa_4": {
+          "type": "qa",
+          "settings": {
+            "question": "Is this a natural formula?",
+            "answer": "<p>Write the answer here.</p>",
+            "open": false
+          }
+        },
+        "qa_5": {
+          "type": "qa",
+          "settings": {
+            "question": "How is this different from other supplements?",
+            "answer": "<p>Write the answer here.</p>",
+            "open": false
+          }
+        },
+        "qa_6": {
+          "type": "qa",
+          "settings": {
+            "question": "How fast is shipping?",
+            "answer": "<p>Write the answer here.</p>",
+            "open": false
+          }
+        }
       },
-      "block_order": ["qa_1", "qa_2", "qa_3", "qa_4", "qa_5", "qa_6"],
-      "settings": {}
+      "block_order": [
+        "qa_1",
+        "qa_2",
+        "qa_3",
+        "qa_4",
+        "qa_5",
+        "qa_6"
+      ],
+      "settings": {
+        "eyebrow": "Frequently Asked Questions",
+        "heading": "Common questions we hear from customers",
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#2fbd44",
+        "heading_color": "#1d4d36",
+        "box_color": "#ffffff",
+        "border_color": "#dfe6e2",
+        "title_color": "#1d4d36",
+        "text_color": "#1d4d36",
+        "icon_color": "#1d4d36",
+        "bullet_color": "#2fbd44",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 32,
+        "eyebrow_size": 16,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "title_size": 19,
+        "title_weight": "600",
+        "text_size": 17,
+        "line_height": 150,
+        "indicator": "plus",
+        "border_width": 1,
+        "radius": 8,
+        "padding": 22,
+        "gap": 12,
+        "align": "left",
+        "max_width": 760,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     },
     "boarage_problem_mechanism": {
       "type": "boarage-problem-mechanism",
       "blocks": {
-        "bullet_1": { "type": "bullet", "settings": { "text": "Burning and tingling that worsens at night" } },
-        "bullet_2": { "type": "bullet", "settings": { "text": "Numbness spreading through your feet, toes, and hands" } },
-        "bullet_3": { "type": "bullet", "settings": { "text": "Loss of balance and fear of falling" } },
-        "bullet_4": { "type": "bullet", "settings": { "text": "Sleep destroyed by pain your doctor says is \"permanent\"" } },
-        "feature_1": { "type": "feature", "settings": { "icon": "cell", "label": "Supports\nCell Health" } },
-        "feature_2": { "type": "feature", "settings": { "icon": "nerve", "label": "Supports\nNerve Tissue" } },
-        "feature_3": { "type": "feature", "settings": { "icon": "shield", "label": "Nerve\nProtection" } },
-        "feature_4": { "type": "feature", "settings": { "icon": "balance", "label": "Supports\nFeeling & Balance" } }
+        "bullet_1": {
+          "type": "bullet",
+          "settings": {
+            "text": "Burning and tingling that worsens at night"
+          }
+        },
+        "bullet_2": {
+          "type": "bullet",
+          "settings": {
+            "text": "Numbness spreading through your feet, toes, and hands"
+          }
+        },
+        "bullet_3": {
+          "type": "bullet",
+          "settings": {
+            "text": "Loss of balance and fear of falling"
+          }
+        },
+        "bullet_4": {
+          "type": "bullet",
+          "settings": {
+            "text": "Sleep destroyed by pain your doctor says is \"permanent\""
+          }
+        },
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "cell",
+            "label": "Supports\nCell Health"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "nerve",
+            "label": "Supports\nNerve Tissue"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "label": "Nerve\nProtection"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "balance",
+            "label": "Supports\nFeeling & Balance"
+          }
+        }
       },
-      "block_order": ["bullet_1", "bullet_2", "bullet_3", "bullet_4", "feature_1", "feature_2", "feature_3", "feature_4"],
-      "settings": {}
+      "block_order": [
+        "bullet_1",
+        "bullet_2",
+        "bullet_3",
+        "bullet_4",
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
+      "settings": {
+        "image_alt": "",
+        "heading": "The Reason Why Your <em>Nerves Are Breaking Down</em> Is Not What You Were Told",
+        "text": "<p>Your nerves are living tissue, and the cells that maintain them are the most energy-hungry cells in your entire body.</p>",
+        "card_eyebrow": "The nurse fruit",
+        "card_heading": "Support your nerves from the core",
+        "card_text": "<p>Activates AMPK, your body's master switch for mitochondrial energy, supporting the cellular energy your nerves rely on to do their job.</p>",
+        "product_alt": "",
+        "product_width": 78,
+        "overhang": 90,
+        "bg_color": "#ffffff",
+        "heading_color": "#0E4D4E",
+        "highlight_color": "#FF6B35",
+        "text_color": "#1d4d36",
+        "bullet_icon_color": "#d94f3d",
+        "bullet_text_color": "#1d4d36",
+        "card_bg_1": "#2f8a55",
+        "card_bg_2": "#0e3d26",
+        "card_eyebrow_color": "#9be7b6",
+        "card_heading_color": "#ffffff",
+        "card_text_color": "#ffffff",
+        "feature_icon_color": "#9be7b6",
+        "feature_text_color": "#ffffff",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 30,
+        "card_heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 18,
+        "radius": 10,
+        "max_width": 760,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "boarage_stages": {
       "type": "boarage-stages",
       "blocks": {
-        "stage_1": { "type": "stage", "settings": { "label": "Stage 1", "title": "Early Warning Signs" } },
-        "stage_2": { "type": "stage", "settings": { "label": "Stage 2", "title": "The Pain Sets In", "text": "<p>The tingling turns to burning. Your feet feel like fire at night. Sleep becomes a battle, numbness creeps in, and your balance starts to feel unreliable.</p>" } },
-        "stage_3": { "type": "stage", "settings": { "label": "Stage 3", "title": "Your World Shrinks", "text": "<p>You cannot walk barefoot. You have stopped gardening, traveling, playing with your grandchildren.</p>" } }
+        "stage_1": {
+          "type": "stage",
+          "settings": {
+            "image_alt": "",
+            "label": "Stage 1",
+            "title": "Early Warning Signs",
+            "text": "<p>Tingling starts in your toes or fingertips. Your feet feel cold or \"off\" for no reason.</p>"
+          }
+        },
+        "stage_2": {
+          "type": "stage",
+          "settings": {
+            "image": "shopify://shop_images/Adv6_image_Monika.jpg",
+            "image_alt": "",
+            "label": "Stage 2",
+            "title": "The Pain Sets In",
+            "text": "<p>The tingling turns to burning. Your feet feel like fire at night. Sleep becomes a battle, numbness creeps in, and your balance starts to feel unreliable.</p>"
+          }
+        },
+        "stage_3": {
+          "type": "stage",
+          "settings": {
+            "image_alt": "",
+            "label": "Stage 3",
+            "title": "Your World Shrinks",
+            "text": "<p>You cannot walk barefoot. You have stopped gardening, traveling, playing with your grandchildren.</p>"
+          }
+        }
       },
-      "block_order": ["stage_1", "stage_2", "stage_3"],
-      "settings": {}
+      "block_order": [
+        "stage_1",
+        "stage_2",
+        "stage_3"
+      ],
+      "settings": {
+        "heading": "How Nerve Breakdown Progresses Over Time",
+        "bg_color": "#ffffff",
+        "heading_color": "#1d4d36",
+        "card_color": "#eef7f1",
+        "label_color": "#2fbd44",
+        "card_title_color": "#1d4d36",
+        "text_color": "#1d4d36",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "card_title_size": 20,
+        "text_size": 17,
+        "image_width": 40,
+        "desktop_layout": "row",
+        "columns": 3,
+        "radius": 8,
+        "gap": 16,
+        "max_width": 1100,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "boarage_science": {
       "type": "boarage-science",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Mitochondrial energy output declines with age",
+        "heading": "The Hidden Reason Nothing Has Worked",
+        "text": "<p>The cells in your nerves need more cellular energy than almost any other cell in your body. As you age, your mitochondria slows down and stops producing it. Your nerves are the first to starve.</p>",
+        "legend_1": "With our Amla",
+        "legend_2": "Modern Life",
+        "axis_y": "Mitochondria",
+        "axis_x": "Age",
+        "curve_1_end": 45,
+        "curve_2_end": 0,
+        "chart_alt": "Mitochondrial energy declines gently with age when supported, and steeply without support.",
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#2fbd44",
+        "heading_color": "#1d4d36",
+        "text_color": "#1d4d36",
+        "chart_bg": "#ffffff",
+        "line_1_color": "#2fbd44",
+        "fill_color": "#2fbd44",
+        "fill_opacity": 10,
+        "line_2_color": "#a83a2a",
+        "axis_color": "#9aa8a0",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 18,
+        "desktop_layout": "columns",
+        "radius": 8,
+        "max_width": 760,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "boarage_timeline": {
       "type": "boarage-timeline",
       "blocks": {
-        "milestone_1": { "type": "milestone", "settings": {} },
-        "milestone_2": { "type": "milestone", "settings": { "when": "Week 3-4:", "title": "Nerve Signaling Improves", "text": "<p>As cellular energy flows back to nerve cells, they can get back to doing their job and supporting healthy signal transmission.</p>", "points": "Tingling and pins-and-needles start to quiet\nBalance and coordination feel more stable" } },
-        "milestone_3": { "type": "milestone", "settings": { "when": "Week 5-8:", "title": "Nerve Support Builds", "text": "<p>With sustained mitochondrial support, nerve cells get what they need to maintain their protective coating and keep functioning the way they're meant to.</p>", "points": "Feeling begins returning to numb areas\nConfidence in walking and daily movement improves" } },
-        "milestone_4": { "type": "milestone", "settings": { "when": "Week 9-12+:", "title": "Long-Term Nerve Resilience", "text": "<p>With consistent use, your mitochondria stays active and protected from the oxidative stress that shut it down in the first place.</p>", "points": "Sustained reduction in nerve pain symptoms\nGreater independence and return to daily activities" } }
+        "milestone_1": {
+          "type": "milestone",
+          "settings": {
+            "when": "Week 1-2:",
+            "title": "Mitochondrial Reactivation Begins",
+            "text": "<p>Your mitochondria begins responding as AMPK is activated and cellular energy production starts to improve.</p>",
+            "points": "The nighttime burning starts to ease\nSleep becomes deeper and more consistent"
+          }
+        },
+        "milestone_2": {
+          "type": "milestone",
+          "settings": {
+            "when": "Week 3-4:",
+            "title": "Nerve Signaling Improves",
+            "text": "<p>As cellular energy flows back to nerve cells, they can get back to doing their job and supporting healthy signal transmission.</p>",
+            "points": "Tingling and pins-and-needles start to quiet\nBalance and coordination feel more stable"
+          }
+        },
+        "milestone_3": {
+          "type": "milestone",
+          "settings": {
+            "when": "Week 5-8:",
+            "title": "Nerve Support Builds",
+            "text": "<p>With sustained mitochondrial support, nerve cells get what they need to maintain their protective coating and keep functioning the way they're meant to.</p>",
+            "points": "Feeling begins returning to numb areas\nConfidence in walking and daily movement improves"
+          }
+        },
+        "milestone_4": {
+          "type": "milestone",
+          "settings": {
+            "when": "Week 9-12+:",
+            "title": "Long-Term Nerve Resilience",
+            "text": "<p>With consistent use, your mitochondria stays active and protected from the oxidative stress that shut it down in the first place.</p>",
+            "points": "Sustained reduction in nerve pain symptoms\nGreater independence and return to daily activities"
+          }
+        }
       },
-      "block_order": ["milestone_1", "milestone_2", "milestone_3", "milestone_4"],
-      "settings": {}
+      "block_order": [
+        "milestone_1",
+        "milestone_2",
+        "milestone_3",
+        "milestone_4"
+      ],
+      "settings": {
+        "heading": "What to Expect as Your Mitochondria Gets Stronger Over Time",
+        "show_guarantee": true,
+        "guarantee_title": "90-Day Money Back Guarantee",
+        "guarantee_text": "<p>Love your results within 90 days or get 100% of your money back, no questions asked.</p>",
+        "bg_1": "#2f8a55",
+        "bg_2": "#0e3d26",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "bullet_icon_color": "#ffffff",
+        "line_color": "#8fc9a6",
+        "marker_color": "#ffffff",
+        "pill_color": "#ffffff",
+        "pill_when_color": "#2fbd44",
+        "pill_title_color": "#1d4d36",
+        "guarantee_box": "#eef7f1",
+        "guarantee_border": "#9fd3b4",
+        "guarantee_ink": "#1d4d36",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 17,
+        "max_width": 760,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
     },
     "boarage_photo_strip": {
       "type": "boarage-photo-strip",
       "blocks": {
-        "photo_1": { "type": "photo", "settings": {} },
-        "photo_2": { "type": "photo", "settings": {} },
-        "photo_3": { "type": "photo", "settings": {} },
-        "photo_4": { "type": "photo", "settings": {} },
-        "photo_5": { "type": "photo", "settings": {} },
-        "photo_6": { "type": "photo", "settings": {} }
+        "photo_1": {
+          "type": "photo",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "disabled": true,
+          "settings": {
+            "alt": ""
+          }
+        },
+        "photo_3": {
+          "type": "photo",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "photo_4": {
+          "type": "photo",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "photo_5": {
+          "type": "photo",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "photo_6": {
+          "type": "photo",
+          "settings": {
+            "alt": ""
+          }
+        }
       },
-      "block_order": ["photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "photo_6"],
-      "settings": {}
+      "block_order": [
+        "photo_1",
+        "photo_2",
+        "photo_3",
+        "photo_4",
+        "photo_5",
+        "photo_6"
+      ],
+      "settings": {
+        "show_stars": true,
+        "heading": "Real Stories, <em>Real Results</em>",
+        "bg_color": "#ffffff",
+        "heading_color": "#1d4d36",
+        "highlight_color": "#2fbd44",
+        "star_color": "#00b67a",
+        "star_ink": "#ffffff",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 28,
+        "star_size": 22,
+        "photo_width_mobile": 44,
+        "photo_width": 240,
+        "ratio": "1 / 1.2",
+        "radius": 8,
+        "gap": 12,
+        "center_desktop": true,
+        "max_width": 1200,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "boarage_comparison": {
       "type": "boarage-comparison",
       "blocks": {
-        "row_1": { "type": "row", "settings": { "label": "Powers Up Your Mitochondria" } },
-        "row_2": { "type": "row", "settings": { "label": "Clinically Studied Potency" } },
-        "row_3": { "type": "row", "settings": { "label": "100% Active Ingredient" } },
-        "row_4": { "type": "row", "settings": { "label": "Supports Nerve Function" } },
-        "row_5": { "type": "row", "settings": { "label": "Backed By History & Science" } },
-        "row_6": { "type": "row", "settings": { "label": "Verified & Tested" } }
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "Powers Up Mitochondria",
+            "us": true,
+            "them": false
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "Clinically Studied Potency",
+            "us": true,
+            "them": false
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "100% Active Ingredient",
+            "us": true,
+            "them": false
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Supports Nerve Function",
+            "us": true,
+            "them": false
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "Backed By History & Science",
+            "us": true,
+            "them": false
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "label": "Verified & Tested",
+            "us": true,
+            "them": false
+          }
+        }
       },
-      "block_order": ["row_1", "row_2", "row_3", "row_4", "row_5", "row_6"],
-      "settings": {}
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5",
+        "row_6"
+      ],
+      "settings": {
+        "eyebrow": "Why us?",
+        "heading": "Nerve support from the source vs. Other approaches",
+        "image_us": "shopify://shop_images/Adv6_image_13.jpg",
+        "label_us": "Our product",
+        "label_them": "Other approaches",
+        "sr_yes": "Yes",
+        "sr_no": "No",
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#2fbd44",
+        "heading_color": "#1d4d36",
+        "text_color": "#1d4d36",
+        "line_color": "#dfe6e2",
+        "us_bg_1": "#2f8a55",
+        "us_bg_2": "#0e3d26",
+        "us_icon_color": "#ffffff",
+        "them_bg": "#eeeeee",
+        "them_icon_color": "#c0392b",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 30,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 18,
+        "icon_size": 32,
+        "col_width": 26,
+        "col_width_desktop": 160,
+        "row_height": 92,
+        "image_height": 100,
+        "overlap": 50,
+        "radius": 8,
+        "max_width": 760,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "boarage_results": {
       "type": "boarage-results",
       "blocks": {
-        "stat_1": { "type": "stat", "settings": {} },
-        "stat_2": { "type": "stat", "settings": { "value": "11%", "label": "Reported improved feeling in hands and feet", "text": "Numbness began receding as nerve cells got back the energy to do their job." } },
-        "stat_3": { "type": "stat", "settings": { "value": "8%", "label": "Slept through the night within 3 weeks", "text": "Deep sleep returned once the burning that woke them for years finally calmed." } }
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "32%",
+            "label": "Reported reduced burning and tingling",
+            "text": "Nighttime nerve pain eased as cellular energy returned to damaged nerves."
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "11%",
+            "label": "Reported improved feeling in hands and feet",
+            "text": "Numbness began receding as nerve cells got back the energy to do their job."
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "8%",
+            "label": "Slept through the night within 3 weeks",
+            "text": "Deep sleep returned once the burning that woke them for years finally calmed."
+          }
+        }
       },
-      "block_order": ["stat_1", "stat_2", "stat_3"],
-      "settings": {}
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3"
+      ],
+      "settings": {
+        "image_alt": "",
+        "photo_ratio": "4 / 3",
+        "heading": "Results felt by those who tried it",
+        "subtitle": "<p>We surveyed daily users to see how it changed their lives.</p>",
+        "show_guarantee": true,
+        "product_alt": "",
+        "product_width": 70,
+        "show_shield": true,
+        "guarantee_big": "90 Day",
+        "guarantee_title": "Money Back Guarantee",
+        "guarantee_text": "<p>If you don't notice a real improvement within 90 days of the product being delivered, return it within 90 days for a full refund.</p>",
+        "guarantee_points": "100% Money-Back Guarantee\nNo Questions Asked",
+        "bg_color": "#ffffff",
+        "card_bg_1": "#2f8a55",
+        "card_bg_2": "#0e3d26",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "accent_color": "#8ff0a4",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 26,
+        "stat_size": 44,
+        "label_size": 21,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 17,
+        "desktop_layout": "stack",
+        "radius": 10,
+        "gap": 16,
+        "max_width": 760,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     },
     "boarage_reviews_list": {
       "type": "boarage-reviews-list",
       "blocks": {
-        "review_1": { "type": "review", "settings": {} },
-        "review_2": { "type": "review", "settings": { "name": "Mike K" } },
-        "review_3": { "type": "review", "settings": { "name": "Robert R" } }
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>",
+            "name": "Sara T"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>",
+            "name": "Mike K"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "text": "<p>Write the review here. Use the toolbar to make words <strong>bold</strong>.</p>",
+            "name": "Robert R"
+          }
+        }
       },
-      "block_order": ["review_1", "review_2", "review_3"],
-      "settings": {}
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "Verified Customer Reviews",
+        "show_rating": true,
+        "rating": 4.8,
+        "max_label": "5.0",
+        "rating_prefix": "Rated",
+        "rating_word": "Excellent",
+        "badge_text": "Verified Customer",
+        "more_label": "Load More Reviews",
+        "more_target": "boarage-reviews-slider",
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#2fbd44",
+        "heading_color": "#1d4d36",
+        "text_color": "#1d4d36",
+        "star_color": "#00b67a",
+        "line_color": "#dfe6e2",
+        "name_color": "#1d4d36",
+        "badge_color": "#2fbd44",
+        "link_color": "#1d4d36",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 17,
+        "max_width": 760,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     }
   },
   "order": [
