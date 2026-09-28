@@ -24,6 +24,11 @@
       assign body_font = 'var(--font-body-family, system-ui, sans-serif)'
   endcase
   assign cols = stages.size | at_most: s.columns | at_least: 1
+  if s.image_ratio == blank or s.image_ratio == 'fill'
+    assign ratio = 'auto'
+  else
+    assign ratio = s.image_ratio
+  endif
 -%}
 {%- if s.heading_font_source == 'custom' and s.heading_font != blank -%}
   {%- style -%}{{ s.heading_font | font_face: font_display: 'swap' }}{%- endstyle -%}
@@ -39,8 +44,12 @@
   .bst__grid { display: grid; grid-template-columns: 1fr; gap: var(--bst-gap, 16px); margin: 0; padding: 0; list-style: none; }
   .bst__card { display: grid; grid-template-columns: var(--bst-img-w, 40%) 1fr; margin: 0; border-radius: var(--bst-radius, 8px); overflow: hidden; background: var(--bst-card, #eef7f1); }
   .bst__media { position: relative; min-height: 100%; background: #dfe6e2; }
-  .bst__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .bst__media::before { content: ""; display: block; padding-top: var(--bst-min-pad, 0); }
+  .bst__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--bst-focus, 50% 50%); display: block; }
   .bst__media--empty { min-height: 220px; }
+  .bst--top .bst__card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .bst--top .bst__media { min-height: 0; aspect-ratio: var(--bst-ratio, 4 / 3); }
+  .bst--top .bst__media::before { display: none; }
   .bst__body { padding: 20px 18px 22px; }
   .bst__label { display: block; margin: 0 0 6px; font-size: .8em; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--bst-label, #2fbd44); }
   .bst__card-title { margin: 0 0 10px; font-family: var(--bst-body-font); font-size: var(--bst-card-title-size, 20px); font-weight: 700; line-height: 1.25; color: var(--bst-card-title, #1d4d36); }
@@ -51,14 +60,15 @@
   @media (min-width: 750px) {
     .bst--row .bst__grid { grid-template-columns: repeat(var(--bst-cols, 3), minmax(0, 1fr)); gap: var(--bst-gap, 16px); }
     .bst--row .bst__card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-    .bst--row .bst__media { aspect-ratio: 4 / 3; min-height: 0; }
+    .bst--row .bst__media { aspect-ratio: var(--bst-ratio, 4 / 3); min-height: 0; }
+    .bst--row .bst__media::before { display: none; }
     .bst--row .bst__body { padding: 22px 22px 26px; }
     .bst--stack .bst__wrap { max-width: min(var(--bst-max, 1100px), 760px); }
   }
   .bst__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
-  #shopify-section-{{ sid }} .bst { --bst-bg: {{ s.bg_color }}; --bst-heading: {{ s.heading_color }}; --bst-card: {{ s.card_color }}; --bst-label: {{ s.label_color }}; --bst-card-title: {{ s.card_title_color }}; --bst-text: {{ s.text_color }}; --bst-heading-font: {{ heading_font }}; --bst-body-font: {{ body_font }}; --bst-heading-size: {{ s.heading_size }}px; --bst-card-title-size: {{ s.card_title_size }}px; --bst-text-size: {{ s.text_size }}px; --bst-img-w: {{ s.image_width }}%; --bst-radius: {{ s.radius }}px; --bst-gap: {{ s.gap }}px; --bst-cols: {{ cols }}; --bst-max: {{ s.max_width }}px; --bst-pad-top: {{ s.padding_top }}px; --bst-pad-bottom: {{ s.padding_bottom }}px; }
+  #shopify-section-{{ sid }} .bst { --bst-bg: {{ s.bg_color }}; --bst-heading: {{ s.heading_color }}; --bst-card: {{ s.card_color }}; --bst-label: {{ s.label_color }}; --bst-card-title: {{ s.card_title_color }}; --bst-text: {{ s.text_color }}; --bst-heading-font: {{ heading_font }}; --bst-body-font: {{ body_font }}; --bst-heading-size: {{ s.heading_size }}px; --bst-card-title-size: {{ s.card_title_size }}px; --bst-text-size: {{ s.text_size }}px; --bst-img-w: {{ s.image_width }}%; {% if ratio != 'auto' %}--bst-ratio: {{ ratio }}; --bst-min-pad: calc(100% / ({{ ratio }})); {% endif %}--bst-radius: {{ s.radius }}px; --bst-gap: {{ s.gap }}px; --bst-cols: {{ cols }}; --bst-max: {{ s.max_width }}px; --bst-pad-top: {{ s.padding_top }}px; --bst-pad-bottom: {{ s.padding_bottom }}px; }
 {%- endstyle -%}
-<div class="bst bst--{{ s.desktop_layout | default: 'row' }}">
+<div class="bst bst--{{ s.desktop_layout | default: 'row' }}{% if s.mobile_layout == 'top' %} bst--top{% endif %}">
   <div class="bst__wrap">
     {%- if s.heading != blank -%}<h2 class="bst__title">{{ s.heading | escape }}</h2>{%- endif -%}
     {%- if stages.size > 0 -%}
@@ -66,7 +76,7 @@
         {%- for block in stages -%}
           {%- assign b = block.settings -%}
           <li class="bst__card" {{ block.shopify_attributes }}>
-            <div class="bst__media{% if b.image == blank %} bst__media--empty{% endif %}">
+            <div class="bst__media{% if b.image == blank %} bst__media--empty{% endif %}"{% if b.image_focus != blank and b.image_focus != 'center' %} style="--bst-focus: 50% {% if b.image_focus == 'top' %}0%{% else %}100%{% endif %};"{% endif %}>
               {%- if b.image != blank -%}
                 {{ b.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 750px) 400px, 40vw', alt: b.image_alt | default: b.image.alt }}
               {%- endif -%}
@@ -128,7 +138,33 @@
     { "type": "range", "id": "card_title_size", "label": "Card title size", "min": 14, "max": 32, "step": 1, "unit": "px", "default": 20 },
     { "type": "range", "id": "text_size", "label": "Text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
     { "type": "header", "content": "Layout" },
-    { "type": "range", "id": "image_width", "label": "Image width on mobile", "min": 25, "max": 55, "step": 1, "unit": "%", "default": 40 },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile card layout",
+      "options": [
+        { "value": "side", "label": "Image left, text right" },
+        { "value": "top", "label": "Image on top, text below" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "info": "With the image on the left, this is the smallest the image gets; a card with more text still grows. On top and on desktop it is the exact shape.",
+      "options": [
+        { "value": "fill", "label": "Fill the card height (crops)" },
+        { "value": "4 / 3", "label": "Landscape 4:3" },
+        { "value": "3 / 2", "label": "Landscape 3:2" },
+        { "value": "16 / 9", "label": "Wide 16:9" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait 4:5" },
+        { "value": "3 / 4", "label": "Portrait 3:4" }
+      ],
+      "default": "4 / 3"
+    },
+    { "type": "range", "id": "image_width", "label": "Image width on mobile", "info": "Only with the image on the left.", "min": 25, "max": 55, "step": 1, "unit": "%", "default": 40 },
     {
       "type": "select",
       "id": "desktop_layout",
@@ -154,6 +190,17 @@
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "text", "id": "image_alt", "label": "Image description (alt)" },
+        {
+          "type": "select",
+          "id": "image_focus",
+          "label": "Keep in view when cropped",
+          "options": [
+            { "value": "center", "label": "Middle" },
+            { "value": "top", "label": "Top" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "center"
+        },
         { "type": "text", "id": "label", "label": "Label", "default": "Stage 1" },
         { "type": "text", "id": "title", "label": "Title", "default": "Early Warning Signs" },
         { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Tingling starts in your toes or fingertips. Your feet feel cold or \"off\" for no reason.</p>" }
