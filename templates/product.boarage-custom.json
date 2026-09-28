@@ -16,14 +16,21 @@
             "margin_bottom": 15
           }
         },
+        "hero_rating": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'boarage-trust-rating', rating: 4.8, max_label: '5.0', prefix: 'Rated', word: 'Excellent', rounding: 'half', star_color: '#00b67a', star_ink: '#ffffff', star_empty: '#dcdce6', text_color: '#191919', font_size: 18, star_size: 24, align: 'left', margin_bottom: 12 %}"
+          }
+        },
         "hero_title": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% render 'boarage-hero-text', title: product.title, tag: 'h1', text: '', title_color: '#1d4d36', title_size: 34 %}"
+            "custom_liquid": "{% render 'boarage-hero-text', title: product.title, tag: 'h1', text: '', title_color: '#1d4d36', title_size: 30 %}"
           }
         },
         "price": {
           "type": "price",
+          "disabled": true,
           "settings": {
             "price_layout": "price-first",
             "price_color": "accent-1",
@@ -39,13 +46,13 @@
         "hero_text": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% render 'boarage-hero-text', title: '', text: '<p>Reactivates mitochondrial function to help support nerve repair, reduce burning and tingling, and support the protective coating your nerves have been losing for years.</p>', text_color: '#1d4d36', text_size: 18 %}"
+            "custom_liquid": "{% capture t %}<p>The 60-second rub that makes the first steps of your day the easy part, every morning and every evening.</p>{% endcapture %}{% render 'boarage-hero-text', title: 'Stop thinking twice about every step.', tag: 'h2', text: t, title_color: '#2fbd44', title_size: 26, text_color: '#1d4d36', text_size: 16 %}"
           }
         },
         "hero_bullets": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% capture items %}\nMitochondria - Reactivated to support nerve repair\nNerve Pain - Helps reduce burning, tingling, numbness\nSleep - Supports the nighttime burn stealing rest\nBalance - Helps brain-to-feet signaling\n{% endcapture %}\n{% render 'boarage-bullets', items: items, margin_top: 20, box_color: '#eef7f1', icon_color: '#2fbd44', lead_color: '#1d4d36', text_color: '#1d4d36', font_size: 18 %}"
+            "custom_liquid": "{% capture items %}\nFeel it – Cool, then warm, within 60 seconds\nCold sensor – Switches on the skin's own cold sensor to quiet the ache\nFirst steps – Makes getting moving every morning easier\nEvery day – No alcohol, no itch, gentle enough for twice a day\n{% endcapture %}\n{% render 'boarage-bullets', items: items, margin_top: 20, box_color: '#eef7f1', icon_color: '#2fbd44', lead_color: '#1d4d36', text_color: '#1d4d36', font_size: 14 %}"
           }
         },
         "buy_buttons": {
@@ -53,7 +60,7 @@
           "settings": {
             "show_dynamic_checkout": false,
             "skip_cart": false,
-            "atc_custom_label": "",
+            "atc_custom_label": "Start my 90-day course",
             "display_price": true,
             "uppercase_text": true,
             "enable_custom_color": true,
@@ -68,7 +75,7 @@
         "hero_note": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% capture items %}\nrefresh: Refills Ship Every Month\nclock: Stop or Cancel Anytime\n{% endcapture %}\n{% render 'boarage-note-line', items: items, font_size: 16, text_color: '#333333', icon_color: '#333333', divider_color: '#c9c9c9' %}"
+            "custom_liquid": "{% capture items %}\ncheck: One-time purchase. No subscription, ever.\n{% endcapture %}\n{% render 'boarage-note-line', items: items, font_size: 16, text_color: '#333333', icon_color: '#333333', divider_color: '#c9c9c9' %}"
           }
         },
         "hero_trust": {
@@ -80,18 +87,19 @@
         "hero_guarantee": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% render 'boarage-guarantee', margin_top: 16, title: '90-Day Money Back Guarantee', text: '<p>Love your results within 90 days or get 100% of your money back, no questions asked.</p>', icon: 'shield-check', box_color: '#eef7f1', border_color: '#9fd3b4', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', text_size: 17 %}"
+            "custom_liquid": "{% capture gtext %}<p>Use it every morning and evening for 90 days. If it hasn't earned its place in your day, write to us and get every cent back, even if the jars are empty.</p>{% endcapture %}{% render 'boarage-guarantee', margin_top: 16, title: 'The Empty Jar Promise', text: gtext, icon: 'shield-check', box_color: '#eef7f1', border_color: '#9fd3b4', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', text_size: 17 %}"
           }
         },
         "hero_faq": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% comment %} FAQ accordion. One row = one capture + one render line. Copy both to add a row; change the number in a1 / faq-1. Write plain text: Enter once = new line, an empty line = new paragraph. {% endcomment %}\n{% capture a1 %}\nWrite the answer here. Press Enter once for a new line, twice for a new paragraph.\n\nWrap key words in <strong>strong</strong> tags to make them bold.\n\n<ul>\n<li><strong>Bullet lead:</strong> bullet text, copy this line for more bullets</li>\n</ul>\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'How do I take it?', content: a1, id: 'faq-1', margin_top: 16, open: true, box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a2 %}\nWrite the answer here.\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'When will I see results?', content: a2, id: 'faq-2', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a3 %}\nWrite the answer here.\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'What is inside?', content: a3, id: 'faq-3', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a4 %}\nWrite the answer here.\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'What if it does not work for me?', content: a4, id: 'faq-4', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a5 %}\nWrite the answer here.\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'Shipping and returns', content: a5, id: 'faq-5', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}"
+            "custom_liquid": "{% comment %} Accordion rows. One row = one capture + one render line. Write plain text: Enter once = new line, an empty line = new paragraph. {% endcomment %}\n{% capture a1 %}\nKnees are made to move, and they stiffen when they rest. When they're stiff, you move less. When you move less, they get stiffer. That's <strong>the rest trap</strong>.\n\nThis rub is made to get you out of it: <strong>cool, then warm,</strong> within a minute, and gentle enough for <strong>every morning and evening</strong>, so moving becomes the easy part of your day again.\n\n100 g · [lasts about X weeks at twice a day]\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'Description', content: a1, id: 'faq-1', margin_top: 16, open: true, box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a2 %}\n<strong>Day 1:</strong> you feel it in the first minute, and write down three things you've quietly given up.\n<strong>Weeks 1–4:</strong> the minute you look forward to, every morning and evening.\n<strong>Weeks 5–8:</strong> the minute starts leading somewhere: the walk, the stairs, the garden.\n<strong>Weeks 9–12:</strong> around day 66 it sticks, and you stop thinking twice.\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'The Results', content: a2, id: 'faq-2', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a3 %}\nUse it for 90 days. If it hasn't earned its place in your day, write to [contact] and you get every cent back, even if the jars are empty. No forms, no arguments.\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'The Empty Jar Promise', content: a3, id: 'faq-3', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}\n{% capture a4 %}\n[Where it ships from, delivery time, tracking, returns address, German-speaking customer service. Keep every line exactly true.]\n{% endcapture %}\n{% render 'boarage-accordion-item', title: 'Shipping & Returns', content: a4, id: 'faq-4', box_color: '#ffffff', border_color: '#dfe6e2', icon_color: '#1d4d36', title_color: '#1d4d36', text_color: '#1d4d36', bullet_color: '#2fbd44', title_size: 19, text_size: 17 %}"
           }
         }
       },
       "block_order": [
         "title",
+        "hero_rating",
         "hero_title",
         "price",
         "hero_text",
@@ -174,6 +182,7 @@
         "review_2",
         "review_3"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Hear from customers who trust us",
         "anchor": "boarage-reviews-slider",
@@ -216,48 +225,64 @@
         "qa_1": {
           "type": "qa",
           "settings": {
-            "question": "How do I take it?",
-            "answer": "<p>Write the answer here.</p>",
+            "question": "How do I use it?",
+            "answer": "<p>Every morning and every evening. Rub [a hazelnut-sized amount] into the skin around each knee for about a minute, until it's absorbed. Then get up and get moving, even if it's just to the kitchen.</p>",
             "open": false
           }
         },
         "qa_2": {
           "type": "qa",
           "settings": {
-            "question": "When will I see results?",
-            "answer": "<p>Write the answer here.</p>",
+            "question": "When will I notice something?",
+            "answer": "<p>The first time you use it: cool within seconds, then warm, within a minute. The bigger change comes from doing it every day, and that takes a few weeks to become a habit. That's why it's a 90-day course, not a single jar.</p>",
             "open": false
           }
         },
         "qa_3": {
           "type": "qa",
           "settings": {
-            "question": "What if it doesn't work for me?",
-            "answer": "<p>Write the answer here.</p>",
+            "question": "How is this different from the rubs I already have?",
+            "answer": "<p>Most rubs are made for bad days. They cool with alcohol that dries the skin, they itch, or they smell like medicine, so they go back in the cabinet once the worst has passed. This one cools through the skin's own cold sensor instead of alcohol, warms after, and looks after your skin with vitamin B3. It's made to be used every day, before the bad days, not after them.</p>",
             "open": false
           }
         },
         "qa_4": {
           "type": "qa",
           "settings": {
-            "question": "Is this a natural formula?",
-            "answer": "<p>Write the answer here.</p>",
+            "question": "Should I rest my knee on a bad day?",
+            "answer": "<p>Go easier, but don't stop. Use the rub, then take a shorter walk. The aim is to keep moving, not to push through. If your knee is swollen or hot, or you're unsure, check with your doctor first.</p>",
             "open": false
           }
         },
         "qa_5": {
           "type": "qa",
           "settings": {
-            "question": "How is this different from other supplements?",
-            "answer": "<p>Write the answer here.</p>",
+            "question": "What's in it?",
+            "answer": "<p>Menthol, camphor and arnica, the trio in grandmother's rub, plus peppermint, frankincense and tea tree. Vitamin B3 and magnesium chloride for the skin, with shea butter, sunflower oil, aloe vera and vitamin E. A long-lasting cooling agent and a gentle warming agent create the cool-then-warm. No alcohol. [Link: full ingredient list]</p>",
             "open": false
           }
         },
         "qa_6": {
           "type": "qa",
           "settings": {
+            "question": "Is this a subscription?",
+            "answer": "<p>No. You pay once, and nothing is sent or charged again unless you order again yourself.</p>",
+            "open": false
+          }
+        },
+        "qa_7": {
+          "type": "qa",
+          "settings": {
+            "question": "What if it doesn't work for me?",
+            "answer": "<p>Then you don't pay for it. Write to us within 90 days and you get every cent back, even if the jars are empty. [Contact: email / phone]</p>",
+            "open": false
+          }
+        },
+        "qa_8": {
+          "type": "qa",
+          "settings": {
             "question": "How fast is shipping?",
-            "answer": "<p>Write the answer here.</p>",
+            "answer": "<p>[True origin, delivery time and tracking.]</p>",
             "open": false
           }
         }
@@ -268,11 +293,13 @@
         "qa_3",
         "qa_4",
         "qa_5",
-        "qa_6"
+        "qa_6",
+        "qa_7",
+        "qa_8"
       ],
       "settings": {
         "eyebrow": "Frequently Asked Questions",
-        "heading": "Common questions we hear from customers",
+        "heading": "Questions we hear every day",
         "bg_color": "#ffffff",
         "eyebrow_color": "#2fbd44",
         "heading_color": "#1d4d36",
@@ -309,53 +336,25 @@
         "bullet_1": {
           "type": "bullet",
           "settings": {
-            "text": "Burning and tingling that worsens at night"
+            "text": "Your knees need a few minutes in the morning before they'll bend properly"
           }
         },
         "bullet_2": {
           "type": "bullet",
           "settings": {
-            "text": "Numbness spreading through your feet, toes, and hands"
+            "text": "You take the stairs down more carefully than you'd admit to anyone"
           }
         },
         "bullet_3": {
           "type": "bullet",
           "settings": {
-            "text": "Loss of balance and fear of falling"
+            "text": "Getting up from a low chair or the floor takes both hands"
           }
         },
         "bullet_4": {
           "type": "bullet",
           "settings": {
-            "text": "Sleep destroyed by pain your doctor says is \"permanent\""
-          }
-        },
-        "feature_1": {
-          "type": "feature",
-          "settings": {
-            "icon": "cell",
-            "label": "Supports\nCell Health"
-          }
-        },
-        "feature_2": {
-          "type": "feature",
-          "settings": {
-            "icon": "nerve",
-            "label": "Supports\nNerve Tissue"
-          }
-        },
-        "feature_3": {
-          "type": "feature",
-          "settings": {
-            "icon": "shield",
-            "label": "Nerve\nProtection"
-          }
-        },
-        "feature_4": {
-          "type": "feature",
-          "settings": {
-            "icon": "balance",
-            "label": "Supports\nFeeling & Balance"
+            "text": "You think twice before a long walk, a trip into town, or a day with the grandchildren"
           }
         }
       },
@@ -363,7 +362,77 @@
         "bullet_1",
         "bullet_2",
         "bullet_3",
-        "bullet_4",
+        "bullet_4"
+      ],
+      "settings": {
+        "image_alt": "",
+        "heading": "The reason your <em>knees get stiffer</em> every year is not what you were told",
+        "text": "<p>You've probably been told it's just your age. Wear and tear, nothing to be done.</p><p>That's only half the story.</p><p>As we get older, some cells in our knees stop renewing themselves, but they don't clear out the way they should. Scientists call them senescent cells. Most people call them zombie cells. They linger and keep sending out signals that leave the tissue around them stiff and irritated. That's why it gets a little harder every year, even when you haven't done anything differently.</p>",
+        "card_eyebrow": "",
+        "card_heading": "",
+        "card_text": "",
+        "product_alt": "",
+        "product_width": 78,
+        "overhang": 90,
+        "bg_color": "#ffffff",
+        "heading_color": "#0e4d4e",
+        "highlight_color": "#ff6b35",
+        "text_color": "#1d4d36",
+        "bullet_icon_color": "#d94f3d",
+        "bullet_text_color": "#1d4d36",
+        "card_bg_1": "#2f8a55",
+        "card_bg_2": "#0e3d26",
+        "card_eyebrow_color": "#9be7b6",
+        "card_heading_color": "#ffffff",
+        "card_text_color": "#ffffff",
+        "feature_icon_color": "#9be7b6",
+        "feature_text_color": "#ffffff",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 30,
+        "card_heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 18,
+        "radius": 10,
+        "max_width": 760,
+        "padding_top": 40,
+        "padding_bottom": 16
+      }
+    },
+    "boarage_mechanism": {
+      "type": "boarage-problem-mechanism",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "bolt",
+            "label": "Feel it in\n60 seconds"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "nerve",
+            "label": "Quiets\nthe noise"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "foot",
+            "label": "Gets you\nmoving"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "label": "Gentle\nevery day"
+          }
+        }
+      },
+      "block_order": [
         "feature_1",
         "feature_2",
         "feature_3",
@@ -371,11 +440,50 @@
       ],
       "settings": {
         "image_alt": "",
-        "heading": "The reason your <em>knees get stiffer</em> every year is not what you were told&nbsp;",
-        "text": "<p>Your nerves are living tissue, and the cells that maintain them are the most energy-hungry cells in your entire body.</p>",
-        "card_eyebrow": "The nurse fruit",
-        "card_heading": "Support your nerves from the core",
-        "card_text": "<p>Activates AMPK, your body's master switch for mitochondrial energy, supporting the cellular energy your nerves rely on to do their job.</p>",
+        "heading": "",
+        "text": "<p><strong>And it isn't only age.</strong> In a well-known lab study, human cells kept low on magnesium turned into zombie cells faster. About a quarter of Germans don't get enough magnesium, and some common stomach tablets lower it further; their own leaflets say so.</p><p></p>",
+        "card_eyebrow": "The 4-in-1 rub",
+        "card_heading": "Four things in one jar.",
+        "card_text": "<p>What keeps zombie cells in check is the one thing that feels hardest when your knees are stiff: moving. Cartilage has no blood vessels of its own. It's fed by movement: every step squeezes it like a sponge and lets fresh fluid back in. Research also links regular exercise with fewer zombie cells.</p><p>So going easy on your knees feels sensible, but it's exactly what lets the stiffness settle in. That's the rest trap. This rub is built to get you out of it.</p>",
+        "product_alt": "",
+        "product_width": 78,
+        "overhang": 90,
+        "bg_color": "#ffffff",
+        "heading_color": "#0e4d4e",
+        "highlight_color": "#ff6b35",
+        "text_color": "#1d4d36",
+        "bullet_icon_color": "#d94f3d",
+        "bullet_text_color": "#1d4d36",
+        "card_bg_1": "#2f8a55",
+        "card_bg_2": "#0e3d26",
+        "card_eyebrow_color": "#9be7b6",
+        "card_heading_color": "#ffffff",
+        "card_text_color": "#ffffff",
+        "feature_icon_color": "#9be7b6",
+        "feature_text_color": "#ffffff",
+        "heading_font_source": "heading",
+        "heading_font": "outfit_n7",
+        "heading_size": 30,
+        "card_heading_size": 28,
+        "body_font_source": "body",
+        "body_font": "work_sans_n4",
+        "text_size": 18,
+        "radius": 10,
+        "max_width": 760,
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "boarage_pillars": {
+      "type": "boarage-problem-mechanism",
+      "disabled": true,
+      "settings": {
+        "image_alt": "",
+        "heading": "What each <em>one does</em>",
+        "text": "<p><strong>1. You feel it within a minute.</strong> Menthol and peppermint cool the skin within seconds. Then camphor and a gentle warming agent follow with warmth. Cool, then warm, the first time you use it. That minute is your proof: something you can feel, not a promise you have to take on trust.</p><p><strong>2. It quiets the noise.</strong> Menthol switches on the skin's own cold sensor. Scientists won the 2021 Nobel Prize in Medicine for discovering these sensors, and menthol is how they found the cold one. A strong cool signal takes over the road to your brain, so the ache in your knees quiets down.</p><p><strong>3. It gets you moving.</strong> This is the one that gets you out of the rest trap. When the first minute of the morning feels good, the first steps are easier to take. Rub it in, and you're up and moving before your knees have time to argue. Do it every day, and moving stops being the hard part.</p><p><strong>4. It's gentle enough for every day.</strong> Old rubs cooled with alcohol and dried out the skin, and magnesium oil itches. This rub has no alcohol. Vitamin B3 supports the skin's natural barrier, and magnesium salts, the minerals of Dead Sea baths, have been studied for helping dry skin hold moisture. So you can use it every morning and evening without ending up with dry, tight skin.</p><p><strong>Four things. One jar. Sixty seconds. Not a rescue for bad days: a ritual for all the others.</strong></p>",
+        "card_eyebrow": "",
+        "card_heading": "",
+        "card_text": "",
         "product_alt": "",
         "product_width": 78,
         "overhang": 90,
@@ -413,8 +521,8 @@
           "settings": {
             "image_alt": "",
             "label": "Stage 1",
-            "title": "Early Warning Signs",
-            "text": "<p>Tingling starts in your toes or fingertips. Your feet feel cold or \"off\" for no reason.</p>"
+            "title": "A slow start",
+            "text": "<p>Your knees need a few minutes in the morning before they'll bend properly. You brush it off. Everyone's a bit stiff at this age.</p>"
           }
         },
         "stage_2": {
@@ -423,8 +531,8 @@
             "image": "shopify://shop_images/Adv6_image_Monika.jpg",
             "image_alt": "",
             "label": "Stage 2",
-            "title": "The Pain Sets In",
-            "text": "<p>The tingling turns to burning. Your feet feel like fire at night. Sleep becomes a battle, numbness creeps in, and your balance starts to feel unreliable.</p>"
+            "title": "You start going easy on them",
+            "text": "<p>You take the stairs more carefully. The low garden bed can wait. The long walk becomes the short one. It feels sensible, but every day you rest, the stiffness settles in a little deeper.</p>"
           }
         },
         "stage_3": {
@@ -432,8 +540,8 @@
           "settings": {
             "image_alt": "",
             "label": "Stage 3",
-            "title": "Your World Shrinks",
-            "text": "<p>You cannot walk barefoot. You have stopped gardening, traveling, playing with your grandchildren.</p>"
+            "title": "Your world gets smaller",
+            "text": "<p>You think twice before a trip into town, a day out with the grandchildren, the walk you used to love. You stop planning things. Not because you can't do them, but because you're no longer sure you can.</p><p><em>None of it happens overnight. That's why it's so easy to miss, and why the way out has to be something you do every day.</em></p>"
           }
         }
       },
@@ -443,7 +551,7 @@
         "stage_3"
       ],
       "settings": {
-        "heading": "How Nerve Breakdown Progresses Over Time",
+        "heading": "How the rest trap closes in",
         "bg_color": "#ffffff",
         "heading_color": "#1d4d36",
         "card_color": "#eef7f1",
@@ -470,16 +578,16 @@
     "boarage_science": {
       "type": "boarage-science",
       "settings": {
-        "eyebrow": "Mitochondrial energy output declines with age",
-        "heading": "The Hidden Reason Nothing Has Worked",
-        "text": "<p>The cells in your nerves need more cellular energy than almost any other cell in your body. As you age, your mitochondria slows down and stops producing it. Your nerves are the first to starve.</p>",
-        "legend_1": "With our Amla",
-        "legend_2": "Modern Life",
-        "axis_y": "Mitochondria",
-        "axis_x": "Age",
-        "curve_1_end": 45,
+        "eyebrow": "The hidden reason nothing has worked",
+        "heading": "Care isn't something you do <em>once it hurts</em>.",
+        "text": "<p>Most of us wait until it's bad. Then out comes the gel from the pharmacy or a painkiller, and once it eases, back in the cabinet they go. In between, we go easy on our knees: skip the garden, take the lift, sit it out.</p><p>Every rub you've tried was made for the bad days. Alcohol rubs dry out the skin. Magnesium oil itches. The pharmacy gel smells through your clothes. Painkillers are hard on the stomach. So none of them ever became a habit, and none of them ever got you out of the rest trap.</p><p>A garden gate that's opened every day swings easily. Leave it shut all winter and it sticks. Knees are the same.</p><p><strong>This rub is made for every day in between.</strong></p>",
+        "legend_1": "Ritual: used every day",
+        "legend_2": "Rescue: bad days only",
+        "axis_y": "How often it's used",
+        "axis_x": "Weeks · illustration",
+        "curve_1_end": 55,
         "curve_2_end": 0,
-        "chart_alt": "Mitochondrial energy declines gently with age when supported, and steeply without support.",
+        "chart_alt": "Illustration, not data: a daily ritual keeps being used, a rescue rub goes back in the cabinet.",
         "bg_color": "#ffffff",
         "eyebrow_color": "#2fbd44",
         "heading_color": "#1d4d36",
@@ -497,7 +605,7 @@
         "body_font": "work_sans_n4",
         "text_size": 18,
         "desktop_layout": "columns",
-        "radius": 8,
+        "radius": 4,
         "max_width": 760,
         "padding_top": 40,
         "padding_bottom": 40
@@ -509,37 +617,37 @@
         "milestone_1": {
           "type": "milestone",
           "settings": {
-            "when": "Week 1-2:",
-            "title": "Mitochondrial Reactivation Begins",
-            "text": "<p>Your mitochondria begins responding as AMPK is activated and cellular energy production starts to improve.</p>",
-            "points": "The nighttime burning starts to ease\nSleep becomes deeper and more consistent"
+            "when": "Day 1:",
+            "title": "Proof in the first minute",
+            "text": "<p>Rub it in. Within seconds, the cool. Then the warmth, spreading slowly. You'll know on day one that this is different from anything in your cabinet.</p><p>Then write down three things you've quietly given up: the long walk, the low garden bed, getting down on the carpet with the grandchildren. Put the note on the fridge, where you'll see it every morning.</p>",
+            "points": "Your first cool-then-warm minute\nYour three things, on the fridge"
           }
         },
         "milestone_2": {
           "type": "milestone",
           "settings": {
-            "when": "Week 3-4:",
-            "title": "Nerve Signaling Improves",
-            "text": "<p>As cellular energy flows back to nerve cells, they can get back to doing their job and supporting healthy signal transmission.</p>",
-            "points": "Tingling and pins-and-needles start to quiet\nBalance and coordination feel more stable"
+            "when": "Weeks 1–4:",
+            "title": "The minute you look forward to",
+            "text": "<p>Every morning and every evening, the same minute: rub, cool, warm, then up and moving. It's the first thing in your day that feels good instead of stiff.</p><p>Some mornings will still be hard. That's not the routine failing. That's the morning it matters most.</p>",
+            "points": "The first minute of your day stops being the worst one\nYou don't skip it, because you don't want to"
           }
         },
         "milestone_3": {
           "type": "milestone",
           "settings": {
-            "when": "Week 5-8:",
-            "title": "Nerve Support Builds",
-            "text": "<p>With sustained mitochondrial support, nerve cells get what they need to maintain their protective coating and keep functioning the way they're meant to.</p>",
-            "points": "Feeling begins returning to numb areas\nConfidence in walking and daily movement improves"
+            "when": "Weeks 5–8:",
+            "title": "The rest trap starts to loosen",
+            "text": "<p>Now the minute leads somewhere. The walk you'd have skipped. The stairs you'd have avoided. The garden bed you'd have left for \"next week.\" Each one is movement, and movement is what feeds your knees.</p>",
+            "points": "You're up and moving before your knees have time to argue\nYou cross the first thing off your list"
           }
         },
         "milestone_4": {
           "type": "milestone",
           "settings": {
-            "when": "Week 9-12+:",
-            "title": "Long-Term Nerve Resilience",
-            "text": "<p>With consistent use, your mitochondria stays active and protected from the oxidative stress that shut it down in the first place.</p>",
-            "points": "Sustained reduction in nerve pain symptoms\nGreater independence and return to daily activities"
+            "when": "Weeks 9–12:",
+            "title": "You stop thinking twice",
+            "text": "<p>Researchers at University College London found that a new daily habit takes about 66 days to become automatic, and that missing the odd day doesn't undo it. That's why this is a 90-day course, not one jar.</p><p>Somewhere past day 66, it stops being something you do and goes back to being who you are: the one who keeps going.</p>",
+            "points": "You say yes before you've checked with your knees\nAll three are crossed off, and there's a new list on the fridge"
           }
         }
       },
@@ -550,10 +658,10 @@
         "milestone_4"
       ],
       "settings": {
-        "heading": "What to Expect as Your Mitochondria Gets Stronger Over Time",
+        "heading": "Your 90 days out of the rest trap",
         "show_guarantee": true,
-        "guarantee_title": "90-Day Money Back Guarantee",
-        "guarantee_text": "<p>Love your results within 90 days or get 100% of your money back, no questions asked.</p>",
+        "guarantee_title": "The Empty Jar Promise",
+        "guarantee_text": "<p>90 days. Every cent back if it hasn't earned its place in your day, even with empty jars.</p>",
         "bg_1": "#2f8a55",
         "bg_2": "#0e3d26",
         "heading_color": "#ffffff",
@@ -627,6 +735,7 @@
         "photo_5",
         "photo_6"
       ],
+      "disabled": true,
       "settings": {
         "show_stars": true,
         "heading": "Real Stories, <em>Real Results</em>",
@@ -656,15 +765,15 @@
         "row_1": {
           "type": "row",
           "settings": {
-            "label": "Powers Up Mitochondria",
+            "label": "You feel it within a minute",
             "us": true,
-            "them": false
+            "them": true
           }
         },
         "row_2": {
           "type": "row",
           "settings": {
-            "label": "Clinically Studied Potency",
+            "label": "Made for every day, not just bad days",
             "us": true,
             "them": false
           }
@@ -672,7 +781,7 @@
         "row_3": {
           "type": "row",
           "settings": {
-            "label": "100% Active Ingredient",
+            "label": "No alcohol to dry out your skin",
             "us": true,
             "them": false
           }
@@ -680,7 +789,7 @@
         "row_4": {
           "type": "row",
           "settings": {
-            "label": "Supports Nerve Function",
+            "label": "No itch, no sticky film",
             "us": true,
             "them": false
           }
@@ -688,7 +797,7 @@
         "row_5": {
           "type": "row",
           "settings": {
-            "label": "Backed By History & Science",
+            "label": "No medicine smell on your clothes",
             "us": true,
             "them": false
           }
@@ -696,7 +805,15 @@
         "row_6": {
           "type": "row",
           "settings": {
-            "label": "Verified & Tested",
+            "label": "Vitamin B3 for the skin you rub twice a day",
+            "us": true,
+            "them": false
+          }
+        },
+        "row_7": {
+          "type": "row",
+          "settings": {
+            "label": "One-time purchase, 90-day Empty Jar Promise",
             "us": true,
             "them": false
           }
@@ -708,14 +825,15 @@
         "row_3",
         "row_4",
         "row_5",
-        "row_6"
+        "row_6",
+        "row_7"
       ],
       "settings": {
-        "eyebrow": "Why us?",
-        "heading": "Nerve support from the source vs. Other approaches",
+        "eyebrow": "Compare",
+        "heading": "Why this, not <em>another rub</em>",
         "image_us": "shopify://shop_images/Adv6_image_13.jpg",
-        "label_us": "Our product",
-        "label_them": "Other approaches",
+        "label_us": "This rub",
+        "label_them": "Ordinary rubs",
         "sr_yes": "Yes",
         "sr_no": "No",
         "bg_color": "#ffffff",
@@ -748,50 +866,19 @@
     },
     "boarage_results": {
       "type": "boarage-results",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "value": "32%",
-            "label": "Reported reduced burning and tingling",
-            "text": "Nighttime nerve pain eased as cellular energy returned to damaged nerves."
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "value": "11%",
-            "label": "Reported improved feeling in hands and feet",
-            "text": "Numbness began receding as nerve cells got back the energy to do their job."
-          }
-        },
-        "stat_3": {
-          "type": "stat",
-          "settings": {
-            "value": "8%",
-            "label": "Slept through the night within 3 weeks",
-            "text": "Deep sleep returned once the burning that woke them for years finally calmed."
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2",
-        "stat_3"
-      ],
       "settings": {
         "image_alt": "",
         "photo_ratio": "4 / 3",
-        "heading": "Results felt by those who tried it",
-        "subtitle": "<p>We surveyed daily users to see how it changed their lives.</p>",
+        "heading": "You're not someone who sits things out.",
+        "subtitle": "<p>You never have been. You worked hard, you looked after everyone, you kept the garden going and the house running, and you didn't make a fuss about any of it. You're the one who keeps going.</p><p>So you're not looking for a miracle. You're looking for something that makes the next step easier, every morning, for long enough to matter.</p><p>Winter is when most of us move the least. Dark mornings, cold stairs, every reason to stay in. It's when the rest trap closes fastest.</p><p>You can go easy on your knees for one more winter and see where that leaves you in spring. Or you can start your 90 days now. [Seasonal line, update it: Start this week and they finish right around Christmas.]</p><p><strong>The 90-day course:</strong> 3 jars, [€]. That's [€X] a day. One-time purchase, no subscription. Covered by the Empty Jar Promise: if it hasn't earned its place in your day, you get every cent back, even with empty jars.</p>",
         "show_guarantee": true,
         "product_alt": "",
         "product_width": 70,
         "show_shield": true,
-        "guarantee_big": "90 Day",
-        "guarantee_title": "Money Back Guarantee",
-        "guarantee_text": "<p>If you don't notice a real improvement within 90 days of the product being delivered, return it within 90 days for a full refund.</p>",
-        "guarantee_points": "100% Money-Back Guarantee\nNo Questions Asked",
+        "guarantee_big": "90 Days",
+        "guarantee_title": "The Empty Jar Promise",
+        "guarantee_text": "<p>Use it every morning and evening for 90 days. If it hasn't earned its place in your day, write to us and get every cent back, even if the jars are empty.</p>",
+        "guarantee_points": "One-time purchase, no subscription\nEvery cent back, even with empty jars",
         "bg_color": "#ffffff",
         "card_bg_1": "#2f8a55",
         "card_bg_2": "#0e3d26",
@@ -812,6 +899,16 @@
         "max_width": 760,
         "padding_top": 24,
         "padding_bottom": 24
+      }
+    },
+    "boarage_closing_cta": {
+      "type": "custom-liquid",
+      "settings": {
+        "visibility": "always-display",
+        "custom_liquid": "<div style='max-width:760px;margin:0 auto;padding:0 20px;text-align:center;color:#1d4d36;'><a href='#' onclick='window.scrollTo(0,0);return false;' style='display:inline-block;padding:18px 32px;border-radius:6px;background:#ff6b35;color:#ffffff;font-weight:700;font-size:18px;text-decoration:none;text-transform:uppercase;'>Start my 90-day course</a><p style='margin:16px 0 0;font-size:17px;font-style:italic;'>P.S. You'll know in the first minute. And you have 90 days to decide.</p></div>",
+        "color_scheme": "background-1",
+        "padding_top": 8,
+        "padding_bottom": 48
       }
     },
     "boarage_reviews_list": {
@@ -847,6 +944,7 @@
         "review_2",
         "review_3"
       ],
+      "disabled": true,
       "settings": {
         "eyebrow": "Reviews",
         "heading": "Verified Customer Reviews",
@@ -884,12 +982,15 @@
     "boarage_reviews_slider",
     "boarage_faq",
     "boarage_problem_mechanism",
+    "boarage_mechanism",
+    "boarage_pillars",
     "boarage_stages",
     "boarage_science",
     "boarage_timeline",
     "boarage_photo_strip",
     "boarage_comparison",
     "boarage_results",
+    "boarage_closing_cta",
     "boarage_reviews_list"
   ]
 }
