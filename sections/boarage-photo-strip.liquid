@@ -1,12 +1,23 @@
 {%- comment -%}
   Boarage PDP · Photo strip ("Real Stories, Real Results"). Centered Trustpilot-style star boxes, a heading
-  whose italic words render in the highlight colour, then a swipeable strip of customer photos (one "Photo"
-  block each, rounded corners). Scroll-snap, no JavaScript; on desktop more photos fit per view.
+  whose italic words render in the highlight colour, then a strip of customer photos (one "Photo" block each,
+  rounded corners). Two motions: a marquee that glides edge to edge on its own (CSS animation, the set of
+  photos is repeated so the loop is seamless, pauses on hover, stops for reduced-motion users) or a
+  swipeable scroll-snap strip. No JavaScript.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
   assign sid = section.id
   assign photos = section.blocks | where: 'type', 'photo'
+  assign motion = s.motion | default: 'marquee'
+  assign copies = 2
+  if photos.size < 4
+    assign copies = 8
+  elsif photos.size < 8
+    assign copies = 4
+  endif
+  assign seconds = s.marquee_seconds | default: 3
+  assign duration = photos.size | times: seconds | at_least: 4
   case s.heading_font_source
     when 'body'
       assign heading_font = 'var(--font-body-family, system-ui, sans-serif)'
@@ -35,10 +46,19 @@
   .bps__item img { display: block; width: 100%; height: 100%; object-fit: cover; }
   @media (min-width: 750px) { .bps__item { flex-basis: var(--bps-w, 240px); } }
   .bps--center .bps__track { justify-content: safe center; }
+  .bps__marquee { width: 100%; padding: 4px 0; overflow: hidden; }
+  .bps__marquee--boxed { max-width: var(--bps-max, 1200px); margin: 0 auto; }
+  .bps__marquee-track { display: flex; width: max-content; gap: var(--bps-gap, 12px); animation: bps-scroll var(--bps-duration, 30s) linear infinite; }
+  .bps__marquee--right .bps__marquee-track { animation-direction: reverse; }
+  .bps__marquee .bps__item { flex: 0 0 calc(var(--bps-w-mobile-vw, 44) * 1vw); scroll-snap-align: none; }
+  @media (min-width: 750px) { .bps__marquee .bps__item { flex-basis: var(--bps-w, 240px); } }
+  .bps--pause .bps__marquee:hover .bps__marquee-track, .bps__marquee:focus-within .bps__marquee-track { animation-play-state: paused; }
+  @keyframes bps-scroll { to { transform: translateX(calc((-100% - var(--bps-gap, 12px)) / var(--bps-copies, 2))); } }
+  @media (prefers-reduced-motion: reduce) { .bps__marquee-track { animation: none; } .bps__marquee { overflow-x: auto; scrollbar-width: none; } }
   .bps__ph { margin: 0; padding: 8px 12px; border: 1.5px dashed #c7a35a; border-radius: 6px; background: rgba(240,165,31,.08); color: #8a5a10; font: 500 14px/1.4 system-ui, sans-serif; text-align: center; }
-  #shopify-section-{{ sid }} .bps { --bps-bg: {{ s.bg_color }}; --bps-heading: {{ s.heading_color }}; --bps-highlight: {{ s.highlight_color }}; --bps-star-color: {{ s.star_color }}; --bps-star-ink: {{ s.star_ink }}; --bps-star: {{ s.star_size }}px; --bps-heading-font: {{ heading_font }}; --bps-heading-size: {{ s.heading_size }}px; --bps-w: {{ s.photo_width }}px; --bps-w-mobile: {{ s.photo_width_mobile }}%; --bps-ratio: {{ s.ratio }}; --bps-radius: {{ s.radius }}px; --bps-gap: {{ s.gap }}px; --bps-max: {{ s.max_width }}px; --bps-pad-top: {{ s.padding_top }}px; --bps-pad-bottom: {{ s.padding_bottom }}px; }
+  #shopify-section-{{ sid }} .bps { --bps-bg: {{ s.bg_color }}; --bps-heading: {{ s.heading_color }}; --bps-highlight: {{ s.highlight_color }}; --bps-star-color: {{ s.star_color }}; --bps-star-ink: {{ s.star_ink }}; --bps-star: {{ s.star_size }}px; --bps-heading-font: {{ heading_font }}; --bps-heading-size: {{ s.heading_size }}px; --bps-w: {{ s.photo_width }}px; --bps-w-mobile: {{ s.photo_width_mobile }}%; --bps-w-mobile-vw: {{ s.photo_width_mobile }}; --bps-copies: {{ copies }}; --bps-duration: {{ duration }}s; --bps-ratio: {{ s.ratio }}; --bps-radius: {{ s.radius }}px; --bps-gap: {{ s.gap }}px; --bps-max: {{ s.max_width }}px; --bps-pad-top: {{ s.padding_top }}px; --bps-pad-bottom: {{ s.padding_bottom }}px; }
 {%- endstyle -%}
-<div class="bps{% if s.center_desktop %} bps--center{% endif %}">
+<div class="bps{% if s.center_desktop %} bps--center{% endif %}{% if s.pause_hover %} bps--pause{% endif %}">
   <div class="bps__wrap">
     {%- if s.show_stars or s.heading != blank -%}
       <div class="bps__head">
@@ -50,7 +70,25 @@
         {%- if s.heading != blank -%}<h2 class="bps__title">{{ s.heading }}</h2>{%- endif -%}
       </div>
     {%- endif -%}
-    {%- if photos.size > 0 -%}
+  </div>
+  {%- if photos.size > 0 and motion == 'marquee' -%}
+    <div class="bps__marquee{% unless s.full_bleed %} bps__marquee--boxed{% endunless %}{% if s.direction == 'right' %} bps__marquee--right{% endif %}" aria-label="{{ s.heading | strip_html | default: 'Customer photos' | escape }}">
+      <div class="bps__marquee-track">
+        {%- for c in (1..copies) -%}
+          {%- assign first_copy = forloop.first -%}
+          {%- for block in photos -%}
+            <div class="bps__item"{% if first_copy %} {{ block.shopify_attributes }}{% else %} aria-hidden="true"{% endif %}>
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 360, 480, 720', sizes: '(min-width: 750px) 240px, 44vw', alt: block.settings.alt | default: block.settings.image.alt }}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+  <div class="bps__wrap">
+    {%- if photos.size > 0 and motion != 'marquee' -%}
       <div class="bps__track" aria-label="{{ s.heading | strip_html | default: 'Customer photos' | escape }}">
         {%- for block in photos -%}
           <div class="bps__item" {{ block.shopify_attributes }}>
@@ -60,7 +98,7 @@
           </div>
         {%- endfor -%}
       </div>
-    {%- elsif request.design_mode -%}
+    {%- elsif photos.size == 0 and request.design_mode -%}
       <p class="bps__ph">Photo strip: add “Photo” blocks to this section.</p>
     {%- endif -%}
   </div>
@@ -95,6 +133,30 @@
     { "type": "font_picker", "id": "heading_font", "label": "Custom heading font", "default": "outfit_n7" },
     { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 1, "unit": "px", "default": 28 },
     { "type": "range", "id": "star_size", "label": "Star box size", "min": 14, "max": 36, "step": 1, "unit": "px", "default": 22 },
+    { "type": "header", "content": "Motion" },
+    {
+      "type": "select",
+      "id": "motion",
+      "label": "How the strip moves",
+      "options": [
+        { "value": "marquee", "label": "Glides on its own (marquee)" },
+        { "value": "swipe", "label": "Swipe by hand" }
+      ],
+      "default": "marquee"
+    },
+    { "type": "range", "id": "marquee_seconds", "label": "Marquee speed", "info": "Seconds each photo takes to cross. Higher is slower.", "min": 1, "max": 8, "step": 0.5, "default": 3 },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Marquee direction",
+      "options": [
+        { "value": "left", "label": "Right to left" },
+        { "value": "right", "label": "Left to right" }
+      ],
+      "default": "left"
+    },
+    { "type": "checkbox", "id": "pause_hover", "label": "Pause while the mouse is over it", "default": true },
+    { "type": "checkbox", "id": "full_bleed", "label": "Marquee runs edge to edge", "info": "Off keeps it inside the maximum width.", "default": true },
     { "type": "header", "content": "Photos" },
     { "type": "range", "id": "photo_width_mobile", "label": "Photo width on mobile", "min": 30, "max": 90, "step": 2, "unit": "%", "default": 44 },
     { "type": "range", "id": "photo_width", "label": "Photo width on desktop", "min": 140, "max": 420, "step": 10, "unit": "px", "default": 240 },
