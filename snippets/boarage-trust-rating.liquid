@@ -14,9 +14,12 @@
     star_empty   unfilled part of a box (#dcdce6)       text_color  the text (#191919)
     font_family  CSS font-family; default the theme body font    font_weight  weight of the plain text (400)
     font_size    px (18)   star_size px (24)   star_gap px (4)   align 'left' | 'center' | 'right'
+    margin_top   px of space above the row (0)   margin_bottom  px of space below (0)
     attrs        extra attributes on the root element (block.shopify_attributes)
 {%- endcomment -%}
 {%- liquid
+  assign margin_top = margin_top | default: 0
+  assign margin_bottom = margin_bottom | default: 0
   assign rating = rating | default: 4.8
   assign max_label = max_label | default: '5.0'
   if prefix == nil
@@ -58,7 +61,7 @@
   endif
 -%}
 {%- style -%}
-  .btr { display: flex; flex-wrap: wrap; align-items: center; gap: .55em .7em; margin: 0; padding: 0; justify-content: var(--btr-justify, flex-start); font-family: var(--btr-font); font-weight: var(--btr-weight, 400); font-size: var(--btr-size, 18px); line-height: 1.2; color: var(--btr-text, #191919); -webkit-font-smoothing: antialiased; }
+  .btr { display: flex; flex-wrap: wrap; align-items: center; gap: .55em .7em; margin: var(--btr-mt, 0) 0 var(--btr-mb, 0); padding: 0; justify-content: var(--btr-justify, flex-start); font-family: var(--btr-font); font-weight: var(--btr-weight, 400); font-size: var(--btr-size, 18px); line-height: 1.2; color: var(--btr-text, #191919); -webkit-font-smoothing: antialiased; }
   .btr, .btr:hover, .btr:focus-visible { text-decoration: none; color: var(--btr-text, #191919); }
   a.btr { cursor: pointer; }
   a.btr:focus-visible { outline: 2px solid var(--btr-star, #00b67a); outline-offset: 4px; border-radius: 4px; }
@@ -86,7 +89,7 @@
   </span>
 {%- endcapture -%}
 {%- capture vars -%}
-  --btr-justify: {{ justify }}; --btr-font: {{ font_family }}; --btr-weight: {{ font_weight }}; --btr-size: {{ font_size }}px; --btr-text: {{ text_color }}; --btr-star: {{ star_color }}; --btr-star-ink: {{ star_ink }}; --btr-star-empty: {{ star_empty }}; --btr-star-size: {{ star_size }}px; --btr-gap: {{ star_gap }}px;
+  --btr-mt: {{ margin_top }}px; --btr-mb: {{ margin_bottom }}px; --btr-justify: {{ justify }}; --btr-font: {{ font_family }}; --btr-weight: {{ font_weight }}; --btr-size: {{ font_size }}px; --btr-text: {{ text_color }}; --btr-star: {{ star_color }}; --btr-star-ink: {{ star_ink }}; --btr-star-empty: {{ star_empty }}; --btr-star-size: {{ star_size }}px; --btr-gap: {{ star_gap }}px;
 {%- endcapture -%}
 {%- if url != blank -%}
   <a class="btr" href="{{ url }}" style="{{ vars }}" {{ attrs }}>{{ body }}</a>
