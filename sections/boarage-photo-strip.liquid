@@ -80,6 +80,8 @@
             <div class="bps__item"{% if first_copy %} {{ block.shopify_attributes }}{% else %} aria-hidden="true"{% endif %}>
               {%- if block.settings.image != blank -%}
                 {{ block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 360, 480, 720', sizes: '(min-width: 750px) 240px, 44vw', alt: block.settings.alt | default: block.settings.image.alt }}
+              {%- else -%}
+                <span aria-hidden="true"></span>
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -94,6 +96,8 @@
           <div class="bps__item" {{ block.shopify_attributes }}>
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 360, 480, 720', sizes: '(min-width: 750px) 240px, 44vw', alt: block.settings.alt | default: block.settings.image.alt }}
+            {%- else -%}
+              <span aria-hidden="true"></span>
             {%- endif -%}
           </div>
         {%- endfor -%}

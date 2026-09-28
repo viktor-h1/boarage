@@ -79,6 +79,8 @@
             <div class="bst__media{% if b.image == blank %} bst__media--empty{% endif %}"{% if b.image_focus != blank and b.image_focus != 'center' %} style="--bst-focus: 50% {% if b.image_focus == 'top' %}0%{% else %}100%{% endif %};"{% endif %}>
               {%- if b.image != blank -%}
                 {{ b.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 750px) 400px, 40vw', alt: b.image_alt | default: b.image.alt }}
+              {%- else -%}
+                <span aria-hidden="true"></span>{%- comment -%} keeps the box from matching the theme's div:empty { display: none } {%- endcomment -%}
               {%- endif -%}
             </div>
             <div class="bst__body">

@@ -57,7 +57,7 @@
   .bcp__title { margin: 0 0 28px; font-family: var(--bcp-heading-font); font-size: var(--bcp-heading-size, 30px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; color: var(--bcp-heading, #1d4d36); overflow-wrap: anywhere; }
   .bcp__title em, .bcp__title i { font-style: normal; color: var(--bcp-eyebrow, #2fbd44); }
   .bcp__table { display: grid; grid-template-columns: var(--bcp-col, 26%) minmax(0, 1fr) var(--bcp-col, 26%); grid-template-rows: var(--bcp-head-h, 0px) repeat(var(--bcp-rows, 1), auto); }
-  .bcp__panel { grid-row: 1 / -1; z-index: 0; margin-top: var(--bcp-panel-top, 0px); border-radius: var(--bcp-radius, 8px); }
+  .bcp__panel { display: block; grid-row: 1 / -1; z-index: 0; margin-top: var(--bcp-panel-top, 0px); border-radius: var(--bcp-radius, 8px); }
   .bcp__panel--us { grid-column: 1; background: linear-gradient(170deg, var(--bcp-us-1, #2f8a55) 0%, var(--bcp-us-2, #0e3d26) 100%); }
   .bcp__panel--them { grid-column: 3; background: var(--bcp-them, #eeeeee); }
   .bcp__head { grid-row: 1; position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: center; height: var(--bcp-head-h, 0px); padding: 0 6px; }
@@ -84,8 +84,9 @@
     {%- if s.heading != blank -%}<h2 class="bcp__title">{{ s.heading }}</h2>{%- endif -%}
     {%- if rows.size > 0 -%}
       <div class="bcp__table" aria-label="{{ s.heading | strip_html | default: 'Comparison' | escape }}">
-        <div class="bcp__panel bcp__panel--us" aria-hidden="true"></div>
-        <div class="bcp__panel bcp__panel--them" aria-hidden="true"></div>
+        {%- comment -%} <span>, not <div>: the theme's base.css hides every empty div (div:empty { display: none }). {%- endcomment -%}
+        <span class="bcp__panel bcp__panel--us" aria-hidden="true"></span>
+        <span class="bcp__panel bcp__panel--them" aria-hidden="true"></span>
         <div class="bcp__head bcp__head--us">
           {%- if s.image_us != blank -%}
             {{ s.image_us | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 320, 480', sizes: '160px', alt: s.label_us }}
