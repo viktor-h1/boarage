@@ -1,0 +1,124 @@
+{%- comment -%}
+  Purchase selector of the buy box: the variant list for assets/boarage-pdp.js (JSON), the weight cards, then the
+  panel with the subscription / one-time cards, the subscription points and the 1-/2-/3-month supply cards.
+  Rendered inside the product form by boarage-pdp-02-buy-box, which resolves the options, the selling plan and the
+  selection on load and passes them in.
+  The radios carry no name the cart reads; assets/boarage-pdp.js maps them to the hidden id / selling_plan inputs.
+{%- endcomment -%}
+<script type="application/json" data-bpdp-variants>[
+  {%- for variant in product.variants -%}
+    {"id":{{ variant.id }},"w":{% if wi >= 0 %}{{ variant.options[wi] | json }}{% else %}null{% endif %},"s":{% if si >= 0 %}{{ variant.options[si] | json }}{% else %}null{% endif %},"p":{{ variant.price | money | json }},"c":{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}""{% endif %},"a":{{ variant.available | json }},"m":{{ variant.featured_media.id | default: 0 | json }},"sp":{{ subs[forloop.index0] | default: '' | json }},"sc":{{ subs_was[forloop.index0] | default: '' | json }},"save":{{ saves[forloop.index0] | default: 0 | plus: 0 }}}{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+]</script>
+{%- if wi >= 0 -%}
+  {%- if s.weight_label != blank -%}
+    <p class="bpdp-pick" id="{{ form_id }}-w">{{ s.weight_label | escape }}</p>
+  {%- elsif request.design_mode -%}
+    <p class="bpdp-pick">{% render 'boarage-placeholder', label: 'Heading above the weight cards' %}</p>
+  {%- endif -%}
+  <fieldset class="bpdp-opts" role="radiogroup"{% if s.weight_label != blank %} aria-labelledby="{{ form_id }}-w"{% else %} aria-label="{{ product.options[wi] | escape }}"{% endif %}>
+    {%- for v in w_values -%}
+      {%- liquid
+        assign val = v.name | default: v
+        assign pos = forloop.index0
+        assign key = val | strip | downcase
+        assign wb = ''
+        for b in weight_blocks
+          assign m = b.settings.match | strip | downcase
+          if m != blank and m == key
+            assign wb = b
+            break
+          endif
+        endfor
+        if wb == blank
+          assign cand = weight_blocks[pos]
+          if cand != blank and cand.settings.match == blank
+            assign wb = cand
+          endif
+        endif
+        assign w_label = wb.settings.label | default: val
+        assign paw = pos | times: 6 | plus: 18 | at_most: 32
+      -%}
+      <label class="bpdp-opt bpdp-wopt"{% if wb != blank %} {{ wb.shopify_attributes }}{% endif %}>
+        <input class="bpdp-opt__in" type="radio" name="{{ form_id }}-weight" value="{{ val | escape }}" data-bpdp-w{% if val == cur_w %} checked{% endif %}>
+        <span class="bpdp-wopt__img">
+          {%- if wb.settings.image != blank -%}
+            {{ wb.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '', width: 48, height: 48, widths: '60, 120' }}
+          {%- else -%}
+            {% render 'boarage-icon', name: 'paw', size: paw %}
+          {%- endif -%}
+        </span>
+        <span class="bpdp-wopt__name">{{ w_label | escape }}</span>
+        {%- if wb.settings.dose != blank -%}<span class="bpdp-opt__sub">{{ wb.settings.dose | escape }}</span>{%- endif -%}
+        {% render 'boarage-icon', name: 'checkc', size: 20, class: 'bpdp-opt__tick' %}
+      </label>
+    {%- endfor -%}
+  </fieldset>
+{%- endif -%}
+
+{%- if has_sub or si >= 0 -%}
+  <div class="bpdp-panel">
+    {%- if has_sub -%}
+      <fieldset class="bpdp-opts" role="radiogroup" aria-label="{{ plan_group_name | escape }}">
+        <label class="bpdp-opt bpdp-popt">
+          <input class="bpdp-opt__in" type="radio" name="{{ form_id }}-plan" value="sub" data-bpdp-p{% if plan_now == 'sub' %} checked{% endif %}>
+          {%- if s.sub_badge != blank -%}<span class="bpdp-popt__badge">{{ s.sub_badge | escape }}</span>{%- endif -%}
+          <span class="bpdp-popt__label">{{ s.sub_label | default: plan_group_name | escape }}</span>
+          <span class="bpdp-popt__price" data-bpdp-sub-price>{{ base_sub }}</span>
+          {%- if s.sub_note != blank -%}<span class="bpdp-opt__sub">{{ s.sub_note | escape }}</span>{%- endif -%}
+        </label>
+        {%- if once_ok -%}
+          <label class="bpdp-opt bpdp-popt">
+            <input class="bpdp-opt__in" type="radio" name="{{ form_id }}-plan" value="once" data-bpdp-p{% if plan_now == 'once' %} checked{% endif %}>
+            <span class="bpdp-popt__label">{% if s.once_label != blank %}{{ s.once_label | escape }}{% elsif request.design_mode %}{% render 'boarage-placeholder', label: 'One-time title' %}{% endif %}</span>
+            <span class="bpdp-popt__price" data-bpdp-once-price>{{ base.price | money }}</span>
+            {%- if s.once_note != blank -%}<span class="bpdp-opt__sub">{{ s.once_note | escape }}</span>{%- endif -%}
+          </label>
+        {%- endif -%}
+      </fieldset>
+      {%- if points_filled > 0 or request.design_mode -%}
+        <ul class="bpdp-list bpdp-points" data-bpdp-points{% if plan_now != 'sub' %} hidden{% endif %}>
+          {%- for block in point_blocks -%}
+            {%- if block.settings.text != blank or request.design_mode -%}
+              <li {{ block.shopify_attributes }}>{% render 'boarage-icon', name: 'checkc', size: 24 %}<span>{% if block.settings.text != blank %}{{ block.settings.text }}{% else %}{% render 'boarage-placeholder', label: 'Subscription point' %}{% endif %}</span></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    {%- elsif request.design_mode -%}
+      <p>{% render 'boarage-placeholder', label: 'Subscription card: add a selling plan to the product (e.g. Shopify Subscriptions)' %}</p>
+    {%- endif -%}
+    {%- if si >= 0 and once_ok -%}
+      <fieldset class="bpdp-opts" role="radiogroup" aria-label="{{ product.options[si] | escape }}" data-bpdp-supplies{% if plan_now == 'sub' %} hidden{% endif %}>
+        {%- for v in s_values -%}
+          {%- liquid
+            assign val = v.name | default: v
+            assign sv = ''
+            assign sv_save = 0
+            for variant in product.variants
+              assign vw = ''
+              if wi >= 0
+                assign vw = variant.options[wi]
+              endif
+              if vw == cur_w and variant.options[si] == val
+                assign sv = variant
+                assign sv_save = saves[forloop.index0] | plus: 0
+                break
+              endif
+            endfor
+            assign badge = ''
+            if sv_save > 0 and s.supply_badge != blank
+              assign badge = s.supply_badge | replace: '[percent]', sv_save
+            endif
+          -%}
+          <label class="bpdp-opt">
+            <input class="bpdp-opt__in" type="radio" name="{{ form_id }}-supply" value="{{ val | escape }}" data-bpdp-s{% if val == cur_s %} checked{% endif %}>
+            <span>{{ val | escape }}</span>
+            <b class="bpdp-opt__price" data-bpdp-sp>{% if sv != blank %}{{ sv.price | money }}{% endif %}</b>
+            <span class="bpdp-pill" data-bpdp-save{% if badge == blank %} hidden{% endif %}>{{ badge | escape }}</span>
+          </label>
+        {%- endfor -%}
+      </fieldset>
+    {%- endif -%}
+  </div>
+{%- endif -%}

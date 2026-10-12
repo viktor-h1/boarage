@@ -3281,7 +3281,7 @@
       "colors_header": "Colours",
       "color_primary": {
         "label": "Primary dark (Kelp)",
-        "info": "Headings on light backgrounds, selected bundle border, dark badges, guarantee icon."
+        "info": "Headings on light backgrounds, selected card border, badges, check marks, guarantee icon."
       },
       "color_primary_ink": {
         "label": "Text on primary dark"
@@ -3299,11 +3299,11 @@
       },
       "color_soft": {
         "label": "Info panels (Mist)",
-        "info": "FAQ, trust box, chart fill."
+        "info": "Selected option cards, FAQ, trust box, chart fill."
       },
       "color_warm": {
         "label": "Secondary panels (Oat)",
-        "info": "Benefits box, guarantee box, stage cards, gallery background, bundle labels."
+        "info": "Benefits box, purchase panel, guarantee box, stage cards, gallery background, saving badges."
       },
       "color_line": {
         "label": "Lines and card borders"
@@ -3480,7 +3480,7 @@
     "s02": {
       "name": "Boarage 02 Buy box",
       "settings": {
-        "paragraph": "Gallery with benefit tiles, rating, title, description, benefits, bundle cards, add-to-cart, trust box, guarantee and accordions. Product-only.",
+        "paragraph": "Gallery with benefit tiles, rating, title, description, benefits, weight cards, subscription / one-time cards, add-to-cart, trust box, guarantee and accordions. Product-only.",
         "gallery_header": "Gallery",
         "gallery_aspect": {
           "label": "Image frame",
@@ -3520,22 +3520,54 @@
           "label": "Description under the title",
           "info": "Two or three plain sentences."
         },
-        "bundle_header": "Bundles and price",
+        "purchase_header": "Purchase options",
+        "purchase_paragraph": "Product setup: one option for the dog's weight and one for the supply length (values start with the number of months, e.g. “2-month supply”). Every weight × supply pair is a variant with its own price. The subscription card appears when the product has a selling plan (e.g. Shopify Subscriptions) and uses the weight's 1-month variant.",
         "offer_label": {
-          "label": "Divider line above the bundles",
+          "label": "Divider line above the options",
           "info": "Example: “Limited time offer”."
         },
-        "price_mode": {
-          "label": "Variant prices are",
-          "info": "Bundle total: the variant price is the total. Per unit: the total is price × units (custom.units_per_variant) and that quantity goes into the cart.",
+        "weight_label": {
+          "label": "Heading above the weight cards",
+          "info": "Example: “Your dog's weight”."
+        },
+        "weight_option": {
+          "label": "Product option for the dog's weight",
+          "info": "The option name, e.g. “Dog weight”. Empty: the first option."
+        },
+        "supply_option": {
+          "label": "Product option for the supply length",
+          "info": "The option name, e.g. “Supply”. Empty: the other option."
+        },
+        "default_plan": {
+          "label": "Selected on page load",
           "options": {
-            "bundle_total": "Bundle totals",
-            "per_unit": "Per unit"
+            "sub": "Subscription",
+            "once": "One-time purchase"
           }
         },
-        "per_unit_label": {
-          "label": "Per-unit label",
-          "info": "Example: “per jar”. Shown only when custom.units_per_variant is set on the variant."
+        "sub_badge": {
+          "label": "Badge on the subscription card",
+          "info": "Example: “Most popular”."
+        },
+        "sub_label": {
+          "label": "Subscription card title",
+          "info": "Empty: the selling plan group name."
+        },
+        "sub_note": {
+          "label": "Line under the subscription price",
+          "info": "Example: “/month • no commitment”."
+        },
+        "once_label": {
+          "label": "One-time card title",
+          "info": "Example: “One-time purchase”."
+        },
+        "once_note": {
+          "label": "Line under the one-time price",
+          "info": "Example: “1 month supply”."
+        },
+        "supply_badge": {
+          "label": "Saving badge on the supply cards",
+          "info": "[percent] becomes the saving against buying 1-month supplies, e.g. “Save [percent]%”. Hidden when there is no saving."
         },
         "stock_text": {
           "label": "Stock / delivery line (status dot)",
@@ -3590,47 +3622,34 @@
             }
           }
         },
-        "bundle": {
-          "name": "Bundle card",
-          "paragraph": "One card per product variant, in variant order. Prices come from the variants.",
+        "weight": {
+          "name": "Weight card",
+          "paragraph": "One card per value of the weight option, in option order. The weight sets the dose, so each weight has its own prices.",
           "settings": {
             "match": {
-              "label": "Variant title to match",
-              "info": "Example: “3 Dosen”. Empty: the card follows the block position."
+              "label": "Option value to match",
+              "info": "Example: “Up to 20 lb”. Empty: the card follows the block position."
             },
-            "name": {
+            "label": {
               "label": "Card name",
-              "info": "Empty: the variant title."
+              "info": "Empty: the option value."
             },
-            "subline": {
-              "label": "Sub-line"
-            },
-            "highlight": {
-              "label": "Highlighted word after the sub-line",
-              "info": "Example: “FREE”."
-            },
-            "badge": {
-              "label": "Tab above the card",
-              "info": "Example: “Most popular”."
-            },
-            "badge_style": {
-              "label": "Tab style",
-              "options": {
-                "light": "Light (Oat)",
-                "dark": "Dark (Kelp)"
-              }
+            "dose": {
+              "label": "Dose line",
+              "info": "Example: “1 scoop a day”."
             },
             "image": {
-              "label": "Card image",
-              "info": "Empty: the variant image, else the product image."
-            },
-            "cta_label": {
-              "label": "Button label for this bundle",
-              "info": "Empty: the section's button label."
-            },
-            "preselect": {
-              "label": "Preselected",
-              "info": "Selected on page load unless the URL names a variant."
+              "label": "Round image",
+              "info": "Empty: a paw icon that grows with the weight."
+            }
+          }
+        },
+        "point": {
+          "name": "Subscription point",
+          "paragraph": "Shown under the subscription card while it is selected (max. 3).",
+          "settings": {
+            "text": {
+              "label": "Point text"
             }
           }
         },

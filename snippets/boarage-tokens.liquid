@@ -2,6 +2,7 @@
   Loads the Boarage PDP assets and maps Theme settings › Boarage PDP onto CSS custom properties.
   Rendered by every Boarage section (the asset tags resolve to the same cached URLs; the style block is idempotent).
   Works without the settings group too: every value falls back to the defaults in boarage-pdp.css.
+  The dark-mode tokens are emitted here, only when Theme settings › Boarage PDP › Dark mode enables them.
 {%- endcomment -%}
 {{ 'boarage-pdp.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'boarage-pdp.js' | asset_url }}" defer="defer"></script>
@@ -24,6 +25,14 @@
       {%- if settings.boarage_font_body != blank %} --bpdp-c-font-body: {{ settings.boarage_font_body.family }}, {{ settings.boarage_font_body.fallback_families }};{% endif %}
     {%- endunless %}
   }
+  {%- liquid
+    assign bpdp_dark = '--bpdp-c-bg: #16201b; --bpdp-c-surface: #23382e; --bpdp-c-ink: #f7f3ea; --bpdp-c-muted: #dce6e1; --bpdp-c-line: rgba(247,243,234,.16); --bpdp-c-soft: #23382e; --bpdp-c-warm: #23382e; --bpdp-c-primary: #f7f3ea; --bpdp-c-em: #e07b4f; --bpdp-c-focus: #e8dcc4;'
+    if settings.boarage_dark_mode == 'system'
+      echo '@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ' | append: bpdp_dark | append: ' } }'
+    elsif settings.boarage_dark_mode == 'dark'
+      echo ':root[data-theme="dark"] { ' | append: bpdp_dark | append: ' }'
+    endif
+  -%}
   {%- unless settings.boarage_use_theme_fonts %}
     {%- if settings.boarage_font_heading != blank %}{{ settings.boarage_font_heading | font_face: font_display: 'swap' }}{% endif %}
     {%- if settings.boarage_font_body != blank %}{{ settings.boarage_font_body | font_face: font_display: 'swap' }}{% endif %}

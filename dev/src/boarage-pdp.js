@@ -123,15 +123,19 @@
     W.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   }
 
-  /* Buy box: radio cards (name="id") drive price, unit line, CTA, stock line, sticky bar, gallery; fetch add-to-cart. */
+  /* Buy box: weight, plan (subscribe / one-time) and supply radios pick the variant from the JSON list and drive
+     the hidden id + selling_plan inputs, card prices, saving badges, CTA, stock line, sticky bar and gallery. */
   function initBuyBox(box) {
     if (once(box)) return;
     function g(s) { return q(s, box); }
     function attr(n) { return box.getAttribute('data-bpdp-' + n) || ''; }
-    var radios = qa('input[type="radio"][data-bpdp-variant]', box), thumbs = qa('[data-bpdp-thumb]', box), gal = g('[data-bpdp-gallery]');
-    var qty = g('input[name="quantity"]'), price = g('[data-bpdp-price]'), was = g('[data-bpdp-was]'), unit = g('[data-bpdp-unit]'), unitVal = g('[data-bpdp-unit-value]'), stock = g('[data-bpdp-stock]');
+    var thumbs = qa('[data-bpdp-thumb]', box), gal = g('[data-bpdp-gallery]'), data = [];
+    try { data = JSON.parse(g('[data-bpdp-variants]').textContent); } catch (e0) {}
+    var ws = qa('[data-bpdp-w]', box), ps = qa('[data-bpdp-p]', box), ss = qa('[data-bpdp-s]', box);
+    var idIn = g('[data-bpdp-id]'), planIn = g('[data-bpdp-plan]'), points = g('[data-bpdp-points]'), sups = g('[data-bpdp-supplies]');
+    var price = g('[data-bpdp-price]'), was = g('[data-bpdp-was]'), stock = g('[data-bpdp-stock]');
     var cta = g('[data-bpdp-cta]'), ctaLabel = g('[data-bpdp-cta-label]'), ctaPrice = g('[data-bpdp-cta-price]'), stPrice = g('[data-bpdp-sticky-price]'), stWas = g('[data-bpdp-sticky-was]'), stLabel = g('[data-bpdp-sticky-label]');
-    var form = g('form[data-bpdp-form]'), err = g('[data-bpdp-error]');
+    var form = g('form[data-bpdp-form]'), err = g('[data-bpdp-error]'), one = attr('one'), saveT = attr('save-text');
 
     function showMedia(id) {
       if (!id) return;
@@ -147,30 +151,45 @@
       ctaLabel.setAttribute('data-swap', '');
       setTimeout(function () { ctaLabel.textContent = t; ctaLabel.removeAttribute('data-swap'); }, 100);
     }
+    function pick(list) { var r = list.filter(function (x) { return x.checked; })[0]; return r ? r.value : null; }
+    function find(w, s) { return data.filter(function (v) { return (v.w === null || v.w === w) && (v.s === null || v.s === s); })[0]; }
 
-    function apply(r, first) {
-      var d = r.dataset, avail = d.available === 'true', label = avail ? (d.cta || attr('cta-default')) : attr('soldout');
-      radios.forEach(function (x) { var l = x.closest('.bpdp-bundle'); if (l) l.classList.toggle('is-selected', x === r); });
-      if (qty) qty.value = d.qty || '1';
-      html(price, d.price);
-      html(was, d.was);
-      html(unitVal, d.unit);
-      if (unit) unit.hidden = !d.unit;
+    function apply(first) {
+      var w = pick(ws), sub = pick(ps) === 'sub', s = sub ? one : pick(ss) || one, base = find(w, one), v = find(w, s) || base;
+      ss.forEach(function (r) {
+        var x = find(w, r.value), l = r.parentNode;
+        html(q('[data-bpdp-sp]', l), x && x.p);
+        html(q('[data-bpdp-save]', l), x && x.save > 0 && saveT ? saveT.replace('[percent]', x.save) : '');
+      });
+      if (base) { html(g('[data-bpdp-sub-price]'), base.sp); html(g('[data-bpdp-once-price]'), base.p); }
+      if (points) points.hidden = !sub;
+      if (sups) sups.hidden = sub;
+      if (!v) return;
+      sub = sub && !!v.sp;
+      var avail = v.a, p = sub ? v.sp : v.p, old = sub ? v.sc : v.c, label = avail ? attr('cta-default') : attr('soldout');
+      if (idIn) idIn.value = v.id;
+      if (planIn) planIn.disabled = !sub;
+      html(price, p);
+      html(was, old);
       swapLabel(label, first);
-      html(ctaPrice, avail ? '• ' + d.price : '');
+      html(ctaPrice, avail ? '• ' + p : '');
       if (cta) { cta.disabled = !avail; cta.setAttribute('aria-disabled', String(!avail)); }
       if (stock) stock.hidden = !avail;
-      html(stPrice, d.price);
-      html(stWas, d.was);
+      html(stPrice, p);
+      html(stWas, old);
       if (stLabel) stLabel.textContent = avail ? (attr('sticky-default') || label) : attr('soldout');
       if (first) return;
-      showMedia(d.media);
-      try { var u = new URL(W.location.href); u.searchParams.set('variant', d.bpdpVariant); W.history.replaceState(null, '', u.toString()); } catch (e) {}
-      box.dispatchEvent(new CustomEvent('boarage:variantchange', { bubbles: true, detail: { variantId: Number(d.bpdpVariant), available: avail } }));
+      if (v.m) showMedia(String(v.m));
+      try {
+        var u = new URL(W.location.href);
+        u.searchParams.set('variant', v.id);
+        if (sub) u.searchParams.set('selling_plan', planIn.value); else u.searchParams.delete('selling_plan');
+        W.history.replaceState(null, '', u.toString());
+      } catch (e) {}
+      box.dispatchEvent(new CustomEvent('boarage:variantchange', { bubbles: true, detail: { variantId: v.id, available: avail, sellingPlan: sub ? Number(planIn.value) : null } }));
     }
-    radios.forEach(function (r) { r.addEventListener('change', function () { if (r.checked) apply(r, false); }); });
-    var checked = radios.filter(function (r) { return r.checked; })[0] || radios[0];
-    if (checked) { checked.checked = true; apply(checked, true); }
+    ws.concat(ps, ss).forEach(function (r) { r.addEventListener('change', function () { apply(false); }); });
+    apply(true);
 
     function showError(msg) { if (err) { err.textContent = msg || ''; err.hidden = !msg; } }
     function busy(on) { if (cta) { cta.setAttribute('aria-busy', on ? 'true' : 'false'); cta.setAttribute('aria-disabled', on || cta.disabled ? 'true' : 'false'); } }

@@ -62,91 +62,216 @@
   "variants": [
     {
       "id": 2001,
-      "title": "Fixture variant A",
-      "price": 4999,
-      "compare_at_price": 8999,
+      "title": "Up to 20 lb / 1-month supply",
+      "options": [
+        "Up to 20 lb",
+        "1-month supply"
+      ],
+      "price": 2999,
+      "compare_at_price": null,
       "available": true,
       "featured_media": {
         "id": 11
-      },
-      "metafields": {
-        "custom": {
-          "units_per_variant": {
-            "value": 1
-          }
-        }
       },
       "featured_image": {
         "src": "/img/media-11.svg",
         "width": 1200,
         "height": 1200,
         "alt": ""
-      }
+      },
+      "selling_plan_allocations": [
+        {
+          "selling_plan": {
+            "id": 501
+          },
+          "price": 2549,
+          "compare_at_price": 2999
+        }
+      ]
     },
     {
       "id": 2002,
-      "title": "Fixture variant B",
-      "price": 12000,
-      "compare_at_price": 18000,
+      "title": "Up to 20 lb / 2-month supply",
+      "options": [
+        "Up to 20 lb",
+        "2-month supply"
+      ],
+      "price": 5199,
+      "compare_at_price": null,
+      "available": true,
+      "featured_media": {
+        "id": 11
+      },
+      "featured_image": {
+        "src": "/img/media-11.svg",
+        "width": 1200,
+        "height": 1200,
+        "alt": ""
+      },
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 2003,
+      "title": "Up to 20 lb / 3-month supply",
+      "options": [
+        "Up to 20 lb",
+        "3-month supply"
+      ],
+      "price": 6999,
+      "compare_at_price": null,
+      "available": true,
+      "featured_media": {
+        "id": 11
+      },
+      "featured_image": {
+        "src": "/img/media-11.svg",
+        "width": 1200,
+        "height": 1200,
+        "alt": ""
+      },
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 2004,
+      "title": "21–50 lb / 1-month supply",
+      "options": [
+        "21–50 lb",
+        "1-month supply"
+      ],
+      "price": 3999,
+      "compare_at_price": null,
       "available": true,
       "featured_media": {
         "id": 12
-      },
-      "metafields": {
-        "custom": {
-          "units_per_variant": {
-            "value": 3
-          }
-        }
       },
       "featured_image": {
         "src": "/img/media-12.svg",
         "width": 1200,
         "height": 1200,
         "alt": ""
-      }
+      },
+      "selling_plan_allocations": [
+        {
+          "selling_plan": {
+            "id": 501
+          },
+          "price": 3399,
+          "compare_at_price": 3999
+        }
+      ]
     },
     {
-      "id": 2003,
-      "title": "Fixture variant C",
-      "price": 18000,
+      "id": 2005,
+      "title": "21–50 lb / 2-month supply",
+      "options": [
+        "21–50 lb",
+        "2-month supply"
+      ],
+      "price": 6999,
+      "compare_at_price": null,
+      "available": true,
+      "featured_media": {
+        "id": 12
+      },
+      "featured_image": {
+        "src": "/img/media-12.svg",
+        "width": 1200,
+        "height": 1200,
+        "alt": ""
+      },
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 2006,
+      "title": "21–50 lb / 3-month supply",
+      "options": [
+        "21–50 lb",
+        "3-month supply"
+      ],
+      "price": 9399,
+      "compare_at_price": null,
+      "available": true,
+      "featured_media": {
+        "id": 12
+      },
+      "featured_image": {
+        "src": "/img/media-12.svg",
+        "width": 1200,
+        "height": 1200,
+        "alt": ""
+      },
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 2007,
+      "title": "51+ lb / 1-month supply",
+      "options": [
+        "51+ lb",
+        "1-month supply"
+      ],
+      "price": 4999,
       "compare_at_price": null,
       "available": true,
       "featured_media": {
         "id": 13
-      },
-      "metafields": {
-        "custom": {}
       },
       "featured_image": {
         "src": "/img/media-13.svg",
         "width": 1200,
         "height": 1200,
         "alt": ""
-      }
+      },
+      "selling_plan_allocations": [
+        {
+          "selling_plan": {
+            "id": 501
+          },
+          "price": 4249,
+          "compare_at_price": 4999
+        }
+      ]
     },
     {
-      "id": 2004,
-      "title": "Fixture variant D",
-      "price": 5000,
+      "id": 2008,
+      "title": "51+ lb / 2-month supply",
+      "options": [
+        "51+ lb",
+        "2-month supply"
+      ],
+      "price": 8799,
       "compare_at_price": null,
-      "available": false,
+      "available": true,
       "featured_media": {
-        "id": 14
-      },
-      "metafields": {
-        "custom": {
-          "units_per_variant": {
-            "value": 1
-          }
-        }
+        "id": 13
       },
       "featured_image": {
-        "src": "/img/media-14.svg",
+        "src": "/img/media-13.svg",
         "width": 1200,
         "height": 1200,
         "alt": ""
-      }
+      },
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 2009,
+      "title": "51+ lb / 3-month supply",
+      "options": [
+        "51+ lb",
+        "3-month supply"
+      ],
+      "price": 11799,
+      "compare_at_price": null,
+      "available": false,
+      "featured_media": {
+        "id": 13
+      },
+      "featured_image": {
+        "src": "/img/media-13.svg",
+        "width": 1200,
+        "height": 1200,
+        "alt": ""
+      },
+      "selling_plan_allocations": []
     }
   ],
   "metafields": {
@@ -170,6 +295,41 @@
     "alt": "Fixture media 1"
   },
   "options": [
-    "Menge"
+    "Dog weight",
+    "Supply"
+  ],
+  "options_with_values": [
+    {
+      "name": "Dog weight",
+      "position": 1,
+      "values": [
+        "Up to 20 lb",
+        "21–50 lb",
+        "51+ lb"
+      ]
+    },
+    {
+      "name": "Supply",
+      "position": 2,
+      "values": [
+        "1-month supply",
+        "2-month supply",
+        "3-month supply"
+      ]
+    }
+  ],
+  "has_only_default_variant": false,
+  "requires_selling_plan": false,
+  "selling_plan_groups": [
+    {
+      "id": 1,
+      "name": "Subscribe & save",
+      "selling_plans": [
+        {
+          "id": 501,
+          "name": "Delivered every month"
+        }
+      ]
+    }
   ]
 }

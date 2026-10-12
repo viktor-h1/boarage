@@ -68,48 +68,46 @@ try {
     await page.waitForFunction(() => window.BoaragePDP);
     await page.waitForTimeout(300);
     await page.screenshot({ path: path.join(SHOTS, 'filled-mobile.png'), fullPage: true });
-    const radios = page.locator('input[data-bpdp-variant]');
-    check('Bundle selector renders one radio card per variant', (await radios.count()) === 4);
-    const first = await page.evaluate(() => ({ price: document.querySelector('[data-bpdp-price]').textContent, unitHidden: document.querySelector('[data-bpdp-unit]').hidden, cta: document.querySelector('[data-bpdp-cta-label]').textContent, scroll: document.querySelector('[data-bpdp-gallery] [data-bpdp-track]').scrollLeft }));
-    await page.locator('label[for$="-v2002"]').click();
-    await page.waitForTimeout(700);
-    const second = await page.evaluate(() => {
-      const r = document.querySelector('input[data-bpdp-variant="2002"]');
+    const st = () => page.evaluate(() => {
+      const q = (s) => document.querySelector(s);
       return {
-        checked: r.checked,
-        price: document.querySelector('[data-bpdp-price]').textContent,
-        expectedPrice: r.dataset.price,
-        unit: document.querySelector('[data-bpdp-unit-value]').textContent,
-        expectedUnit: r.dataset.unit,
-        unitHidden: document.querySelector('[data-bpdp-unit]').hidden,
-        cta: document.querySelector('[data-bpdp-cta-label]').textContent,
-        ctaPrice: document.querySelector('[data-bpdp-cta-price]').textContent,
-        expectedCta: r.dataset.cta,
-        stickyPrice: document.querySelector('[data-bpdp-sticky-price]').textContent,
-        stickyLabel: document.querySelector('[data-bpdp-sticky-label]').textContent,
-        expectedSticky: document.querySelector('[data-bpdp-buybox]').getAttribute('data-bpdp-sticky-default') || r.dataset.cta,
-        url: location.search,
-        nav: performance.getEntriesByType('navigation').length,
-        selectedCard: document.querySelector('.bpdp-bundle.is-selected input').dataset.bpdpVariant,
-        liveRegion: document.querySelector('[data-bpdp-price]').closest('[aria-live]').getAttribute('aria-live'),
-        radiogroup: document.querySelector('fieldset.bpdp-bundles').getAttribute('role'),
-        scroll: document.querySelector('[data-bpdp-gallery] [data-bpdp-track]').scrollLeft,
-        stockHidden: document.querySelector('[data-bpdp-stock]').hidden,
+        id: q('[data-bpdp-id]').value, plan: q('[data-bpdp-plan]').value, planOff: q('[data-bpdp-plan]').disabled,
+        price: q('[data-bpdp-price]').textContent, was: q('[data-bpdp-was]').hidden ? '' : q('[data-bpdp-was]').textContent,
+        subPrice: q('[data-bpdp-sub-price]').textContent, oncePrice: q('[data-bpdp-once-price]').textContent,
+        points: !q('[data-bpdp-points]').hidden && q('[data-bpdp-points]').offsetHeight > 0, supplies: !q('[data-bpdp-supplies]').hidden && q('[data-bpdp-supplies]').offsetHeight > 0,
+        cta: q('[data-bpdp-cta-label]').textContent, ctaPrice: q('[data-bpdp-cta-price]').textContent, ctaOff: q('[data-bpdp-cta]').disabled,
+        stickyPrice: q('[data-bpdp-sticky-price]').textContent, stickyLabel: q('[data-bpdp-sticky-label]').textContent,
+        stockHidden: q('[data-bpdp-stock]').hidden, url: location.search, nav: performance.getEntriesByType('navigation').length,
+        saves: [...document.querySelectorAll('[data-bpdp-save]')].map((e) => (e.hidden ? '' : e.textContent)),
+        supplyPrices: [...document.querySelectorAll('[data-bpdp-sp]')].map((e) => e.textContent),
+        selected: [...document.querySelectorAll('.bpdp-opt')].filter((l) => l.querySelector(':checked')).map((l) => getComputedStyle(l).borderColor).length,
+        scroll: q('[data-bpdp-gallery] [data-bpdp-track]').scrollLeft,
+        groups: [...document.querySelectorAll('fieldset.bpdp-opts')].map((f) => f.getAttribute('role')),
+        live: q('[data-bpdp-price]').closest('[aria-live]').getAttribute('aria-live'),
       };
     });
-    check('Variant switch updates the price without reload', second.checked && second.price === second.expectedPrice && second.price !== first.price && second.nav === 1, `${first.price} → ${second.price}`);
-    check('Variant switch updates the per-unit price (12000 / 3)', second.unit === second.expectedUnit && !second.unitHidden && /40,00/.test(second.unit), second.unit);
-    check('Variant switch updates the CTA label and the price inside the button', second.cta === second.expectedCta && second.cta !== first.cta && second.ctaPrice.includes(second.expectedPrice), `${first.cta} → ${second.cta} ${second.ctaPrice}`);
-    check('Variant switch updates the sticky bar', second.stickyPrice === second.expectedPrice && second.stickyLabel === second.expectedSticky, `${second.stickyPrice} / ${second.stickyLabel}`);
-    check('Variant switch updates ?variant= in the URL', /variant=2002/.test(second.url), second.url);
-    check('Variant switch scrolls the gallery to the variant image', second.scroll > first.scroll, `${first.scroll} → ${second.scroll}`);
-    check('Selected card + a11y attributes (aria-live, radiogroup)', second.selectedCard === '2002' && second.liveRegion === 'polite' && second.radiogroup === 'radiogroup' && !second.stockHidden);
-    await page.locator('label[for$="-v2003"]').click(); await page.waitForTimeout(200);
-    const third = await page.evaluate(() => ({ unitHidden: document.querySelector('[data-bpdp-unit]').hidden, was: document.querySelector('[data-bpdp-was]').hidden }));
-    check('Missing units metafield hides the per-unit line; no compare-at hides "was"', third.unitHidden && third.was);
-    await page.locator('label[for$="-v2004"]').click(); await page.waitForTimeout(200);
-    const soldout = await page.evaluate(() => ({ disabled: document.querySelector('[data-bpdp-cta]').disabled, label: document.querySelector('[data-bpdp-cta-label]').textContent, stockHidden: document.querySelector('[data-bpdp-stock]').hidden, priceHidden: document.querySelector('[data-bpdp-cta-price]').hidden }));
-    check('Sold-out variant disables the CTA with the sold-out label and hides the stock line', soldout.disabled && soldout.label === 'Ausverkauft' && soldout.stockHidden && soldout.priceHidden, soldout.label);
+    const counts = await page.evaluate(() => ({ w: document.querySelectorAll('[data-bpdp-w]').length, p: document.querySelectorAll('[data-bpdp-p]').length, s: document.querySelectorAll('[data-bpdp-s]').length }));
+    check('Purchase selector: 3 weight cards, subscribe + one-time cards, 3 supply cards', counts.w === 3 && counts.p === 2 && counts.s === 3, JSON.stringify(counts));
+    const s0 = await st();
+    check('On load: subscription selected, points shown, supply cards hidden, 1-month variant with the selling plan', s0.id === '2001' && s0.plan === '501' && !s0.planOff && s0.points && !s0.supplies && /25,49/.test(s0.price) && /29,99/.test(s0.was) && /25,49/.test(s0.ctaPrice), JSON.stringify({ id: s0.id, price: s0.price, was: s0.was, points: s0.points, supplies: s0.supplies }));
+    check('Option groups are radiogroups and the price has a polite live region', s0.groups.length === 3 && s0.groups.every((r) => r === 'radiogroup') && s0.live === 'polite');
+    await page.locator('label.bpdp-wopt').nth(1).click(); await page.waitForTimeout(700);
+    const s1 = await st();
+    check('Weight switch updates the subscription and one-time prices without reload', s1.id === '2004' && /33,99/.test(s1.subPrice) && /39,99/.test(s1.oncePrice) && /33,99/.test(s1.price) && /33,99/.test(s1.ctaPrice) && s1.nav === 1, `${s0.subPrice} → ${s1.subPrice} / ${s1.oncePrice}`);
+    check('Weight switch updates ?variant= and ?selling_plan= in the URL', /variant=2004/.test(s1.url) && /selling_plan=501/.test(s1.url), s1.url);
+    check('Weight switch scrolls the gallery to the variant image', s1.scroll > s0.scroll, `${s0.scroll} → ${s1.scroll}`);
+    check('Weight switch updates the sticky bar', /33,99/.test(s1.stickyPrice) && s1.stickyLabel === (await page.evaluate(() => document.querySelector('[data-bpdp-buybox]').getAttribute('data-bpdp-sticky-default'))), `${s1.stickyPrice} / ${s1.stickyLabel}`);
+    await page.locator('label.bpdp-popt').nth(1).click(); await page.waitForTimeout(300);
+    const s2 = await st();
+    check('One-time: points hide, supply cards appear, selling plan is dropped, one-time price', !s2.points && s2.supplies && s2.planOff && s2.id === '2004' && /39,99/.test(s2.price) && !s2.was && !/selling_plan/.test(s2.url), JSON.stringify({ points: s2.points, supplies: s2.supplies, planOff: s2.planOff, price: s2.price, url: s2.url }));
+    check('Supply cards show this weight\'s prices and the computed saving (Save [percent]%)', /39,99/.test(s2.supplyPrices[0]) && /69,99/.test(s2.supplyPrices[1]) && /93,99/.test(s2.supplyPrices[2]) && s2.saves[0] === '' && s2.saves[1] === 'Save 12%' && s2.saves[2] === 'Save 22%', `${s2.supplyPrices.join(' / ')} | ${s2.saves.join(' / ')}`);
+    await page.locator('[data-bpdp-supplies] label').nth(2).click(); await page.waitForTimeout(300);
+    const s3 = await st();
+    check('Supply card selects the 3-month variant and updates price, CTA and sticky bar', s3.id === '2006' && /93,99/.test(s3.price) && /93,99/.test(s3.ctaPrice) && /93,99/.test(s3.stickyPrice) && /variant=2006/.test(s3.url), `${s3.id} ${s3.price}`);
+    await page.locator('label.bpdp-wopt').nth(2).click(); await page.waitForTimeout(300);
+    const s4 = await st();
+    check('Sold-out variant disables the CTA with the sold-out label and hides the stock line', s4.id === '2009' && s4.ctaOff && s4.cta === 'Ausverkauft' && s4.stockHidden && /117,99/.test(s4.supplyPrices[2]), `${s4.id} ${s4.cta}`);
+    check('Exactly one card is selected per group', s4.selected === 3, String(s4.selected));
     const beforeScroll = await page.evaluate(() => document.querySelector('[data-bpdp-sticky]').hidden);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2)); await page.waitForTimeout(400);
     const afterScroll = await page.evaluate(() => { const b = document.querySelector('[data-bpdp-sticky]'); const cs = getComputedStyle(b); return { hidden: b.hidden, mounted: b.hasAttribute('data-mounted'), opacity: cs.opacity, transform: cs.transform, bottom: b.getBoundingClientRect().bottom <= innerHeight + 1 }; });
@@ -117,11 +115,16 @@ try {
     await page.screenshot({ path: path.join(SHOTS, 'filled-mobile-sticky.png') });
     await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(400);
     check('Sticky bar hides again when the CTA is back in view', await page.evaluate(() => document.querySelector('[data-bpdp-sticky]').hidden));
-    await page.locator('label[for$="-v2002"]').click(); await page.waitForTimeout(150);
+    const field = (n) => { const m = (cartPost || '').match(new RegExp(`name="${n}"\\r?\\n\\r?\\n([^\\r\\n]*)`)); return m ? m[1] : null; };
+    await page.locator('label.bpdp-wopt').nth(1).click(); await page.locator('[data-bpdp-supplies] label').nth(1).click(); await page.waitForTimeout(150);
     await page.locator('[data-bpdp-cta]').click();
     await page.waitForFunction(() => window.__cartRendered);
-    const field = (n) => { const m = (cartPost || '').match(new RegExp(`name="${n}"\\r?\\n\\r?\\n([^\\r\\n]*)`)); return m ? m[1] : null; };
-    check('Add to cart posts the selected variant and renders the cart drawer', field('id') === '2002' && field('quantity') === '1' && field('sections') === 'cart-drawer,cart-icon-bubble', `id=${field('id')} quantity=${field('quantity')} sections=${field('sections')}`);
+    check('Add to cart (one-time) posts the 2-month variant without a selling plan and renders the cart drawer', field('id') === '2005' && field('selling_plan') === null && field('quantity') === '1' && field('sections') === 'cart-drawer,cart-icon-bubble', `id=${field('id')} selling_plan=${field('selling_plan')} sections=${field('sections')}`);
+    await page.evaluate(() => { window.__cartRendered = null; });
+    await page.locator('label.bpdp-popt').nth(0).click(); await page.waitForTimeout(150);
+    await page.locator('[data-bpdp-cta]').click();
+    await page.waitForFunction(() => window.__cartRendered);
+    check('Add to cart (subscription) posts the 1-month variant with the selling plan', field('id') === '2004' && field('selling_plan') === '501', `id=${field('id')} selling_plan=${field('selling_plan')}`);
     // gallery, tiles, payment icons, guarantee, accordions inside the buy box
     const buy = await page.evaluate(() => ({
       tiles: document.querySelectorAll('.bpdp-gal__hero .bpdp-tile').length,
@@ -163,13 +166,13 @@ try {
     await ctx.close();
   }
 
-  // ---------- per-unit price mode ----------
+  // ---------- ?variant= of a multi-month supply opens on one-time ----------
   {
     const ctx = await browser.newContext(MOBILE); const page = await ctx.newPage();
-    await page.goto(`${url}/filled-storefront-perunit.html`);
+    await page.goto(`${url}/filled-storefront-onetime.html`);
     await page.waitForFunction(() => window.BoaragePDP);
-    const r = await page.evaluate(() => { const i = document.querySelector('input[data-bpdp-variant="2002"]'); return { price: i.dataset.price, unit: i.dataset.unit, qty: i.dataset.qty, was: i.dataset.was }; });
-    check('Per-unit mode: total = price × units, unit = price, quantity = units', /360,00/.test(r.price) && /120,00/.test(r.unit) && r.qty === '3' && /540,00/.test(r.was), JSON.stringify(r));
+    const r = await page.evaluate(() => ({ id: document.querySelector('[data-bpdp-id]').value, planOff: document.querySelector('[data-bpdp-plan]').disabled, once: document.querySelector('[data-bpdp-p][value="once"]').checked, w: document.querySelector('[data-bpdp-w]:checked').value, s: document.querySelector('[data-bpdp-s]:checked').value, price: document.querySelector('[data-bpdp-price]').textContent, supplies: !document.querySelector('[data-bpdp-supplies]').hidden }));
+    check('?variant=2005 opens on one-time with 21–50 lb and the 2-month card', r.id === '2005' && r.planOff && r.once && r.w === '21–50 lb' && r.s === '2-month supply' && /69,99/.test(r.price) && r.supplies, JSON.stringify(r));
     await ctx.close();
   }
 
@@ -235,19 +238,19 @@ try {
       if (info) focused.add(info);
       await page.keyboard.press('Tab');
     }
-    check('Tab reaches bundle radios, thumbnails, CTA, accordions, load-more and links (carousel arrows are disabled when nothing overflows on desktop)', ['bpdp-bundle__radio', 'thumb', 'bpdp-btn', 'bpdp-acc__summary', 'more', 'A'].every((c) => focused.has(c)), [...focused].join(','));
+    check('Tab reaches option radios, thumbnails, CTA, accordions, load-more and links (carousel arrows are disabled when nothing overflows on desktop)', ['bpdp-opt__in', 'thumb', 'bpdp-btn', 'bpdp-acc__summary', 'more', 'A'].every((c) => focused.has(c)), [...focused].join(','));
     await page.locator('#shopify-section-boarage_faq details[data-bpdp-acc] summary').first().focus();
     await page.keyboard.press('Enter'); await page.waitForTimeout(300);
     const opened = await page.evaluate(() => document.querySelector('#shopify-section-boarage_faq details[data-bpdp-acc]').open);
     await page.keyboard.press('Space'); await page.waitForTimeout(300);
     const closed = await page.evaluate(() => !document.querySelector('#shopify-section-boarage_faq details[data-bpdp-acc]').open);
     check('Enter opens and Space closes an accordion', opened && closed);
-    await page.locator('input[data-bpdp-variant="2001"]').focus();
-    await page.keyboard.press('ArrowDown'); await page.waitForTimeout(250);
-    const kb = await page.evaluate(() => ({ checked: document.querySelector('input[data-bpdp-variant="2002"]').checked, price: document.querySelector('[data-bpdp-price]').textContent, expected: document.querySelector('input[data-bpdp-variant="2002"]').dataset.price }));
-    check('Arrow keys select bundles and update the price', kb.checked && kb.price === kb.expected);
-    const focusRing = await page.evaluate(() => { const r = document.querySelector('input[data-bpdp-variant="2002"]'); r.focus(); return getComputedStyle(r.nextElementSibling).outlineStyle; });
-    check('Focused bundle card shows a visible outline', focusRing !== 'none', focusRing);
+    await page.locator('[data-bpdp-w]').first().focus();
+    await page.keyboard.press('ArrowRight'); await page.waitForTimeout(250);
+    const kb = await page.evaluate(() => ({ checked: document.querySelectorAll('[data-bpdp-w]')[1].checked, id: document.querySelector('[data-bpdp-id]').value, price: document.querySelector('[data-bpdp-price]').textContent }));
+    check('Arrow keys move between weight cards and update the variant and price', kb.checked && kb.id === '2004' && /33,99/.test(kb.price), JSON.stringify(kb));
+    const focusRing = await page.evaluate(() => getComputedStyle(document.querySelectorAll('[data-bpdp-w]')[1].closest('.bpdp-opt')).outlineStyle);
+    check('Focused option card shows a visible outline', focusRing !== 'none', focusRing);
     await ctx.close();
   }
 
@@ -261,7 +264,7 @@ try {
     await page.waitForTimeout(400);
     const m = await page.evaluate(() => {
       const bodyPx = [...document.querySelectorAll('.bpdp-rte p, .bpdp-rev__text, .bpdp-stage__body p, .bpdp-tl__item > p, .bpdp-benefits li, .bpdp-acc__inner p')].filter((e) => !e.closest('.bpdp-legal')).map((e) => parseFloat(getComputedStyle(e).fontSize));
-      const targets = [...document.querySelectorAll('.bpdp button, .bpdp summary, .bpdp a.bpdp-btn, .bpdp-bundle, .bpdp-legal__links a')].filter((e) => e.offsetParent !== null).map((e) => { const r = e.getBoundingClientRect(); return { h: r.height, w: r.width, c: e.className }; });
+      const targets = [...document.querySelectorAll('.bpdp button, .bpdp summary, .bpdp a.bpdp-btn, .bpdp-opt, .bpdp-legal__links a')].filter((e) => e.offsetParent !== null).map((e) => { const r = e.getBoundingClientRect(); return { h: r.height, w: r.width, c: e.className }; });
       const tooSmall = targets.filter((t) => t.h < 44 || t.w < 44);
       const wide = document.documentElement.scrollWidth > innerWidth + 1;
       return { cls: window.__cls, minBody: Math.min(...bodyPx), tooSmall, targets: targets.length, wide };

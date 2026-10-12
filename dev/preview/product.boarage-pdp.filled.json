@@ -74,45 +74,6 @@
             "text": "Hautfreundlich und angenehm für die tägliche Anwendung"
           }
         },
-        "bundle_1": {
-          "type": "bundle",
-          "settings": {
-            "match": "1 Dose",
-            "name": "",
-            "subline": "",
-            "highlight": "",
-            "badge": "",
-            "badge_style": "light",
-            "cta_label": "",
-            "preselect": false
-          }
-        },
-        "bundle_2": {
-          "type": "bundle",
-          "settings": {
-            "match": "3 Dosen",
-            "name": "",
-            "subline": "",
-            "highlight": "",
-            "badge": "",
-            "badge_style": "light",
-            "cta_label": "",
-            "preselect": true
-          }
-        },
-        "bundle_3": {
-          "type": "bundle",
-          "settings": {
-            "match": "6 Dosen",
-            "name": "",
-            "subline": "",
-            "highlight": "",
-            "badge": "",
-            "badge_style": "light",
-            "cta_label": "",
-            "preselect": false
-          }
-        },
         "trust_1": {
           "type": "trust",
           "settings": {
@@ -166,9 +127,6 @@
         "benefit_3",
         "benefit_4",
         "benefit_5",
-        "bundle_1",
-        "bundle_2",
-        "bundle_3",
         "trust_1",
         "trust_2",
         "trust_3",
@@ -188,8 +146,6 @@
         "rating_word": "",
         "description": "<p>&lt;h3 style=&quot;font-weight: bold;&quot;&gt;Das Mineral, das deine Gelenke, Nerven und Muskeln entspannen lässt.&lt;/h3&gt;</p><p>&lt;p&gt;Magnesiumchlorid + Vitamin B3, ohne fettende Sulfate, mit spürbarer Kühl-Wärme-Wirkung für beanspruchte Muskeln.</p><p>&lt;/p&gt;</p>",
         "offer_label": "",
-        "price_mode": "bundle_total",
-        "per_unit_label": "",
         "stock_text": "Kostenloser Versand – Lieferzeit 9–12 Werktage nach Versand",
         "cta_label": "In den Warenkorb legen",
         "cta_show_price": true,

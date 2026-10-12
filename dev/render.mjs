@@ -18,6 +18,8 @@ const settingsSchema = readJson('config/settings_schema.json');
 function themeSettings(overrides = {}) {
   const out = {};
   for (const group of settingsSchema) for (const s of group.settings || []) if (s.id && 'default' in s) out[s.id] = s.default;
+  // font_picker settings are font objects in Shopify; the harness has no font library, so map them to system stacks.
+  for (const group of settingsSchema) for (const s of group.settings || []) if (s.type === 'font_picker' && out[s.id]) out[s.id] = { family: 'Georgia', fallback_families: 'serif' };
   return { ...out, ...overrides };
 }
 
@@ -217,13 +219,29 @@ const pages = [
   { name: 'filled-storefront', mode: 'filled', design: false, themeOverrides: FILLED_THEME },
   { name: 'filled-editor', mode: 'filled', design: true, themeOverrides: FILLED_THEME },
   { name: 'filled-storefront-system', mode: 'filled', design: false, themeOverrides: { ...FILLED_THEME, boarage_dark_mode: 'system' } },
-  { name: 'filled-storefront-perunit', mode: 'filled', design: false, selectedVariant: null, perUnit: true, themeOverrides: FILLED_THEME },
+  { name: 'filled-storefront-onetime', mode: 'filled', design: false, selectedVariant: 2005, themeOverrides: FILLED_THEME },
+  { name: 'demo-storefront', mode: 'filled', design: false, demo: true, themeOverrides: FILLED_THEME },
 ];
+// Buy box: the fixture product names its options "Dog weight" and "Supply"; the saving badge uses the [percent] token.
+const BUY_FILLED = { weight_option: 'Dog weight', supply_option: 'Supply', supply_badge: 'Save [percent]%' };
+// demo-storefront: the reference copy for the purchase panel, to preview the buy box as it will read.
+const BUY_DEMO = { ...BUY_FILLED, weight_label: "Your dog's weight", sub_badge: 'Most popular', sub_label: 'Subscribe', sub_note: '/month • no commitment', once_label: 'One-time purchase', once_note: '1 month supply' };
+const DEMO_BLOCKS = {
+  weight_1: { dose: '½ scoop a day' }, weight_2: { dose: '1 scoop a day' }, weight_3: { dose: '2 scoops a day' },
+  point_1: { text: 'Save 15% every month + free shipping' }, point_2: { text: 'Cancel anytime, no fees' }, point_3: { text: 'Priority dispatch, never run out' },
+};
+const buyBox = template.sections.boarage_buy_box;
+const blockBackup = JSON.parse(JSON.stringify(buyBox.blocks));
 for (const p of pages) {
-  if (p.perUnit) template.sections.boarage_buy_box.settings = { ...(template.sections.boarage_buy_box.settings || {}), price_mode: 'per_unit' };
-  if (p.mode === 'filled') { template.sections.boarage_sale_bar.settings = { countdown_mode: 'daily' }; template.sections.boarage_reviews_list.settings = { initial_count: 2 }; }
+  if (p.mode === 'filled') {
+    template.sections.boarage_sale_bar.settings = { countdown_mode: 'daily' };
+    template.sections.boarage_reviews_list.settings = { initial_count: 2 };
+    buyBox.settings = p.demo ? BUY_DEMO : BUY_FILLED;
+  }
+  if (p.demo) for (const [id, st] of Object.entries(DEMO_BLOCKS)) buyBox.blocks[id].settings = { ...st, label: '', image: null, match: '' };
   await renderPage(p);
-  if (p.perUnit) delete template.sections.boarage_buy_box.settings.price_mode;
+  buyBox.blocks = JSON.parse(JSON.stringify(blockBackup));
+  buyBox.settings = {};
   template.sections.boarage_sale_bar.settings = {};
   template.sections.boarage_reviews_list.settings = {};
   console.log(`rendered dev/out/${p.name}.html`);

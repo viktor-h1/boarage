@@ -12,9 +12,12 @@
         "benefit_2": { "type": "benefit", "settings": {} },
         "benefit_3": { "type": "benefit", "settings": {} },
         "benefit_4": { "type": "benefit", "settings": {} },
-        "bundle_1": { "type": "bundle", "settings": {} },
-        "bundle_2": { "type": "bundle", "settings": {} },
-        "bundle_3": { "type": "bundle", "settings": {} },
+        "weight_1": { "type": "weight", "settings": {} },
+        "weight_2": { "type": "weight", "settings": {} },
+        "weight_3": { "type": "weight", "settings": {} },
+        "point_1": { "type": "point", "settings": {} },
+        "point_2": { "type": "point", "settings": {} },
+        "point_3": { "type": "point", "settings": {} },
         "note_1": { "type": "note", "settings": {} },
         "note_2": { "type": "note", "settings": {} },
         "trust_1": { "type": "trust", "settings": {} },
@@ -24,7 +27,7 @@
         "accordion_3": { "type": "accordion", "settings": {} },
         "accordion_4": { "type": "accordion", "settings": {} }
       },
-      "block_order": ["star_rating", "tile_1", "tile_2", "tile_3", "benefit_1", "benefit_2", "benefit_3", "benefit_4", "bundle_1", "bundle_2", "bundle_3", "note_1", "note_2", "trust_1", "trust_2", "accordion_1", "accordion_2", "accordion_3", "accordion_4"],
+      "block_order": ["star_rating", "tile_1", "tile_2", "tile_3", "benefit_1", "benefit_2", "benefit_3", "benefit_4", "weight_1", "weight_2", "weight_3", "point_1", "point_2", "point_3", "note_1", "note_2", "trust_1", "trust_2", "accordion_1", "accordion_2", "accordion_3", "accordion_4"],
       "settings": {}
     },
     "boarage_reviews": {

@@ -20,7 +20,7 @@
     "colors_header": "Farben",
     "color_primary": {
       "label": "Primär dunkel (Kelp)",
-      "info": "Überschriften auf hellem Grund, Rahmen des gewählten Pakets, dunkle Badges, Garantie-Icon."
+      "info": "Überschriften auf hellem Grund, Rahmen der gewählten Karte, Badges, Häkchen, Garantie-Icon."
     },
     "color_primary_ink": {
       "label": "Text auf Primär dunkel"
@@ -38,11 +38,11 @@
     },
     "color_soft": {
       "label": "Info-Flächen (Mist)",
-      "info": "FAQ, Vertrauens-Box, Diagrammfläche."
+      "info": "Gewählte Optionskarten, FAQ, Vertrauens-Box, Diagrammfläche."
     },
     "color_warm": {
       "label": "Sekundäre Flächen (Oat)",
-      "info": "Vorteile-Box, Garantie-Box, Stadien-Karten, Galerie-Hintergrund, Paket-Labels."
+      "info": "Vorteile-Box, Kauf-Panel, Garantie-Box, Stadien-Karten, Galerie-Hintergrund, Spar-Badges."
     },
     "color_line": {
       "label": "Linien und Kartenrahmen"
@@ -219,7 +219,7 @@
   "s02": {
     "name": "Boarage 02 Kaufbox",
     "settings": {
-      "paragraph": "Galerie mit Vorteil-Kacheln, Bewertung, Titel, Beschreibung, Vorteile, Paket-Karten, Warenkorb, Vertrauensbox, Garantie und Akkordeons. Nur für Produkte.",
+      "paragraph": "Galerie mit Vorteil-Kacheln, Bewertung, Titel, Beschreibung, Vorteile, Gewichtskarten, Abo-/Einmalkauf-Karten, Warenkorb, Vertrauensbox, Garantie und Akkordeons. Nur für Produkte.",
       "gallery_header": "Galerie",
       "gallery_aspect": {
         "label": "Bildformat",
@@ -259,22 +259,54 @@
         "label": "Beschreibung unter dem Titel",
         "info": "Zwei bis drei klare Sätze."
       },
-      "bundle_header": "Pakete und Preis",
+      "purchase_header": "Kaufoptionen",
+      "purchase_paragraph": "Produkt-Einrichtung: eine Option für das Gewicht des Hundes und eine für die Vorratsdauer (Werte beginnen mit der Zahl der Monate, z. B. „2-month supply“). Jedes Paar Gewicht × Vorrat ist eine Variante mit eigenem Preis. Die Abo-Karte erscheint, wenn das Produkt einen Verkaufsplan hat (z. B. Shopify Subscriptions), und nutzt die 1-Monats-Variante des Gewichts.",
       "offer_label": {
-        "label": "Trennzeile über den Paketen",
+        "label": "Trennzeile über den Optionen",
         "info": "Beispiel: „Nur für kurze Zeit“."
       },
-      "price_mode": {
-        "label": "Variantenpreise sind",
-        "info": "Paketpreis: der Variantenpreis ist der Gesamtpreis. Pro Stück: Gesamtpreis = Preis × Stück (custom.units_per_variant), diese Menge wandert in den Warenkorb.",
+      "weight_label": {
+        "label": "Überschrift über den Gewichtskarten",
+        "info": "Beispiel: „Gewicht deines Hundes“."
+      },
+      "weight_option": {
+        "label": "Produktoption für das Gewicht",
+        "info": "Der Optionsname, z. B. „Dog weight“. Leer: die erste Option."
+      },
+      "supply_option": {
+        "label": "Produktoption für die Vorratsdauer",
+        "info": "Der Optionsname, z. B. „Supply“. Leer: die andere Option."
+      },
+      "default_plan": {
+        "label": "Beim Laden ausgewählt",
         "options": {
-          "bundle_total": "Paketpreise (Gesamt)",
-          "per_unit": "Pro Stück"
+          "sub": "Abo",
+          "once": "Einmalkauf"
         }
       },
-      "per_unit_label": {
-        "label": "Beschriftung Stückpreis",
-        "info": "Beispiel: „pro Dose“. Erscheint nur, wenn custom.units_per_variant an der Variante gesetzt ist."
+      "sub_badge": {
+        "label": "Badge auf der Abo-Karte",
+        "info": "Beispiel: „Beliebteste Wahl“."
+      },
+      "sub_label": {
+        "label": "Titel der Abo-Karte",
+        "info": "Leer: der Name der Verkaufsplan-Gruppe."
+      },
+      "sub_note": {
+        "label": "Zeile unter dem Abo-Preis",
+        "info": "Beispiel: „/Monat • jederzeit kündbar“."
+      },
+      "once_label": {
+        "label": "Titel der Einmalkauf-Karte",
+        "info": "Beispiel: „Einmalkauf“."
+      },
+      "once_note": {
+        "label": "Zeile unter dem Einmalpreis",
+        "info": "Beispiel: „Vorrat für 1 Monat“."
+      },
+      "supply_badge": {
+        "label": "Spar-Badge auf den Vorratskarten",
+        "info": "[percent] wird zur Ersparnis gegenüber 1-Monats-Vorräten, z. B. „Spare [percent] %“. Ohne Ersparnis ausgeblendet."
       },
       "stock_text": {
         "label": "Lager-/Lieferzeile (Statuspunkt)",
@@ -329,47 +361,34 @@
           }
         }
       },
-      "bundle": {
-        "name": "Paket-Karte",
-        "paragraph": "Eine Karte pro Produktvariante, in Variantenreihenfolge. Preise kommen aus den Varianten.",
+      "weight": {
+        "name": "Gewichtskarte",
+        "paragraph": "Eine Karte pro Wert der Gewichtsoption, in Optionsreihenfolge. Das Gewicht bestimmt die Dosis, daher hat jedes Gewicht eigene Preise.",
         "settings": {
           "match": {
-            "label": "Variantentitel (Zuordnung)",
-            "info": "Beispiel: „3 Dosen“. Leer: die Karte folgt der Blockposition."
+            "label": "Optionswert (Zuordnung)",
+            "info": "Beispiel: „Bis 9 kg“. Leer: die Karte folgt der Blockposition."
           },
-          "name": {
+          "label": {
             "label": "Kartenname",
-            "info": "Leer: der Variantentitel."
+            "info": "Leer: der Optionswert."
           },
-          "subline": {
-            "label": "Unterzeile"
-          },
-          "highlight": {
-            "label": "Hervorgehobenes Wort nach der Unterzeile",
-            "info": "Beispiel: „GRATIS“."
-          },
-          "badge": {
-            "label": "Reiter über der Karte",
-            "info": "Beispiel: „Beliebteste Wahl“."
-          },
-          "badge_style": {
-            "label": "Reiter-Stil",
-            "options": {
-              "light": "Hell (Oat)",
-              "dark": "Dunkel (Kelp)"
-            }
+          "dose": {
+            "label": "Dosis-Zeile",
+            "info": "Beispiel: „1 Messlöffel täglich“."
           },
           "image": {
-            "label": "Kartenbild",
-            "info": "Leer: das Variantenbild, sonst das Produktbild."
-          },
-          "cta_label": {
-            "label": "Button-Text für dieses Paket",
-            "info": "Leer: der Button-Text der Sektion."
-          },
-          "preselect": {
-            "label": "Vorausgewählt",
-            "info": "Beim Laden ausgewählt, sofern die URL keine Variante nennt."
+            "label": "Rundes Bild",
+            "info": "Leer: ein Pfoten-Icon, das mit dem Gewicht wächst."
+          }
+        }
+      },
+      "point": {
+        "name": "Abo-Vorteil",
+        "paragraph": "Erscheint unter der Abo-Karte, solange sie ausgewählt ist (max. 3).",
+        "settings": {
+          "text": {
+            "label": "Text"
           }
         }
       },
