@@ -157,11 +157,10 @@ body { background: var(--bpdp-bg); }
 .bpdp-buy { display: grid; gap: 24px; padding: 16px 0 24px; }
 .bpdp-gal { position: relative; }
 .bpdp-gal__slide { width: calc(100% - 40px); display: flex; }
-.bpdp-gal__hero { display: grid; grid-template-columns: 2.1fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 12px; }
+.bpdp-gal__hero { width: 100%; display: grid; grid-template-columns: 2.1fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 12px; }
 .bpdp-gal__hero--plain { grid-template-columns: 1fr; }
 .bpdp-gal__fig { position: relative; grid-row: 1 / -1; border-radius: var(--bpdp-radius); overflow: hidden; background: var(--bpdp-warm); aspect-ratio: var(--bpdp-gal-ratio, 4 / 5); }
 .bpdp-gal__fig img, .bpdp-gal__slide > img { width: 100%; height: 100%; object-fit: var(--bpdp-gal-fit, contain); }
-.bpdp-gal__hero { width: 100%; }
 .bpdp-gal__slide > img { border-radius: var(--bpdp-radius); background: var(--bpdp-warm); aspect-ratio: auto; }
 .bpdp-seals { position: absolute; top: 12px; left: 12px; display: grid; gap: 8px; }
 .bpdp-seal { display: flex; align-items: center; justify-content: center; width: 76px; height: 76px; padding: 8px; border-radius: 50%; background: var(--bpdp-dark); color: var(--bpdp-salt); box-shadow: inset 0 0 0 3px var(--bpdp-dark), inset 0 0 0 5px rgba(247,243,234,.85), var(--bpdp-shadow-soft); font: 700 10px/1.2 var(--bpdp-font-head); text-transform: uppercase; text-align: center; letter-spacing: .04em; }
@@ -176,9 +175,9 @@ body { background: var(--bpdp-bg); }
 .bpdp-divider::before, .bpdp-divider::after { content: ""; flex: 1; height: 1px; background: var(--bpdp-line); }
 .bpdp-form { display: grid; gap: 16px; }
 .bpdp-bundles { display: grid; grid-template-columns: repeat(var(--bpdp-cols, 3), minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; border: 0; min-width: 0; }
-.bpdp-bundle { position: relative; display: flex; flex-direction: column; gap: 8px; cursor: pointer; }
+.bpdp-bundle { position: relative; display: grid; grid-row: span 2; grid-template-rows: subgrid; gap: 8px; cursor: pointer; }
 .bpdp-bundle__radio { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.bpdp-bundle__box { display: flex; flex-direction: column; flex: 1; border: 1px solid var(--bpdp-line); border-radius: var(--bpdp-radius); background: var(--bpdp-surface); overflow: hidden; transition: border-color var(--bpdp-fast), box-shadow var(--bpdp-fast), transform var(--bpdp-fast) var(--bpdp-ease-out); }
+.bpdp-bundle__box { display: flex; flex-direction: column; border: 1px solid var(--bpdp-line); border-radius: var(--bpdp-radius); background: var(--bpdp-surface); overflow: hidden; transition: border-color var(--bpdp-fast), box-shadow var(--bpdp-fast), transform var(--bpdp-fast) var(--bpdp-ease-out); }
 .bpdp-bundle:active .bpdp-bundle__box { transform: scale(.97); }
 .bpdp-bundle.is-selected .bpdp-bundle__box { border-color: var(--bpdp-primary); box-shadow: inset 0 0 0 1px var(--bpdp-primary), var(--bpdp-shadow-soft); }
 .bpdp-bundle__radio:focus-visible + .bpdp-bundle__box { outline: 3px solid var(--bpdp-focus); outline-offset: 2px; }
@@ -191,7 +190,7 @@ body { background: var(--bpdp-bg); }
 .bpdp-bundle__img { width: 100%; aspect-ratio: 1; object-fit: contain; }
 .bpdp-bundle__name { font-weight: 600; font-size: .95em; line-height: 1.2; color: var(--bpdp-ink); }
 .bpdp-bundle__sub { font-size: .85em; line-height: 1.25; }
-.bpdp-bundle__price { display: flex; flex-direction: column; align-items: center; font-family: var(--bpdp-font-head); font-weight: 700; font-size: 1.2em; line-height: 1.15; color: var(--bpdp-ink); }
+.bpdp-bundle__price { display: flex; flex-direction: column; align-items: center; text-align: center; font-family: var(--bpdp-font-head); font-weight: 700; font-size: 1.2em; line-height: 1.15; color: var(--bpdp-ink); }
 .bpdp-bundle__was { font-size: .65em; font-weight: 500; color: var(--bpdp-muted); text-decoration: line-through; }
 .bpdp-bundle__unit { font-size: .6em; font-weight: 500; color: var(--bpdp-muted); font-family: var(--bpdp-font-body); }
 .bpdp-bundle--soldout .bpdp-bundle__box { border-style: dashed; }
