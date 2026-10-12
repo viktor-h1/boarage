@@ -1,0 +1,10 @@
+{
+  "add_to_cart": "In den Warenkorb",
+  "sold_out": "Ausverkauft",
+  "cart_error": "Dein Warenkorb konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+  "payment_methods": "Zahlungsarten",
+  "previous_slide": "Vorherige Folie",
+  "next_slide": "Nächste Folie",
+  "star_rating": "{{ rating_value }} von {{ rating_max }} Sternen",
+  "load_image": "Bild {{ index }} anzeigen"
+}

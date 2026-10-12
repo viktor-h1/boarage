@@ -1,0 +1,10 @@
+{
+  "add_to_cart": "Add to cart",
+  "sold_out": "Sold out",
+  "cart_error": "Your cart couldn't be updated. Please try again.",
+  "payment_methods": "Payment methods",
+  "previous_slide": "Previous slide",
+  "next_slide": "Next slide",
+  "star_rating": "{{ rating_value }} out of {{ rating_max }} stars",
+  "load_image": "Show image {{ index }}"
+}

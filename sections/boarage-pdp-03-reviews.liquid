@@ -32,8 +32,8 @@
           </ul>
           <div class="bpdp-bar" data-bpdp-bar aria-hidden="true"><i></i></div>
           <div class="bpdp-nav">
-            <button type="button" class="bpdp-nav__btn bpdp-press" data-bpdp-prev aria-label="{{ 'general.slider.previous_slide' | t }}">{% render 'boarage-icon', name: 'chevron-left', size: 20 %}</button>
-            <button type="button" class="bpdp-nav__btn bpdp-press" data-bpdp-next aria-label="{{ 'general.slider.next_slide' | t }}">{% render 'boarage-icon', name: 'chevron-right', size: 20 %}</button>
+            <button type="button" class="bpdp-nav__btn bpdp-press" data-bpdp-prev aria-label="{{ 'boarage.previous_slide' | t }}">{% render 'boarage-icon', name: 'chevron-left', size: 20 %}</button>
+            <button type="button" class="bpdp-nav__btn bpdp-press" data-bpdp-next aria-label="{{ 'boarage.next_slide' | t }}">{% render 'boarage-icon', name: 'chevron-right', size: 20 %}</button>
           </div>
         {%- endif -%}
         {%- for block in app_blocks -%}{% render block %}{%- endfor -%}

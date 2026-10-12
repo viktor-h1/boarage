@@ -1,12 +1,11 @@
 {
-  "products.product.add_to_cart": "In den Warenkorb legen",
-  "products.product.sold_out": "Ausverkauft",
-  "products.product.price.unit_price": "Grundpreis",
-  "accessibility.star_reviews_info": "{{ rating_value }} von {{ rating_max }} Sternen",
   "accessibility.total_reviews": "Bewertungen insgesamt",
-  "products.product.media.load_image": "Bild {{ index }} in Galerieansicht laden",
-  "sections.cart.cart_error": "Beim Aktualisieren deines Warenkorbs ist ein Fehler aufgetreten. Bitte versuche es erneut.",
-  "sections.footer.payment": "Payment methods",
-  "general.slider.previous_slide": "Slide left",
-  "general.slider.next_slide": "Slide right"
+  "boarage.add_to_cart": "In den Warenkorb",
+  "boarage.sold_out": "Ausverkauft",
+  "boarage.cart_error": "Dein Warenkorb konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+  "boarage.payment_methods": "Zahlungsarten",
+  "boarage.previous_slide": "Vorherige Folie",
+  "boarage.next_slide": "Nächste Folie",
+  "boarage.star_rating": "{{ rating_value }} von {{ rating_max }} Sternen",
+  "boarage.load_image": "Bild {{ index }} anzeigen"
 }

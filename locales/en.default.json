@@ -202,6 +202,10 @@
     }
   },
   "templates": {
+    "404": {
+      "title": "Page not found",
+      "subtext": "404"
+    },
     "search": {
       "no_results": "No results found for “{{ terms }}”. Check the spelling or use a different word or phrase.",
       "page": "Page",
@@ -245,10 +249,6 @@
         "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
       }
-    },
-    "404": {
-      "title": "Page not found",
-      "subtext": "404"
     }
   },
   "sections": {
@@ -478,5 +478,15 @@
         "shipping_address": "Shipping Address"
       }
     }
+  },
+  "boarage": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "cart_error": "Your cart couldn't be updated. Please try again.",
+    "payment_methods": "Payment methods",
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide",
+    "star_rating": "{{ rating_value }} out of {{ rating_max }} stars",
+    "load_image": "Show image {{ index }}"
   }
 }

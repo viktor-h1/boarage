@@ -42,10 +42,10 @@
   </div>
   {%- if s.show_thumbnails and gal_images.size > 1 -%}
     <div class="bpdp-thumbs">
-      <button type="button" class="bpdp-press" data-bpdp-thumb="{{ hero_media.id }}" aria-current="true" aria-label="{{ 'products.product.media.load_image' | t: index: 1 }}">{{ hero_img | image_url: width: 128 | image_tag: loading: 'lazy', alt: '', widths: '64, 128' }}</button>
+      <button type="button" class="bpdp-press" data-bpdp-thumb="{{ hero_media.id }}" aria-current="true" aria-label="{{ 'boarage.load_image' | t: index: 1 }}">{{ hero_img | image_url: width: 128 | image_tag: loading: 'lazy', alt: '', widths: '64, 128' }}</button>
       {%- for media in gal_images -%}
         {%- if media.id != hero_media.id -%}
-          <button type="button" class="bpdp-press" data-bpdp-thumb="{{ media.id }}" aria-current="false" aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index | plus: 1 }}">{{ media.preview_image | image_url: width: 128 | image_tag: loading: 'lazy', alt: '', widths: '64, 128' }}</button>
+          <button type="button" class="bpdp-press" data-bpdp-thumb="{{ media.id }}" aria-current="false" aria-label="{{ 'boarage.load_image' | t: index: forloop.index | plus: 1 }}">{{ media.preview_image | image_url: width: 128 | image_tag: loading: 'lazy', alt: '', widths: '64, 128' }}</button>
         {%- endif -%}
       {%- endfor -%}
     </div>

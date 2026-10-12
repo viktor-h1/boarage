@@ -9,3 +9,5 @@ package-lock.json
 .shopifyignore
 # Lint-only snapshot of the live storefront strings (edited by merchants in the language editor): never pushed.
 locales/en.default.json
+# Per-store deploy snapshots (merged shared files of other themes), uploaded separately: never pushed as theme files.
+deploy/

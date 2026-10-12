@@ -44,6 +44,20 @@ Assign the template in the admin: Product → *Theme template* → `boarage-pdp`
 contains the files (a product assigned to a missing template falls back to the default product page).
 To preview without assigning: append `?view=boarage-pdp` to the product URL.
 
+## Deploying to the wuffle store (Horizon)
+
+The wuffle store (atjvab-ih.myshopify.com) runs Horizon 4.3.0, not Shrine. `deploy/wuffle/` holds its shared files
+with the Boarage additions merged in: `config/settings_schema.json`, the four locale files and the product template
+without the LAI reviews app block (that app isn't installed there). To refresh it after a Horizon update, pull those
+five files from the store into `deploy/wuffle/` and run `node dev/merge-shared.mjs deploy/wuffle`.
+
+The theme files go to an **unpublished copy** of Horizon: `sections/boarage-pdp-*`, `snippets/boarage-*`,
+`assets/boarage-pdp.*` from the repo root plus everything in `deploy/wuffle/`. After adding to the cart the visitor
+goes to the cart page (Horizon's cart drawer has its own event API, not the Dawn contract).
+
+The sections' shopper-facing strings (add to cart, sold out, cart error, slider and rating labels) live in their own
+`boarage` namespace in `locales/en.default.json` / `de.json`, so they don't depend on a theme's key names.
+
 ## Theme settings (Theme settings › Boarage PDP)
 
 | Setting id | Default | Notes |

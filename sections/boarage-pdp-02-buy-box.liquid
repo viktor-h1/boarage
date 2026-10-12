@@ -13,9 +13,9 @@
   assign form_id = 'bpdp-form-' | append: section.id
   assign cta_default = s.cta_label
   if cta_default == blank
-    assign cta_default = 'products.product.add_to_cart' | t
+    assign cta_default = 'boarage.add_to_cart' | t
   endif
-  assign soldout_label = 'products.product.sold_out' | t
+  assign soldout_label = 'boarage.sold_out' | t
   assign weight_blocks = section.blocks | where: 'type', 'weight'
   assign point_blocks = section.blocks | where: 'type', 'point'
   assign benefit_blocks = section.blocks | where: 'type', 'benefit'
@@ -248,7 +248,7 @@
   {%- endif -%}
 {%- else -%}
   {%- render 'boarage-tokens' -%}
-  <div class="bpdp bpdp-buy-root" id="boarage-buy-box" tabindex="-1" data-bpdp-buybox data-bpdp-section="{{ section.id }}" data-bpdp-cta-default="{{ cta_default | escape }}" data-bpdp-soldout="{{ soldout_label | escape }}" data-bpdp-sticky-default="{{ s.sticky_cta_label | escape }}" data-bpdp-after="{{ s.after_add | default: 'drawer' }}" data-bpdp-cart-url="{{ routes.cart_url }}" data-bpdp-error-text="{{ 'sections.cart.cart_error' | t | escape }}" data-bpdp-one="{{ one | escape }}" data-bpdp-save-text="{{ s.supply_badge | escape }}">
+  <div class="bpdp bpdp-buy-root" id="boarage-buy-box" tabindex="-1" data-bpdp-buybox data-bpdp-section="{{ section.id }}" data-bpdp-cta-default="{{ cta_default | escape }}" data-bpdp-soldout="{{ soldout_label | escape }}" data-bpdp-sticky-default="{{ s.sticky_cta_label | escape }}" data-bpdp-after="{{ s.after_add | default: 'drawer' }}" data-bpdp-cart-url="{{ routes.cart_url }}" data-bpdp-error-text="{{ 'boarage.cart_error' | t | escape }}" data-bpdp-one="{{ one | escape }}" data-bpdp-save-text="{{ s.supply_badge | escape }}">
     <div class="bpdp-wrap">
       <div class="bpdp-buy">
 
@@ -335,7 +335,7 @@
                 </ul>
               {%- endif -%}
               {%- if s.show_payment_icons and pay_types.size > 0 -%}
-                <div class="bpdp-pay" aria-label="{{ 'sections.footer.payment' | t }}">{%- for type in pay_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
+                <div class="bpdp-pay" aria-label="{{ 'boarage.payment_methods' | t }}">{%- for type in pay_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
               {%- endif -%}
             </div>
           {%- endif -%}

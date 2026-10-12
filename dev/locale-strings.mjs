@@ -1,6 +1,6 @@
 // Every editor string of the Boarage PDP sections and settings, English + German.
 // `node dev/locale-strings.mjs` writes dev/shared/boarage.en.schema.json and boarage.de.schema.json;
-// `node dev/merge-shared.mjs` then merges them into the theme's locale files.
+// `node dev/merge-shared.mjs [theme-dir]` then merges them into the theme's locale files.
 import fs from 'node:fs';
 
 const S = {
@@ -312,9 +312,22 @@ const S = {
   's14.settings.datenschutz_link.label': ['Datenschutz link', 'Datenschutz-Link'],
 };
 
-function build(i) {
+// Storefront strings of the sections (shopper-facing), merged into each theme's locales/en.default.json and de.json
+// under "boarage", so the sections don't depend on the wording or key names of a particular theme.
+const F = {
+  'add_to_cart': ['Add to cart', 'In den Warenkorb'],
+  'sold_out': ['Sold out', 'Ausverkauft'],
+  'cart_error': ['Your cart couldn\'t be updated. Please try again.', 'Dein Warenkorb konnte nicht aktualisiert werden. Bitte versuche es erneut.'],
+  'payment_methods': ['Payment methods', 'Zahlungsarten'],
+  'previous_slide': ['Previous slide', 'Vorherige Folie'],
+  'next_slide': ['Next slide', 'Nächste Folie'],
+  'star_rating': ['{{ rating_value }} out of {{ rating_max }} stars', '{{ rating_value }} von {{ rating_max }} Sternen'],
+  'load_image': ['Show image {{ index }}', 'Bild {{ index }} anzeigen'],
+};
+
+function build(i, table = S) {
   const out = {};
-  for (const [k, v] of Object.entries(S)) {
+  for (const [k, v] of Object.entries(table)) {
     const parts = k.split('.');
     let o = out;
     for (const p of parts.slice(0, -1)) o = o[p] = o[p] || {};
@@ -324,4 +337,6 @@ function build(i) {
 }
 fs.writeFileSync('dev/shared/boarage.en.schema.json', JSON.stringify(build(0), null, 2) + '\n');
 fs.writeFileSync('dev/shared/boarage.de.schema.json', JSON.stringify(build(1), null, 2) + '\n');
-console.log(`${Object.keys(S).length} strings written`);
+fs.writeFileSync('dev/shared/boarage.en.json', JSON.stringify(build(0, F), null, 2) + '\n');
+fs.writeFileSync('dev/shared/boarage.de.json', JSON.stringify(build(1, F), null, 2) + '\n');
+console.log(`${Object.keys(S).length} editor strings and ${Object.keys(F).length} storefront strings written`);

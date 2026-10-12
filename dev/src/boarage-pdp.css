@@ -4,7 +4,7 @@
    Rules kept here: Sea Salt replaces pure white; Dawn is a fill with Ink on top, never text on a light background;
    Tide and Dawn Deep are small text on Sea Salt or Mist only (on Oat panels small text uses Ink or Kelp).
    Spacing on a 4 px scale. Motion: transform/opacity only (plus grid-template-rows for accordions).
-   All sizes in px/em: Shrine sets html to 62.5%. */
+   All sizes in px/em (Shrine sets html to 62.5%). Theme fonts: Dawn/Shrine (--font-*-family) or Horizon (--font-*--family). */
 :root {
   --bpdp-primary: var(--bpdp-c-primary, #23382e);
   --bpdp-primary-ink: var(--bpdp-c-primary-ink, #f7f3ea);
@@ -31,8 +31,8 @@
   --bpdp-shadow-up: 0 -8px 32px rgba(35, 56, 46, .14);
   --bpdp-radius: var(--bpdp-c-radius, 8px);
   --bpdp-base: var(--bpdp-c-base, 18px);
-  --bpdp-font-head: var(--bpdp-c-font-heading, var(--font-heading-family, system-ui, sans-serif));
-  --bpdp-font-body: var(--bpdp-c-font-body, var(--font-body-family, system-ui, sans-serif));
+  --bpdp-font-head: var(--bpdp-c-font-heading, var(--font-heading-family, var(--font-heading--family, system-ui, sans-serif)));
+  --bpdp-font-body: var(--bpdp-c-font-body, var(--font-body-family, var(--font-body--family, system-ui, sans-serif)));
   --bpdp-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --bpdp-ease-move: cubic-bezier(0.77, 0, 0.175, 1);
   --bpdp-fast: 160ms;
