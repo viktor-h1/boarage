@@ -276,7 +276,7 @@ try {
     const lightBg = await dp.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await dp.goto(`${url}/filled-storefront-system.html`);
     const darkBg = await dp.evaluate(() => ({ bg: getComputedStyle(document.body).backgroundColor, theme: document.documentElement.getAttribute('data-theme') }));
-    check('Dark mode: off by default (data-theme=light), follows the system when enabled', lightBg === 'rgb(255, 255, 255)' && darkBg.theme === null && darkBg.bg === 'rgb(13, 42, 28)', `${lightBg} → ${darkBg.bg}`);
+    check('Dark mode: off by default (data-theme=light), follows the system when enabled', lightBg === 'rgb(247, 243, 234)' && darkBg.theme === null && darkBg.bg === 'rgb(22, 32, 27)', `${lightBg} → ${darkBg.bg}`);
     await dark.close();
   }
 } finally {

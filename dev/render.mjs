@@ -137,7 +137,7 @@ engine.registerFilter('t', (key, ...args) => {
 
 // ---------- page assembly ----------
 function svgMedia(label) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="1200" height="1200"><rect width="240" height="240" fill="#d6ebe1"/><rect x="44" y="92" width="152" height="112" rx="18" fill="#fff" stroke="#1f4a3d" stroke-width="3"/><rect x="38" y="60" width="164" height="40" rx="10" fill="#1f4a3d"/><text x="120" y="152" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#1f4a3d">${label}</text></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="1200" height="1200"><rect width="240" height="240" fill="#e8dcc4"/><rect x="44" y="92" width="152" height="112" rx="18" fill="#f7f3ea" stroke="#23382e" stroke-width="3"/><rect x="38" y="60" width="164" height="40" rx="10" fill="#23382e"/><text x="120" y="152" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#23382e">${label}</text></svg>`;
 }
 function shell({ title, body, mode, design }) {
   return `<!DOCTYPE html>
@@ -208,7 +208,7 @@ fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'img'), { recursive: true });
 for (const f of fs.readdirSync(path.join(ROOT, 'assets'))) fs.copyFileSync(path.join(ROOT, 'assets', f), path.join(OUT, 'assets', f));
 for (const m of product.media) fs.writeFileSync(path.join(OUT, 'img', `media-${m.id}.svg`), svgMedia(`Fixture media ${m.id}`));
-fs.writeFileSync(path.join(OUT, 'img', 'photo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600"><rect width="800" height="600" fill="#f6e5cb"/><circle cx="400" cy="300" r="120" fill="#1f4a3d"/></svg>`);
+fs.writeFileSync(path.join(OUT, 'img', 'photo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600"><rect width="800" height="600" fill="#dce6e1"/><circle cx="400" cy="300" r="120" fill="#23382e"/></svg>`);
 
 const FILLED_THEME = { boarage_guarantee_title: 'Guarantee title sample', boarage_guarantee_text: '<p>Guarantee text sample</p>' };
 const pages = [

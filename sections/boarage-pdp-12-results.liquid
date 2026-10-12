@@ -24,7 +24,7 @@
   {%- render 'boarage-tokens' -%}
   <div class="bpdp bpdp-sec">
     <div class="bpdp-wrap">
-      <div class="bpdp-res bpdp-on-dark" style="--bpdp-shield-ink: var(--bpdp-dark-2);">
+      <div class="bpdp-res bpdp-on-dark" style="--bpdp-shield-ink: var(--bpdp-dark);">
         {%- if s.image != blank -%}
           <div class="bpdp-res__photo">{{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 900px) 45vw, 100vw', alt: s.image_alt }}</div>
         {%- elsif request.design_mode -%}

@@ -3280,26 +3280,30 @@
       },
       "colors_header": "Farben",
       "color_primary": {
-        "label": "Primärgrün",
-        "info": "Überschriften, Rahmen des gewählten Pakets, Siegel, Garantie-Icon."
+        "label": "Primär dunkel (Kelp)",
+        "info": "Überschriften auf hellem Grund, Rahmen des gewählten Pakets, dunkle Badges, Garantie-Icon."
       },
       "color_primary_ink": {
-        "label": "Text auf Primärgrün"
+        "label": "Text auf Primär dunkel"
       },
       "color_cta": {
-        "label": "Button-Grün",
-        "info": "Warenkorb-Button, Sterne, Häkchen. Dunkel genug für weißen Text lassen."
+        "label": "Akzent (Dawn)",
+        "info": "Der einzige Akzent: Buttons, Sterne, Garantie-Leiste. Nur als Fläche verwenden, nie als Text auf hellem Grund."
       },
       "color_cta_ink": {
-        "label": "Text auf Buttons"
+        "label": "Text auf Akzent (dunkel lassen: Ink)"
       },
       "color_mint": {
         "label": "Hervorhebung auf dunklen Flächen",
-        "info": "Kursive Wörter in Überschriften auf dunklen Sektionen und Vorzeilen."
+        "info": "Kursive Wörter in Überschriften, große Zahlen und Icons auf den dunklen Kelp-Sektionen."
       },
       "color_soft": {
-        "label": "Helles Grün",
-        "info": "Vorteile-Box, Garantie-Box, Stadien-Karten, Galerie-Hintergrund."
+        "label": "Info-Flächen (Mist)",
+        "info": "FAQ, Vertrauens-Box, Diagrammfläche."
+      },
+      "color_warm": {
+        "label": "Sekundäre Flächen (Oat)",
+        "info": "Vorteile-Box, Garantie-Box, Stadien-Karten, Galerie-Hintergrund, Paket-Labels."
       },
       "color_line": {
         "label": "Linien und Kartenrahmen"
@@ -3309,7 +3313,7 @@
       },
       "color_bg": {
         "label": "Seitenhintergrund",
-        "info": "Leer lassen, um den Theme-Hintergrund zu behalten."
+        "info": "Standard Sea Salt (die Marke nutzt nie reines Weiß). Leeren, um den Theme-Hintergrund zu behalten."
       },
       "radius": {
         "label": "Eckenradius"
@@ -3335,7 +3339,7 @@
     "common": {
       "heading": {
         "label": "Überschrift",
-        "info": "Kursive Wörter erscheinen grün."
+        "info": "Kursive Wörter werden hervorgehoben (Dawn Deep auf hell, Dawn auf dunkel)."
       },
       "eyebrow": {
         "label": "Vorzeile (über der Überschrift)"
@@ -3434,7 +3438,7 @@
     "s01": {
       "name": "Boarage 01 Sale-Leiste",
       "settings": {
-        "paragraph": "Dunkelgrüne Leiste mit Überschrift, Unterzeile und optionalem Countdown. Leer = unsichtbar.",
+        "paragraph": "Dawn-Leiste (Garantie/Angebot) mit Überschrift, Unterzeile und optionalem Countdown. Leer = unsichtbar.",
         "title": {
           "label": "Überschrift (z. B. Name der Aktion)"
         },
@@ -3534,7 +3538,7 @@
           "info": "Beispiel: „pro Dose“. Erscheint nur, wenn custom.units_per_variant an der Variante gesetzt ist."
         },
         "stock_text": {
-          "label": "Lager-/Lieferzeile (grüner Punkt)",
+          "label": "Lager-/Lieferzeile (Statuspunkt)",
           "info": "Bei ausverkauften Varianten ausgeblendet."
         },
         "buttons_header": "Buttons",
@@ -3567,7 +3571,7 @@
       "blocks": {
         "tile": {
           "name": "Galerie-Kachel",
-          "paragraph": "Dunkelgrüne Kachel neben dem ersten Bild (max. 3).",
+          "paragraph": "Dunkle Kelp-Kachel neben dem ersten Bild (max. 3).",
           "settings": {
             "text": {
               "label": "Kacheltext (2–4 Wörter)"
@@ -3602,7 +3606,7 @@
               "label": "Unterzeile"
             },
             "highlight": {
-              "label": "Grünes Wort nach der Unterzeile",
+              "label": "Hervorgehobenes Wort nach der Unterzeile",
               "info": "Beispiel: „GRATIS“."
             },
             "badge": {
@@ -3612,8 +3616,8 @@
             "badge_style": {
               "label": "Reiter-Stil",
               "options": {
-                "light": "Hellgrün",
-                "dark": "Dunkelgrün"
+                "light": "Hell (Oat)",
+                "dark": "Dunkel (Kelp)"
               }
             },
             "image": {
@@ -3654,7 +3658,7 @@
     "s03": {
       "name": "Boarage 03 Bewertungen",
       "settings": {
-        "paragraph": "Dunkelgrünes Panel mit wischbaren Bewertungskarten. App-Block der Bewertungs-App oder manuelle Bewertungen."
+        "paragraph": "Tide-Panel mit wischbaren Bewertungskarten. App-Block der Bewertungs-App oder manuelle Bewertungen."
       }
     },
     "s04": {
@@ -3695,7 +3699,7 @@
     "s06": {
       "name": "Boarage 06 Wirkweise",
       "settings": {
-        "paragraph": "Grüne Karte: Vorzeile, Überschrift, Absatz, bis zu vier Icon-Punkte und ein Produktbild.",
+        "paragraph": "Tide-Karte auf Kelp-Sektion: Vorzeile, Überschrift, Absatz, bis zu vier Icon-Punkte und ein Produktbild.",
         "image": {
           "label": "Produktbild"
         }
@@ -3743,11 +3747,11 @@
           }
         },
         "line_1": {
-          "label": "Legende: grüne Kurve",
+          "label": "Legende: Tide-Kurve (unsere)",
           "info": "Die Kurve, die hoch bleibt."
         },
         "line_2": {
-          "label": "Legende: rote Kurve",
+          "label": "Legende: Dawn-Kurve (Vergleich)",
           "info": "Die Kurve, die abfällt."
         },
         "axis_y": {
@@ -3765,14 +3769,14 @@
     "s09": {
       "name": "Boarage 09 Zeitverlauf",
       "settings": {
-        "paragraph": "Grüne Sektion: Überschrift, Meilensteine an einer Linie mit Checklisten, Garantie-Box."
+        "paragraph": "Tide-Sektion: Überschrift, Meilensteine an einer Linie mit Checklisten, Garantie-Box."
       },
       "blocks": {
         "milestone": {
           "name": "Meilenstein",
           "settings": {
             "when": {
-              "label": "Zeitangabe (grün)",
+              "label": "Zeitangabe (hervorgehoben)",
               "info": "Beispiel: „Woche 1–2:“."
             },
             "title": {
@@ -3803,7 +3807,7 @@
     "s11": {
       "name": "Boarage 11 Vergleich",
       "settings": {
-        "paragraph": "Drei Spalten: wir (grün, Häkchen), Merkmal, andere (grau, Kreuze).",
+        "paragraph": "Drei Spalten: wir (Kelp, Häkchen), Merkmal, andere (Oat, Kreuze).",
         "image_us": {
           "label": "Unser Produktbild"
         },

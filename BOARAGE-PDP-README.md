@@ -52,16 +52,38 @@ To preview without assigning: append `?view=boarage-pdp` to the product URL.
 | `boarage_font_heading` | Outfit Bold | Shopify font library |
 | `boarage_font_body` | Work Sans | |
 | `boarage_base_size` | 18 px | Body size; everything scales from it |
-| `boarage_color_primary` / `_primary_ink` | #1D4D36 / #FFFFFF | Headings, selected bundle, seals |
-| `boarage_color_cta` / `_cta_ink` | #2FBD44 / #FFFFFF | Buttons, stars, checks, highlighted words |
-| `boarage_color_mint` | #5EF09A | Highlights on dark sections |
-| `boarage_color_soft` | #EEF7F1 | Light green boxes |
-| `boarage_color_line`, `_surface`, `_bg` | #E2E7E4, #FFFFFF, (theme) | Borders, cards, page |
+| `boarage_color_primary` / `_primary_ink` | #23382E Kelp / #F7F3EA Sea Salt | Headings on light, selected bundle, dark badges |
+| `boarage_color_cta` / `_cta_ink` | #E07B4F Dawn / #16201B Ink | The one accent: buttons, stars, sale/guarantee strip (fill only) |
+| `boarage_color_mint` | #E07B4F Dawn | Highlights, big numbers and icons on Kelp sections |
+| `boarage_color_soft` | #DCE6E1 Mist | Info panels: FAQ, trust box, chart fill |
+| `boarage_color_warm` | #E8DCC4 Oat | Secondary panels: benefits, guarantee box, stage cards, gallery, bundle labels |
+| `boarage_color_line`, `_surface`, `_bg` | #DED5C3, #F7F3EA, #F7F3EA | Borders, cards, page (Sea Salt replaces pure white) |
 | `boarage_radius` | 8 px | Corner radius |
 | `boarage_dark_mode` | Off | Off / Follow system / Always dark (header and footer of the theme have no dark mode) |
 | `boarage_guarantee_title`, `boarage_guarantee_text` | empty | The guarantee box shown in the buy box and the timeline |
 
-Headline fields are inline rich text: **italic** words render in green (the reference's highlighted phrases).
+Headline fields are inline rich text: **italic** words are highlighted (Dawn Deep on light, Dawn on Kelp, Oat on Tide).
+
+## Brand styling (Dog Dental Powder palette, brand kit v1)
+
+The layout and elements are the Auniva skeleton; the styling follows the brand palette and the UI/UX playbook rules:
+
+* **Surfaces**: Sea Salt page and cards; Kelp for dark sections (problem, mechanism, legal, results card, comparison
+  "us" column); Tide for secondary dark panels (reviews slider, timeline, mechanism card); Oat for secondary panels
+  (benefits, guarantee box, stage cards, gallery, "them" column); Mist for info panels (FAQ, trust box).
+* **Dawn is a fill only**: buttons, sale/guarantee strip, stars, guarantee box edge, timeline dots — always with
+  Ink text (5.7:1), never Sea Salt on Dawn (2.7:1) and never Dawn text on a light background.
+* **Small text**: Ink body, Tide secondary text and icons, Dawn Deep for small emphasis — Tide and Dawn Deep only on
+  Sea Salt or Mist; inside Oat panels small text stays Ink/Kelp.
+* **Playbook**: one primary action per view, selected bundle marked by a radio dot as well as the border (state not
+  by colour alone), one corner radius everywhere, 4 px spacing scale, body line height 1.55 / headings 1.2,
+  Kelp-tinted soft shadows, thin light borders.
+* Dark mode maps to Ink page / Kelp panels with Sea Salt text.
+* `npm run build` shortens CSS custom properties used only inside the stylesheet (`--bpdp-ink` → `--_ink`) to stay
+  under the 25 KB budget; names that Liquid or the script use keep the `--bpdp-` prefix.
+
+Existing themes that already saved values for the colour settings keep them: reset the colours under
+Theme settings › Boarage PDP to pick up the brand defaults.
 
 ## Sections, settings and blocks
 

@@ -2510,58 +2510,66 @@
         "id": "boarage_color_primary",
         "label": "t:boarage.settings.color_primary.label",
         "info": "t:boarage.settings.color_primary.info",
-        "default": "#1D4D36"
+        "default": "#23382E"
       },
       {
         "type": "color",
         "id": "boarage_color_primary_ink",
         "label": "t:boarage.settings.color_primary_ink.label",
-        "default": "#FFFFFF"
+        "default": "#F7F3EA"
       },
       {
         "type": "color",
         "id": "boarage_color_cta",
         "label": "t:boarage.settings.color_cta.label",
         "info": "t:boarage.settings.color_cta.info",
-        "default": "#1EA339"
+        "default": "#E07B4F"
       },
       {
         "type": "color",
         "id": "boarage_color_cta_ink",
         "label": "t:boarage.settings.color_cta_ink.label",
-        "default": "#FFFFFF"
+        "default": "#16201B"
       },
       {
         "type": "color",
         "id": "boarage_color_mint",
         "label": "t:boarage.settings.color_mint.label",
         "info": "t:boarage.settings.color_mint.info",
-        "default": "#5EF09A"
+        "default": "#E07B4F"
       },
       {
         "type": "color",
         "id": "boarage_color_soft",
         "label": "t:boarage.settings.color_soft.label",
         "info": "t:boarage.settings.color_soft.info",
-        "default": "#EEF7F1"
+        "default": "#DCE6E1"
+      },
+      {
+        "type": "color",
+        "id": "boarage_color_warm",
+        "label": "t:boarage.settings.color_warm.label",
+        "info": "t:boarage.settings.color_warm.info",
+        "default": "#E8DCC4"
       },
       {
         "type": "color",
         "id": "boarage_color_line",
         "label": "t:boarage.settings.color_line.label",
-        "default": "#E2E7E4"
+        "default": "#DED5C3"
       },
       {
         "type": "color",
         "id": "boarage_color_surface",
         "label": "t:boarage.settings.color_surface.label",
-        "default": "#FFFFFF"
+        "default": "#F7F3EA"
       },
       {
         "type": "color",
         "id": "boarage_color_bg",
         "label": "t:boarage.settings.color_bg.label",
-        "info": "t:boarage.settings.color_bg.info"
+        "info": "t:boarage.settings.color_bg.info",
+        "default": "#F7F3EA"
       },
       {
         "type": "range",

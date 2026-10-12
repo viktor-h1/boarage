@@ -19,26 +19,30 @@
     },
     "colors_header": "Colours",
     "color_primary": {
-      "label": "Primary green",
-      "info": "Headings, selected bundle border, seals, guarantee icon."
+      "label": "Primary dark (Kelp)",
+      "info": "Headings on light backgrounds, selected bundle border, dark badges, guarantee icon."
     },
     "color_primary_ink": {
-      "label": "Text on primary green"
+      "label": "Text on primary dark"
     },
     "color_cta": {
-      "label": "Button green",
-      "info": "Add-to-cart button, stars, check marks. Keep it dark enough for white text."
+      "label": "Accent (Dawn)",
+      "info": "The one accent: buttons, stars, sale/guarantee strip. Use it as a fill only, never as text on a light background."
     },
     "color_cta_ink": {
-      "label": "Text on buttons"
+      "label": "Text on accent (keep dark: Ink)"
     },
     "color_mint": {
       "label": "Highlight on dark backgrounds",
-      "info": "Italic words in headlines on dark sections and eyebrow lines."
+      "info": "Italic words in headlines, big numbers and icons on the dark Kelp sections."
     },
     "color_soft": {
-      "label": "Light green tint",
-      "info": "Benefits box, guarantee box, stage cards, gallery background."
+      "label": "Info panels (Mist)",
+      "info": "FAQ, trust box, chart fill."
+    },
+    "color_warm": {
+      "label": "Secondary panels (Oat)",
+      "info": "Benefits box, guarantee box, stage cards, gallery background, bundle labels."
     },
     "color_line": {
       "label": "Lines and card borders"
@@ -48,7 +52,7 @@
     },
     "color_bg": {
       "label": "Page background",
-      "info": "Leave empty to keep the theme background."
+      "info": "Sea Salt by default (the brand never uses pure white). Clear it to keep the theme background."
     },
     "radius": {
       "label": "Corner radius"
@@ -74,7 +78,7 @@
   "common": {
     "heading": {
       "label": "Headline",
-      "info": "Italic words are shown in green."
+      "info": "Italic words are highlighted (Dawn Deep on light, Dawn on dark)."
     },
     "eyebrow": {
       "label": "Eyebrow line (above the headline)"
@@ -173,7 +177,7 @@
   "s01": {
     "name": "Boarage 01 Sale bar",
     "settings": {
-      "paragraph": "Dark green bar with a bold headline, a sub-line and an optional countdown. Hidden while empty.",
+      "paragraph": "Dawn guarantee/sale strip with a bold headline, a sub-line and an optional countdown. Hidden while empty.",
       "title": {
         "label": "Headline (e.g. the sale name)"
       },
@@ -273,7 +277,7 @@
         "info": "Example: “per jar”. Shown only when custom.units_per_variant is set on the variant."
       },
       "stock_text": {
-        "label": "Stock / delivery line (green dot)",
+        "label": "Stock / delivery line (status dot)",
         "info": "Hidden for sold-out variants."
       },
       "buttons_header": "Buttons",
@@ -306,7 +310,7 @@
     "blocks": {
       "tile": {
         "name": "Gallery tile",
-        "paragraph": "Dark green tile next to the first image (max. 3).",
+        "paragraph": "Dark Kelp tile next to the first image (max. 3).",
         "settings": {
           "text": {
             "label": "Tile text (2–4 words)"
@@ -341,7 +345,7 @@
             "label": "Sub-line"
           },
           "highlight": {
-            "label": "Green word after the sub-line",
+            "label": "Highlighted word after the sub-line",
             "info": "Example: “FREE”."
           },
           "badge": {
@@ -351,8 +355,8 @@
           "badge_style": {
             "label": "Tab style",
             "options": {
-              "light": "Light green",
-              "dark": "Dark green"
+              "light": "Light (Oat)",
+              "dark": "Dark (Kelp)"
             }
           },
           "image": {
@@ -393,7 +397,7 @@
   "s03": {
     "name": "Boarage 03 Reviews slider",
     "settings": {
-      "paragraph": "Dark green panel with swipeable review cards. Add the reviews app block or manual reviews."
+      "paragraph": "Tide panel with swipeable review cards. Add the reviews app block or manual reviews."
     }
   },
   "s04": {
@@ -434,7 +438,7 @@
   "s06": {
     "name": "Boarage 06 Mechanism",
     "settings": {
-      "paragraph": "Green card: eyebrow, headline, paragraph, up to four icon items and a product image.",
+      "paragraph": "Tide card on a Kelp section: eyebrow, headline, paragraph, up to four icon items and a product image.",
       "image": {
         "label": "Product image"
       }
@@ -482,11 +486,11 @@
         }
       },
       "line_1": {
-        "label": "Legend: green curve",
+        "label": "Legend: Tide curve (ours)",
         "info": "The curve that stays high."
       },
       "line_2": {
-        "label": "Legend: red curve",
+        "label": "Legend: Dawn curve (comparison)",
         "info": "The curve that drops."
       },
       "axis_y": {
@@ -504,14 +508,14 @@
   "s09": {
     "name": "Boarage 09 Timeline",
     "settings": {
-      "paragraph": "Green section: headline, milestones on a rail with checklists, guarantee box."
+      "paragraph": "Tide section: headline, milestones on a rail with checklists, guarantee box."
     },
     "blocks": {
       "milestone": {
         "name": "Milestone",
         "settings": {
           "when": {
-            "label": "Time label (green)",
+            "label": "Time label (highlighted)",
             "info": "Example: “Week 1–2:”."
           },
           "title": {
@@ -542,7 +546,7 @@
   "s11": {
     "name": "Boarage 11 Comparison",
     "settings": {
-      "paragraph": "Three columns: us (green, checks), feature, others (grey, crosses).",
+      "paragraph": "Three columns: us (Kelp, checks), feature, others (Oat, crosses).",
       "image_us": {
         "label": "Our product image"
       },
