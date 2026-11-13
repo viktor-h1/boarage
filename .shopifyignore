@@ -7,5 +7,7 @@ package-lock.json
 .theme-check.yml
 .gitignore
 .shopifyignore
+# Standalone Doo Diligence landing page, hosted on Netlify, not part of the theme.
+pdp-burned-by-fiber/
 # Lint-only snapshot of the live storefront strings (edited by merchants in the language editor): never pushed.
 locales/en.default.json

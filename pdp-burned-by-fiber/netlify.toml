@@ -1,0 +1,9 @@
+# Static page: nothing to build. When deploying from Git, set the site's Base directory to "pdp-burned-by-fiber".
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

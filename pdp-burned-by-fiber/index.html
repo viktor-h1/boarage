@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doo Diligence</title>
+<meta name="theme-color" content="#f6f2e9">
+<link rel="preload" href="content.json" as="fetch" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232346ff'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='900' font-size='16' text-anchor='middle' fill='%23fff'%3Edd%3C/text%3E%3C/svg%3E">
+<style>
+/* Doo Diligence PDP, "Burned by fiber". Layout follows the Auniva skeleton (buy box on top, sales sequence below),
+   restyled to the brief: paper background, ink text, one accent colour. All copy lives in content.json. */
+:root{
+  --dd-paper:#f6f2e9;--dd-card:#fffdf8;--dd-white:#fff;--dd-ink:#1a1916;--dd-ink-2:#2d2b27;--dd-muted:#57534b;
+  --dd-line:#dcd4c4;--dd-line-2:#a39a87;--dd-shot:#dedad1;
+  --dd-accent:#2346ff;            /* the one accent colour: swap it here */
+  --dd-accent-hover:#1534e0;--dd-accent-ink:#fff;--dd-accent-soft:#e5e9ff;--dd-accent-light:#b3bfff;
+  --dd-ph:#ffe14d;
+  --dd-radius:14px;--dd-gutter:16px;--dd-max:1120px;
+  --dd-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --dd-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --dd-ease:cubic-bezier(.23,1,.32,1);--dd-fast:160ms;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--dd-paper);color:var(--dd-ink);font:17px/1.5 var(--dd-font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+img{height:auto}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-underline-offset:3px}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--dd-accent);outline-offset:3px;border-radius:4px}
+.dd-sec--ink :focus-visible,.dd-sec--accent :focus-visible,.dd-foot :focus-visible,.dd-gcard :focus-visible{outline-color:#fff}
+.dd-vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.dd-skip{position:absolute;left:8px;top:-80px;z-index:70;padding:12px 16px;background:var(--dd-ink);color:#fff;border-radius:8px;text-decoration:none}
+.dd-skip:focus{top:8px}
+.dd-wrap{max-width:var(--dd-max);margin:0 auto;padding:0 var(--dd-gutter)}
+.dd-narrow{max-width:780px}
+.dd-sec{padding:52px 0}
+.dd-sec--ink{background:var(--dd-ink);color:var(--dd-paper)}
+.dd-sec--accent{background:var(--dd-accent);color:#fff}
+.dd-sec--line{border-top:1px solid var(--dd-line)}
+.dd-h1,.dd-h2,.dd-h3{font-weight:800;line-height:1.12;letter-spacing:-.02em;text-wrap:balance}
+.dd-h1{font-size:clamp(25px,6.5vw,30px)}
+.dd-h2{font-size:clamp(27px,7.2vw,34px)}
+.dd-h3{font-size:19px;line-height:1.25;letter-spacing:-.01em}
+.dd-h1 em,.dd-h2 em,.dd-closing em{font-style:normal;color:var(--dd-accent)}
+.dd-sec--ink em{color:var(--dd-accent-light)}
+.dd-eyebrow{display:block;margin-bottom:10px;font:700 13px/1.3 var(--dd-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dd-accent)}
+.dd-sec--ink .dd-eyebrow{color:var(--dd-accent-light)}
+.dd-sec--accent .dd-eyebrow{color:#fff;opacity:.85}
+.dd-center{text-align:center}
+.dd-lead{margin-top:12px;font-size:19px;line-height:1.4}
+mark.dd-ph{background:var(--dd-ph);color:#000;padding:0 .25em;border-radius:3px;box-shadow:0 0 0 1px #c9a800;font-weight:600;font-style:normal;-webkit-box-decoration-break:clone;box-decoration-break:clone;overflow-wrap:anywhere}
+.dd-i{flex:0 0 auto;width:24px;height:24px}
+
+/* buttons */
+.dd-btn{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px 10px;min-height:52px;padding:12px 22px;border:0;border-radius:12px;background:var(--dd-accent);color:var(--dd-accent-ink);font-weight:800;font-size:18px;line-height:1.2;text-align:center;text-decoration:none;transition:transform var(--dd-fast) var(--dd-ease),background-color var(--dd-fast)}
+.dd-btn:active{transform:scale(.97)}
+.dd-btn--block{width:100%;min-height:60px;font-size:19px}
+.dd-btn__price{font-weight:700;opacity:.92}
+.dd-btn__price::before{content:"· "}
+@media (hover:hover) and (pointer:fine){.dd-btn:hover{background:var(--dd-accent-hover)}}
+.dd-gline{display:flex;align-items:flex-start;justify-content:center;gap:8px;font-size:14px;line-height:1.4;color:var(--dd-muted);text-align:left}
+.dd-gline .dd-i{width:18px;height:18px;margin-top:1px;color:var(--dd-accent)}
+.dd-sec--accent .dd-gline{color:#fff}
+.dd-sec--accent .dd-gline .dd-i{color:#fff}
+
+/* 4.1 announcement bar (Auniva 01 sale bar, no countdown) */
+.dd-ann{background:var(--dd-ink);color:var(--dd-paper);padding:8px var(--dd-gutter);font-size:clamp(11px,3.1vw,14px);font-weight:600;line-height:1.35;text-align:center}
+.dd-ann p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dd-ann p+p{margin-top:2px}
+.dd-ann p.dd-ann__sale{color:var(--dd-accent-light);white-space:normal}
+.dd-top{border-bottom:1px solid var(--dd-line)}
+.dd-top .dd-wrap{display:flex;align-items:center;min-height:46px}
+.dd-logo{display:inline-flex;align-items:center;min-height:44px;font-weight:900;font-size:20px;letter-spacing:-.035em;text-decoration:none}
+.dd-logo::before{content:"";width:12px;height:12px;margin-right:8px;border-radius:50%;background:var(--dd-accent)}
+
+/* 4.2 buy box (Auniva 02): head, gallery, offer */
+.dd-buy{padding:14px 0 36px}
+.dd-buy__grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "gal" "offer";gap:14px}
+.dd-buy__head{grid-area:head}
+.dd-buy__gal{grid-area:gal;min-width:0}
+.dd-buy__offer{grid-area:offer;display:grid;gap:14px;min-width:0;outline:0}
+.dd-subh{margin-top:10px;font-size:16px;line-height:1.45;color:var(--dd-ink-2)}
+.dd-outcomes{display:grid;gap:4px;margin-top:10px}
+.dd-outcomes li{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:650;line-height:1.3}
+.dd-outcomes .dd-i{width:22px;height:22px;color:var(--dd-accent)}
+.dd-rating{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:10px;font-size:15px}
+.dd-stars{position:relative;display:inline-block;color:#cfc7b6;font-size:18px;letter-spacing:2px;line-height:1}
+.dd-stars::before{content:"★★★★★";position:absolute;left:0;top:0;width:calc(var(--r,5) / 5 * 100%);overflow:hidden;color:var(--dd-ink);white-space:nowrap}
+
+/* gallery (Auniva gallery carousel: scroll-snap, peek on mobile, thumbnails on desktop) */
+.dd-gal{position:relative}
+.dd-gal__track{display:flex;gap:10px;margin:0 calc(-1 * var(--dd-gutter));padding:0 var(--dd-gutter);scroll-padding:0 var(--dd-gutter);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.dd-gal__track::-webkit-scrollbar{display:none}
+.dd-gal__slide{flex:0 0 calc(100% - 40px);scroll-snap-align:start;border-radius:var(--dd-radius);overflow:hidden;background:var(--dd-shot)}
+.dd-gal__slide img{width:100%;aspect-ratio:var(--dd-ratio-m,var(--dd-ratio,4 / 3));object-fit:cover}
+.dd-shot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;aspect-ratio:var(--dd-ratio-m,var(--dd-ratio,4 / 3));padding:18px;background:var(--dd-shot) repeating-linear-gradient(135deg,transparent 0 16px,rgba(0,0,0,.035) 16px 32px);color:#3a3731;font-size:15px;line-height:1.35;font-weight:600;text-align:center}
+.dd-shot__tag{padding:4px 7px;border-radius:4px;background:var(--dd-ph);color:#000;font:700 11px/1 var(--dd-mono);letter-spacing:.08em;text-transform:uppercase}
+.dd-shot--sm{padding:4px;gap:4px}
+.dd-shot--sm .dd-shot__tag{padding:3px;font-size:8px;letter-spacing:0;line-height:1.2}
+.dd-gal__count{position:absolute;left:10px;bottom:10px;padding:4px 9px;border-radius:999px;background:rgba(26,25,22,.78);color:#fff;font:600 12px/1.2 var(--dd-mono)}
+.dd-gal__nav{display:none}
+.dd-thumbs{display:none}
+
+/* offer selector (Auniva bundle cards, stacked per the brief) */
+.dd-opts{display:grid;gap:12px;min-width:0;margin:0;padding:0;border:0}
+.dd-opts legend{float:left;width:100%;margin-bottom:2px;padding:0;font:700 13px/1.3 var(--dd-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dd-muted)}
+.dd-opt{position:relative;display:block;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.dd-opt__radio{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.dd-opt__box{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 14px;border:1.5px solid var(--dd-line);border-radius:12px;background:var(--dd-card);transition:border-color var(--dd-fast),box-shadow var(--dd-fast),transform var(--dd-fast) var(--dd-ease)}
+.dd-opt:active .dd-opt__box{transform:scale(.985)}
+.dd-opt__radio:checked+.dd-opt__box{border-color:var(--dd-accent);box-shadow:inset 0 0 0 1.5px var(--dd-accent);background:var(--dd-white)}
+.dd-opt__radio:focus-visible+.dd-opt__box{outline:3px solid var(--dd-accent);outline-offset:3px}
+.dd-opt__dot{flex:0 0 auto;width:22px;height:22px;border:2px solid var(--dd-line-2);border-radius:50%;transition:border-color var(--dd-fast),background var(--dd-fast)}
+.dd-opt__radio:checked+.dd-opt__box .dd-opt__dot{border-color:var(--dd-accent);background:radial-gradient(circle,var(--dd-accent) 0 5px,transparent 5.5px)}
+.dd-opt__main{flex:1;display:grid;gap:2px;min-width:0}
+.dd-opt__name{font-weight:750;line-height:1.25;text-wrap:balance}
+.dd-opt__meta{font-size:14px;line-height:1.3;color:var(--dd-muted)}
+.dd-opt__meta>span:not([hidden])+span:not([hidden])::before{content:" · "}
+.dd-opt__price{display:grid;justify-items:end;font-weight:800;font-size:19px;line-height:1.15;white-space:nowrap}
+.dd-opt__was{font-size:13px;font-weight:500;color:var(--dd-muted)}
+.dd-opt__badge{position:absolute;top:-10px;right:14px;padding:3px 10px;border-radius:999px;background:var(--dd-accent);color:#fff;font:800 11px/1.3 var(--dd-mono);letter-spacing:.06em;text-transform:uppercase}
+.dd-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.dd-chips:empty,.dd-chips:not(:has(>:not([hidden]))){display:none}
+.dd-chip{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--dd-accent-soft);color:#1530c4;font-size:12.5px;font-weight:700;line-height:1.4}
+.dd-subbox{padding:12px 14px;border:1.5px dashed var(--dd-line-2);border-radius:12px;background:var(--dd-card)}
+.dd-toggle{position:relative;display:flex;align-items:center;gap:12px;min-height:44px;font-weight:750;cursor:pointer}
+.dd-toggle input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.dd-switch{position:relative;flex:0 0 auto;width:46px;height:28px;border-radius:999px;background:#8c8577;transition:background var(--dd-fast)}
+.dd-switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform 200ms var(--dd-ease)}
+.dd-toggle input:checked+.dd-switch{background:var(--dd-accent)}
+.dd-toggle input:checked+.dd-switch::after{transform:translateX(18px)}
+.dd-toggle input:focus-visible+.dd-switch{outline:3px solid var(--dd-accent);outline-offset:3px}
+.dd-terms{margin-top:4px;font-size:14px;line-height:1.4;color:var(--dd-muted)}
+.dd-gift{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:var(--dd-accent-soft)}
+.dd-gift__img{flex:0 0 72px;width:72px;border-radius:10px;overflow:hidden;background:var(--dd-shot)}
+.dd-gift__img img,.dd-gift__img .dd-shot{aspect-ratio:1}
+.dd-gift__title{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-weight:800;line-height:1.25}
+.dd-gift__title .dd-i{width:20px;height:20px;color:var(--dd-accent)}
+.dd-gift .dd-chip{background:#fff}
+.dd-gift__items{margin-top:4px;font-size:14px;line-height:1.35}
+.dd-gift__items li::before{content:"+ ";font-weight:700;color:var(--dd-accent)}
+.dd-gift__value{margin-top:4px;font-size:13px;font-weight:600;color:var(--dd-muted)}
+.dd-gift[data-included="true"] [data-f="gift-state"]{color:#1530c4}
+.dd-pre{padding:10px 12px;border-radius:10px;background:var(--dd-card);border:1.5px solid var(--dd-ink);font-weight:700;text-align:center}
+.dd-p65link{text-align:center;font-size:14px}
+.dd-p65link a{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:700}
+.dd-p65link .dd-i{width:18px;height:18px}
+
+/* sticky add-to-cart (Auniva sticky bar, mobile only) */
+.dd-sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;gap:12px;padding:10px var(--dd-gutter) calc(10px + env(safe-area-inset-bottom));background:var(--dd-white);box-shadow:0 -6px 24px rgba(26,25,22,.14);opacity:0;transform:translateY(100%);transition:transform 240ms var(--dd-ease),opacity 240ms var(--dd-ease)}
+.dd-sticky.is-on{opacity:1;transform:none}
+.dd-sticky__info{display:grid;min-width:0;line-height:1.2}
+.dd-sticky__opt{font-size:13px;color:var(--dd-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dd-sticky__info b{font-size:19px;font-weight:800}
+.dd-sticky .dd-btn{flex:1;min-height:52px;font-size:17px}
+.dd-toast{position:fixed;left:50%;bottom:92px;z-index:60;width:max-content;max-width:calc(100% - 32px);padding:12px 16px;border-radius:12px;background:var(--dd-ink);color:var(--dd-paper);font-size:15px;line-height:1.35;text-align:center;opacity:0;transform:translate(-50%,8px);pointer-events:none;transition:opacity 200ms var(--dd-ease),transform 200ms var(--dd-ease)}
+.dd-toast.is-on{opacity:1;transform:translate(-50%,0)}
+
+/* 4.3 sound familiar (Auniva 05 problem, dark) */
+.dd-checks{display:grid;gap:14px;margin-top:24px}
+.dd-checks li{display:flex;gap:12px;align-items:flex-start;font-size:18px;line-height:1.4}
+.dd-checks .dd-i{margin-top:1px;color:var(--dd-accent-light)}
+.dd-closing{margin-top:28px;padding-top:24px;border-top:1px dashed rgba(246,242,233,.35);font-size:22px;font-weight:800;line-height:1.3;letter-spacing:-.01em}
+.dd-sec--ink .dd-closing em{color:var(--dd-accent-light)}
+
+/* 4.4 reframe (Auniva 06 mechanism) */
+.dd-reasons{display:grid;gap:22px;margin-top:26px}
+.dd-reason{display:flex;gap:14px;align-items:flex-start}
+.dd-num{flex:0 0 auto;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--dd-ink);color:var(--dd-paper);font:800 17px/1 var(--dd-mono)}
+.dd-reason p{margin-top:6px}
+.dd-eqs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:30px}
+.dd-eq{display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 10px;border-radius:var(--dd-radius);text-align:center}
+.dd-eq--bad{background:#ebe5d8;border:1.5px dashed var(--dd-line-2);color:var(--dd-ink-2)}
+.dd-eq--good{background:var(--dd-accent-soft);border:2px solid var(--dd-accent)}
+.dd-eq__part{font-weight:750;font-size:16px;line-height:1.25}
+.dd-eq__op{font:800 22px/1 var(--dd-mono);color:var(--dd-muted)}
+.dd-eq--good .dd-eq__op{color:var(--dd-accent)}
+.dd-eq__res{font-size:44px;line-height:1.1;margin-top:2px}
+
+/* 4.5 the fix (Auniva 07 stages) */
+.dd-fixes{display:grid;gap:14px;margin-top:26px}
+.dd-fix{position:relative;padding:22px 20px 22px 74px;border:1.5px solid var(--dd-line);border-radius:var(--dd-radius);background:var(--dd-card)}
+.dd-fix__n{position:absolute;left:18px;top:20px;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--dd-accent);color:#fff;font:800 19px/1 var(--dd-mono)}
+.dd-fix .dd-eyebrow{margin-bottom:6px;font-size:12px}
+.dd-fix p{margin-top:6px}
+
+/* 4.6 honesty block */
+.dd-note{position:relative;max-width:660px;margin:0 auto;padding:30px 22px 24px;border:1.5px solid var(--dd-ink);border-radius:6px;background:var(--dd-card);font-size:18px;line-height:1.5}
+.dd-note::before{content:"";position:absolute;top:-12px;left:50%;width:120px;height:24px;margin-left:-60px;background:rgba(35,70,255,.2);transform:rotate(-2deg)}
+.dd-note .dd-eyebrow{color:var(--dd-muted)}
+
+/* 4.7 ramp-up timeline (Auniva 09 timeline: vertical on mobile, horizontal on desktop) */
+.dd-tl{position:relative;display:grid;gap:26px;margin-top:30px;padding-left:34px}
+.dd-tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:rgba(255,255,255,.75)}
+.dd-tl li{position:relative;display:grid;gap:8px}
+.dd-tl li::before{content:"";position:absolute;left:-34px;top:6px;width:16px;height:16px;border-radius:4px;background:#fff}
+.dd-tl__pill{justify-self:start;padding:5px 11px;border-radius:6px;background:#fff;color:var(--dd-accent);font:800 15px/1.3 var(--dd-mono)}
+.dd-tl p{font-size:18px;line-height:1.45}
+.dd-tl+.dd-gline{margin-top:34px;font-size:16px;font-weight:600}
+
+/* 4.8 how it works */
+.dd-steps{display:grid;gap:14px;margin-top:26px}
+.dd-step{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:var(--dd-radius);background:var(--dd-card);border:1.5px solid var(--dd-line)}
+.dd-step__ic{position:relative;flex:0 0 auto;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--dd-accent-soft);color:var(--dd-accent)}
+.dd-step__ic .dd-i{width:28px;height:28px}
+.dd-step__n{position:absolute;top:-4px;right:-4px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--dd-ink);color:#fff;font:800 12px/1 var(--dd-mono)}
+.dd-step p{font-size:18px;line-height:1.4}
+.dd-warn{display:flex;gap:12px;align-items:flex-start;max-width:780px;margin:20px auto 0;padding:14px 16px;border:2px solid var(--dd-ink);border-radius:10px;background:var(--dd-card);font-size:15px;line-height:1.45}
+.dd-warn .dd-i{color:var(--dd-ink)}
+
+/* 4.9 the Doo Diligence Report (receipt / lab report) */
+.dd-receipt{position:relative;max-width:520px;margin:0 auto;padding:30px 22px 36px;background:var(--dd-white);font:15px/1.5 var(--dd-mono);color:var(--dd-ink);box-shadow:0 1px 0 var(--dd-line),0 10px 30px rgba(26,25,22,.06)}
+.dd-receipt::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:linear-gradient(-45deg,transparent 7px,var(--dd-white) 0) 0 0/14px 10px repeat-x,linear-gradient(45deg,transparent 7px,var(--dd-white) 0) 0 0/14px 10px repeat-x}
+.dd-receipt__brand{font-size:12px;letter-spacing:.2em;text-transform:uppercase;text-align:center;color:var(--dd-muted)}
+.dd-receipt__title{margin-top:6px;font:800 22px/1.2 var(--dd-mono);letter-spacing:-.01em;text-align:center;text-transform:uppercase}
+.dd-receipt__serv{margin-top:6px;font-size:13px;text-align:center;color:var(--dd-muted)}
+.dd-receipt dl{margin-top:18px;border-top:2px dashed var(--dd-line-2)}
+.dd-receipt dl>div{padding:12px 0;border-bottom:2px dotted var(--dd-line)}
+.dd-receipt dt{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dd-muted)}
+.dd-receipt dd{margin-top:2px;font-size:16px}
+.dd-receipt a{font-weight:700;display:inline-flex;align-items:center;min-height:44px}
+.dd-stamp{position:absolute;top:18px;right:12px;padding:6px 10px;border:3px double var(--dd-accent);border-radius:6px;color:var(--dd-accent);font:900 14px/1 var(--dd-mono);letter-spacing:.12em;text-transform:uppercase;transform:rotate(-12deg);opacity:.9}
+.dd-receipt-foot{margin-top:34px;font-size:20px;font-weight:800;text-align:center;letter-spacing:-.01em}
+
+/* 4.11 comparison (Auniva 11 comparison, three columns, lab-report styling) */
+.dd-cmp{margin-top:26px;border-radius:var(--dd-radius);background:var(--dd-white);border:1.5px solid var(--dd-line);overflow:hidden}
+.dd-cmp table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:15px;line-height:1.35}
+.dd-cmp col.dd-cmp__lab{width:28%}
+.dd-cmp th,.dd-cmp td{padding:12px 8px;text-align:center;vertical-align:middle;overflow-wrap:anywhere}
+.dd-cmp thead th{padding-top:14px;padding-bottom:14px;font:700 12px/1.3 var(--dd-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--dd-muted);border-bottom:2px dashed var(--dd-line-2)}
+.dd-cmp thead th.dd-cmp__us{color:#fff;background:var(--dd-accent)}
+.dd-cmp tbody th{text-align:left;font-weight:750;padding-left:12px}
+.dd-cmp tbody tr+tr>*{border-top:1.5px dotted var(--dd-line)}
+.dd-cmp td.dd-cmp__us{background:var(--dd-accent-soft);font-weight:750}
+.dd-cmp .dd-i{margin:0 auto;width:24px;height:24px}
+.dd-cmp .dd-yes{color:var(--dd-accent)}
+.dd-cmp .dd-no{color:var(--dd-line-2)}
+
+/* 4.12 social proof (Auniva 03 reviews) / founder note */
+.dd-revs{margin-top:24px}
+.dd-revs__track{display:flex;gap:12px;margin:0 calc(-1 * var(--dd-gutter));padding:4px var(--dd-gutter);scroll-padding:0 var(--dd-gutter);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.dd-revs__track::-webkit-scrollbar{display:none}
+.dd-rev{flex:0 0 calc(100% - 48px);scroll-snap-align:start;display:flex;flex-direction:column;gap:10px;padding:20px;border-radius:var(--dd-radius);border:1.5px solid var(--dd-line);background:var(--dd-card)}
+.dd-rev__tag{align-self:flex-start}
+.dd-rev__title{font-weight:800;font-size:18px;line-height:1.25}
+.dd-rev__name{margin-top:auto;font-size:14px;font-weight:700;color:var(--dd-muted)}
+.dd-nav{display:flex;justify-content:center;gap:16px;margin-top:16px}
+.dd-nav button{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--dd-ink);background:transparent}
+.dd-nav button[disabled]{opacity:.3;cursor:default}
+[data-car-static] .dd-nav{display:none}
+.dd-founder{max-width:720px;margin:0 auto;padding:28px 22px;border-radius:var(--dd-radius);background:var(--dd-card);border:1.5px solid var(--dd-line)}
+.dd-founder__body{margin-top:14px;font-size:18px}
+.dd-founder__sign{margin-top:16px;font-weight:700}
+
+/* 4.14 guarantee (Auniva 12 results card, guarantee part) */
+.dd-gcard{display:grid;gap:14px;justify-items:center;max-width:820px;margin:0 auto;padding:34px 22px;border-radius:20px;background:var(--dd-ink);color:var(--dd-paper);text-align:center}
+.dd-gcard__seal{display:grid;place-items:center;width:132px;height:132px;border-radius:50%;border:3px solid var(--dd-accent-light);box-shadow:inset 0 0 0 6px var(--dd-ink),inset 0 0 0 8px var(--dd-accent-light);color:var(--dd-accent-light);line-height:1}
+.dd-gcard__big{display:block;font-size:52px;font-weight:900;letter-spacing:-.04em}
+.dd-gcard__unit{display:block;margin-top:2px;font:800 13px/1 var(--dd-mono);letter-spacing:.2em;text-transform:uppercase}
+.dd-gcard p{max-width:560px;font-size:18px}
+.dd-gcard .dd-btn{margin-top:6px}
+
+/* 4.15 FAQ (Auniva 04 accordion) */
+.dd-accs{display:grid;gap:12px;margin-top:26px}
+.dd-acc{border:1.5px solid var(--dd-line);border-radius:var(--dd-radius);background:var(--dd-card)}
+.dd-acc summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:16px 18px;list-style:none;cursor:pointer;font-weight:750;font-size:18px;line-height:1.3}
+.dd-acc summary::-webkit-details-marker{display:none}
+.dd-acc__icon{flex:0 0 auto;transition:transform 220ms var(--dd-ease)}
+.dd-acc[data-open] .dd-acc__icon{transform:rotate(45deg)}
+.dd-acc__grid{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 220ms var(--dd-ease),opacity 220ms var(--dd-ease)}
+.dd-acc[data-open] .dd-acc__grid{grid-template-rows:1fr;opacity:1}
+.dd-acc[open]:not([data-open]) .dd-acc__grid{transition-duration:150ms}
+.dd-acc:not([data-anim])[open] .dd-acc__grid{grid-template-rows:1fr;opacity:1}
+.dd-acc__body{min-height:0;overflow:hidden}
+.dd-acc__inner{padding:0 18px 20px}
+.dd-acc__inner p+p{margin-top:10px}
+
+/* 4.16 email capture */
+.dd-mail{max-width:780px;margin:0 auto;padding:28px 20px;border-radius:var(--dd-radius);background:var(--dd-accent-soft)}
+.dd-mail .dd-h2{font-size:clamp(24px,6.4vw,30px)}
+.dd-mail form{display:grid;gap:10px;margin-top:18px}
+.dd-mail label{font-weight:700;font-size:15px}
+.dd-mail input{width:100%;min-height:54px;padding:12px 14px;border:1.5px solid var(--dd-line-2);border-radius:12px;background:#fff;font-size:17px}
+.dd-mail input:focus-visible{outline:3px solid var(--dd-accent);outline-offset:1px;border-radius:12px}
+.dd-mail__msg{min-height:1.4em;font-size:15px;font-weight:600}
+.dd-mail__msg[data-state="error"]{color:#b3261e}
+.dd-klaviyo{margin-top:12px;font-size:14px}
+
+/* 4.17 final CTA */
+.dd-final{max-width:640px;margin:0 auto;text-align:center}
+.dd-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:24px 0 14px;padding:0;border:0}
+.dd-mini label{position:relative;cursor:pointer}
+.dd-mini input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.dd-mini span{display:grid;gap:2px;min-height:64px;align-content:center;padding:8px 4px;border:1.5px solid var(--dd-line);border-radius:12px;background:var(--dd-card);font-size:14px;line-height:1.25;transition:border-color var(--dd-fast),box-shadow var(--dd-fast)}
+.dd-mini b{font-size:18px}
+.dd-mini input:checked+span{border-color:var(--dd-accent);box-shadow:inset 0 0 0 1.5px var(--dd-accent);background:#fff}
+.dd-mini input:focus-visible+span{outline:3px solid var(--dd-accent);outline-offset:3px}
+.dd-final__mode{margin:12px 0 6px;font-size:14px;color:var(--dd-muted)}
+.dd-final__mode a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;font-weight:700;color:var(--dd-ink)}
+.dd-final .dd-gline{margin-top:8px}
+
+/* 4.18 footer (Auniva 14 legal strip) */
+.dd-foot{padding:44px 0 calc(100px + env(safe-area-inset-bottom));background:var(--dd-ink);color:#d9d3c6;font-size:15px;line-height:1.5}
+.dd-foot__brand{font-weight:900;font-size:20px;letter-spacing:-.03em;color:var(--dd-paper)}
+.dd-fda{margin-top:18px;padding:14px 16px;border:1px solid rgba(246,242,233,.35);border-radius:10px}
+.dd-p65{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:14px 16px;border:2px solid var(--dd-paper);border-radius:10px;color:var(--dd-paper)}
+.dd-p65 .dd-i{width:26px;height:26px}
+.dd-foot__warn{margin-top:14px}
+.dd-foot__links{display:flex;flex-wrap:wrap;gap:0 22px;margin-top:18px}
+.dd-foot__links a,.dd-foot__links span{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:600;color:var(--dd-paper)}
+.dd-foot__copy{margin-top:10px;font-size:13px;color:#a39d90}
+.dd-fail{max-width:640px;margin:60px auto;padding:24px;font-size:17px}
+.dd-fail code{padding:2px 6px;background:#fff;border-radius:4px}
+
+/* desktop */
+@media (min-width:900px){
+  body{font-size:18px}
+  .dd-sec{padding:84px 0}
+  .dd-h1{font-size:42px;line-height:1.08}
+  .dd-h2{font-size:40px}
+  .dd-ann{font-size:14px}
+  .dd-top .dd-wrap{min-height:56px}
+  .dd-buy{padding:36px 0 64px}
+  .dd-buy__grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-areas:"gal head" "gal offer";column-gap:56px;row-gap:22px;align-items:start}
+  .dd-buy__gal{position:sticky;top:20px}
+  .dd-subh{font-size:19px}
+  .dd-ann p{white-space:normal}
+  .dd-outcomes li{font-size:17px}
+  .dd-gal__track{margin:0;padding:0;scroll-padding:0}
+  .dd-gal__slide{flex-basis:100%}
+  .dd-gal__slide img,.dd-gal__slide .dd-shot{aspect-ratio:var(--dd-ratio,4 / 3)}
+  .dd-gal__nav{position:absolute;top:calc(50% - 50px);display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,253,248,.92);box-shadow:0 2px 10px rgba(26,25,22,.15)}
+  .dd-gal__nav--prev{left:12px}.dd-gal__nav--next{right:12px}
+  .dd-gal__nav[disabled]{opacity:0;pointer-events:none}
+  .dd-gal__count{bottom:auto;top:12px;left:12px}
+  .dd-thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px}
+  .dd-thumbs button{position:relative;padding:0;min-height:56px;border:2px solid transparent;border-radius:10px;overflow:hidden;background:var(--dd-shot);font:700 13px/1 var(--dd-mono);color:#3a3731}
+  .dd-thumbs button[aria-current="true"]{border-color:var(--dd-accent)}
+  .dd-thumbs img{width:100%;aspect-ratio:1;object-fit:cover}
+  .dd-sticky,.dd-toast{bottom:24px}
+  .dd-sticky{display:none!important}
+  .dd-reasons{grid-template-columns:1fr 1fr;gap:36px}
+  .dd-eqs{max-width:760px;margin:44px auto 0;gap:20px}
+  .dd-eq{padding:26px 16px}
+  .dd-eq__part{font-size:19px}
+  .dd-eq__res{font-size:60px}
+  .dd-fixes{grid-template-columns:1fr 1fr;gap:20px}
+  .dd-tl{grid-template-columns:repeat(4,1fr);gap:28px;padding-left:0;padding-top:34px}
+  .dd-tl::before{left:0;right:0;top:7px;bottom:auto;width:auto;height:2px}
+  .dd-tl li::before{left:0;top:-34px}
+  .dd-tl+.dd-gline{justify-content:center}
+  .dd-steps{grid-template-columns:repeat(3,1fr);gap:20px}
+  .dd-step{flex-direction:column;align-items:flex-start;padding:24px}
+  .dd-receipt{padding:38px 40px 44px}
+  .dd-cmp{max-width:900px;margin-left:auto;margin-right:auto}
+  .dd-cmp table{font-size:16px}
+  .dd-cmp thead th{font-size:13px}
+  .dd-cmp th,.dd-cmp td{padding:16px 14px}
+  .dd-rev{flex-basis:calc(33.333% - 8px)}
+  .dd-gcard{grid-template-columns:auto 1fr;justify-items:start;column-gap:40px;padding:48px;text-align:left}
+  .dd-gcard__seal{grid-row:1 / span 4;width:180px;height:180px}
+  .dd-gcard__big{font-size:72px}
+  .dd-accs{max-width:820px;margin-left:auto;margin-right:auto}
+  .dd-mail{padding:40px 44px}
+  .dd-mail form{grid-template-columns:1fr auto;align-items:end;column-gap:12px}
+  .dd-mail label{grid-column:1 / -1}
+  .dd-mail__msg{grid-column:1 / -1}
+  .dd-foot{padding-bottom:48px}
+  .dd-foot__cols{display:grid;grid-template-columns:1fr 1.4fr;gap:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:1ms!important;animation:none!important;scroll-behavior:auto!important}
+  .dd-btn:active,.dd-opt:active .dd-opt__box{transform:none}
+}
+</style>
+</head>
+<body>
+<div id="dd-app"></div>
+<noscript><p class="dd-fail">This page needs JavaScript to show the product.</p></noscript>
+<script>
+/* Doo Diligence PDP runtime: fetches content.json, renders the sections in content.sections order, wires the offer,
+   gallery, accordions, sticky bar and dd:track events. Vanilla, no dependencies. */
+(function () {
+  'use strict';
+  var D = document, W = window, app = D.getElementById('dd-app');
+  var RM = W.matchMedia ? W.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var C, cfg, FT, HV = 'A', V = {}, S = { boxes: 2, sub: false };
+  var fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+  var fmt0 = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+  function reduced() { return !!(RM && RM.matches); }
+  function $(s, r) { return (r || D).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || D).querySelectorAll(s)); }
+  function r2(n) { return Math.round(n * 100) / 100; }
+  function money(n) { return fmt.format(n); }
+  function moneyShort(n) { return Math.abs(n - Math.round(n)) < 0.005 ? fmt0.format(n) : fmt.format(n); }
+  var ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return ESC[c]; }); }
+  function look(k, x) { return x && Object.prototype.hasOwnProperty.call(x, k) ? x[k] : V[k]; }
+
+  /* Copy renderer: escape, fill {TOKENS}, **bold**, *accent*, then mark every [[PLACEHOLDER: ...]] in yellow. */
+  var PH_RE = /\[\[PLACEHOLDER(?::[^\]]*)?\]\]/g;
+  function t(raw, x) {
+    if (raw == null || raw === '') return '';
+    return esc(raw)
+      .replace(/\{([A-Z0-9_]+)\}/g, function (m, k) { var v = look(k, x); return v == null ? m : typeof v === 'object' ? v.html : esc(v); })
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      .replace(PH_RE, function (m) { return '<mark class="dd-ph">' + m + '</mark>'; });
+  }
+  /* Plain-text version (attributes, toasts, the document title). */
+  function plain(raw, x) {
+    return String(raw == null ? '' : raw)
+      .replace(/\{([A-Z0-9_]+)\}/g, function (m, k) { var v = look(k, x); return v == null ? m : typeof v === 'object' ? v.text : String(v); })
+      .replace(/\*+/g, '');
+  }
+  function at(raw, x) { return esc(plain(raw, x)); }
+
+  var IC = {
+    check: '<path d="m5 12.5 4.5 4.5L19 7"/>',
+    checksq: '<rect x="3" y="3" width="18" height="18" rx="3.5"/><path d="m7.5 12.5 3 3 6-7"/>',
+    x: '<path d="m7 7 10 10M17 7 7 17"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+    balloon: '<path d="M12 3a6 6 0 0 1 6 6c0 3.9-3.3 7-6 7s-6-3.1-6-7a6 6 0 0 1 6-6Z"/><path d="M12 16v1.2c0 1.6-2 2.1-2 3.8"/><path d="m3.5 3.5 17 17"/>',
+    stick: '<rect x="8" y="2.5" width="8" height="19" rx="1.6"/><path d="M8 7h8" stroke-dasharray="1.6 1.8"/>',
+    tear: '<path d="M8 6.5h8v14a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 8 20.5v-14Z"/><path d="M8 6.5 9.5 2h5L16 6.5" stroke-dasharray="1.6 1.6"/><path d="M11 12.5h2"/>',
+    glass: '<path d="M5.5 4h13l-1.6 15.6a1.6 1.6 0 0 1-1.6 1.4H8.7a1.6 1.6 0 0 1-1.6-1.4L5.5 4Z"/><path d="M6.3 10.5h11.4"/><path d="M12 2v5" />',
+    go: '<path d="M4 12h15M13 6l6 6-6 6"/>',
+    shield: '<path d="M12 2.5 4.5 5.5v5.8c0 4.9 3.2 8.6 7.5 10.2 4.3-1.6 7.5-5.3 7.5-10.2V5.5L12 2.5Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    left: '<path d="m15 5-7 7 7 7"/>',
+    right: '<path d="m9 5 7 7-7 7"/>',
+    gift: '<rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8.5h14V12M12 8v12.5"/><path d="M12 8C10.5 4.5 6.5 4 6.5 6.5S10 8 12 8Zm0 0c1.5-3.5 5.5-4 5.5-1.5S14 8 12 8Z"/>',
+    warn: '<path d="M12 3.2 2.3 20.5h19.4L12 3.2Z" stroke-width="2.2"/><path d="M12 9.5v5" stroke-width="2.6"/><path d="M12 17.6v.1" stroke-width="2.8"/>',
+    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+  };
+  function icon(n, cls) {
+    return '<svg class="dd-i' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (IC[n] || IC.check) + '</svg>';
+  }
+
+  /* ---------- state, pricing, toggles ---------- */
+  function opt(b) { return C.buybox.offer.options.filter(function (o) { return o.boxes === b; })[0]; }
+  function priced(b, sub) {
+    var base = Number(cfg['PRICE_' + b]), subPrice = r2(base * (1 - cfg.SUB_DISCOUNT)), price = sub ? subPrice : base;
+    var ref = r2(Number(cfg.PRICE_1) * b);
+    return { price: price, subPrice: subPrice, ref: ref, save: r2(ref - price), perDay: price / (b * cfg.STICKS_PER_BOX), perBox: price / b, ship: b >= cfg.FREE_SHIP_MIN_QTY, days: b * cfg.SUB_DAYS_PER_BOX };
+  }
+  function parseDay(s) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '').trim()); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59, 59) : null; }
+  function niceDay(s) { var d = parseDay(s); return d ? d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : s; }
+  function saleOn() { if (!cfg.SALE_MODE) return false; var d = parseDay(cfg.SALE_END_DATE); return !d ? true : Date.now() <= d.getTime(); }
+  function prop65On() { var p = cfg.PROP65_WARNING; return p === 'auto' || p == null ? !!FT.prop65_default : p === true || p === 'true'; }
+  function ctaLabel() { return cfg.PREORDER_MODE ? C.buybox.cta.preorder_label : C.buybox.cta.label; }
+  function optShort() { return plain(opt(S.boxes).short) + (S.sub ? ' · ' + plain(C.buybox.sticky_sub) : ''); }
+
+  function buildVars() {
+    var email = String(cfg.SUPPORT_EMAIL || '').trim();
+    var gifts = C.buybox.offer.options.filter(function (o) { return o.gift; }).map(function (o) { return o.boxes; });
+    V = {
+      FIBER_TYPE: FT.name, FIBER_TYPE_CAP: FT.name_cap, FIBER_TYPE_LABEL: FT.label_name,
+      FERMENT_LINE: FT.ferment, TEXTURE_LINE: FT.texture_line, TEXTURE_SHORT: FT.texture_short, MIX_STEP: FT.mix_step,
+      WATER_WARNING: C.water_warning,
+      FIBER_G: cfg.FIBER_G, FILL_G: cfg.FILL_G, STICKS_PER_BOX: cfg.STICKS_PER_BOX, MADE_IN: cfg.MADE_IN,
+      GUARANTEE_DAYS: cfg.GUARANTEE_DAYS, FREE_SHIP_MIN_QTY: cfg.FREE_SHIP_MIN_QTY,
+      SUB_PCT: Math.round(cfg.SUB_DISCOUNT * 100), SUB_DAYS_PER_BOX: cfg.SUB_DAYS_PER_BOX,
+      GIFT_NAME: C.buybox.gift.name, GIFT_MIN: gifts.length ? Math.min.apply(null, gifts) : '',
+      PREORDER_SHIP_DATE: cfg.PREORDER_SHIP_DATE ? niceDay(cfg.PREORDER_SHIP_DATE) : '[[PLACEHOLDER: real pre-order ship date]]',
+      SALE_END_DATE: cfg.SALE_END_DATE ? niceDay(cfg.SALE_END_DATE) : '[[PLACEHOLDER: real sale end date]]',
+      YEAR: new Date().getFullYear(),
+      EMAIL_US: email ? { html: '<a href="mailto:' + esc(email) + '">email us</a>', text: 'email us (' + email + ')' } : 'email us'
+    };
+  }
+
+  /* ---------- analytics hook ---------- */
+  function track(name, data, el) {
+    var detail = { event: name, headline_variant: HV, fiber_type: cfg.FIBER_TYPE, ts: Date.now() };
+    for (var k in data) if (Object.prototype.hasOwnProperty.call(data, k)) detail[k] = data[k];
+    (el || D).dispatchEvent(new CustomEvent('dd:track', { bubbles: true, detail: detail }));
+    if (W.console) console.info('[dd:track]', name, detail);
+  }
+
+  /* ---------- media (placeholder box or real <img>) ---------- */
+  function media(m, i, n, hero, tag, small) {
+    if (m.src) {
+      return '<img src="' + esc(m.src) + '"' + (m.srcset ? ' srcset="' + esc(m.srcset) + '" sizes="' + esc(m.sizes || '(min-width: 900px) 50vw, 90vw') + '"' : '') +
+        ' width="' + (m.width || 1200) + '" height="' + (m.height || 900) + '" alt="' + at(m.alt) + '"' +
+        (hero ? ' fetchpriority="high" loading="eager"' : ' loading="lazy" decoding="async"') + '>';
+    }
+    return '<div class="dd-shot' + (small ? ' dd-shot--sm' : '') + '" role="img" aria-label="' + at(m.alt) + '">' +
+      '<span class="dd-shot__tag">' + esc(tag || 'Placeholder') + (n ? ' ' + (i + 1) + '/' + n : '') + '</span>' +
+      (small ? '' : '<span class="dd-shot__desc">' + t(m.shot) + '</span>') + '</div>';
+  }
+
+  /* ---------- sections ---------- */
+  var R = {};
+  function sec(id, mod, inner, narrow) {
+    return '<section class="dd-sec' + (mod ? ' ' + mod : '') + '" id="' + id + '" aria-labelledby="h-' + id + '"><div class="dd-wrap' + (narrow ? ' dd-narrow' : '') + '">' + inner + '</div></section>';
+  }
+  function h2(id, text, eyebrow, center) {
+    return '<div class="dd-shead' + (center ? ' dd-center' : '') + '">' + (eyebrow ? '<span class="dd-eyebrow">' + t(eyebrow) + '</span>' : '') + '<h2 class="dd-h2" id="h-' + id + '">' + t(text) + '</h2></div>';
+  }
+  function gline(text) { return '<p class="dd-gline">' + icon('shield') + '<span>' + t(text) + '</span></p>'; }
+
+  R.announcement = function () {
+    var a = C.announcement;
+    return '<div class="dd-ann">' + (saleOn() ? '<p class="dd-ann__sale">' + t(a.sale_text) + '</p>' : '') + '<p>' + t(a.text) + '</p></div>';
+  };
+
+  R.header = function () {
+    return '<header class="dd-top"><div class="dd-wrap"><a class="dd-logo" href="./">' + t(C.header.brand) + '</a></div></header>';
+  };
+
+  function ratingLine() {
+    var rv = C.proof.reviews;
+    if (typeof rv.rating !== 'number') return '<p class="dd-rating">' + t(rv.rating_placeholder) + '</p>';
+    return '<p class="dd-rating"><span class="dd-stars" style="--r:' + rv.rating + '" role="img" aria-label="' + rv.rating + ' out of 5 stars">★★★★★</span><b>' + rv.rating + '</b>' +
+      (rv.count ? '<a href="#proof">' + t(rv.count_label, { N: rv.count }) + '</a>' : '') + '</p>';
+  }
+
+  R.buybox = function () {
+    var b = C.buybox, g = b.gallery, n = g.items.length, o = b.offer, gf = b.gift, pre = cfg.PREORDER_MODE;
+    var head = (cfg.SHOW_REVIEWS ? ratingLine() : '') +
+      '<h1 class="dd-h1" id="h-buy">' + t(b.headlines[HV] || b.headlines.A) + '</h1>' +
+      '<p class="dd-subh">' + t(b.sub) + '</p>' +
+      '<ul class="dd-outcomes">' + b.outcomes.map(function (x) { return '<li>' + icon(x.icon) + '<span>' + t(x.text) + '</span></li>'; }).join('') + '</ul>';
+
+    var gal = '<div class="dd-gal" data-gal style="--dd-ratio:' + at(g.ratio || '4 / 3') + ';--dd-ratio-m:' + at(g.ratio_mobile || g.ratio || '4 / 3') + '">' +
+      '<div class="dd-gal__track" data-car-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="' + at(g.label) + '">' +
+      g.items.map(function (m, i) { return '<div class="dd-gal__slide" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' / ' + n + '">' + media(m, i, n, i === 0, g.placeholder_tag) + '</div>'; }).join('') +
+      '</div>' +
+      '<span class="dd-gal__count" aria-hidden="true"><span data-gal-i>1</span> / ' + n + '</span>' +
+      '<button type="button" class="dd-gal__nav dd-gal__nav--prev" data-car-prev aria-label="' + at(g.prev) + '">' + icon('left') + '</button>' +
+      '<button type="button" class="dd-gal__nav dd-gal__nav--next" data-car-next aria-label="' + at(g.next) + '">' + icon('right') + '</button>' +
+      '<div class="dd-thumbs">' + g.items.map(function (m, i) {
+        return '<button type="button" data-gal-thumb="' + i + '" aria-label="' + at(g.thumb) + ' ' + (i + 1) + '" aria-current="' + (i === 0) + '">' +
+          (m.src ? '<img src="' + esc(m.thumb || m.src) + '" width="120" height="120" alt="" loading="lazy" decoding="async">' : (i + 1)) + '</button>';
+      }).join('') + '</div></div>';
+
+    var cards = o.options.map(function (op) {
+      return '<label class="dd-opt" data-opt="' + op.boxes + '">' +
+        '<input class="dd-opt__radio" type="radio" name="dd-boxes" value="' + op.boxes + '" data-track="offer_select" data-track-location="buybox">' +
+        '<span class="dd-opt__box">' +
+          (op.badge ? '<span class="dd-opt__badge">' + t(op.badge) + '</span>' : '') +
+          '<span class="dd-opt__dot" aria-hidden="true"></span>' +
+          '<span class="dd-opt__main"><span class="dd-opt__name">' + t(op.name) + '</span>' +
+            '<span class="dd-opt__meta"><span data-c="perbox"></span><span data-c="perday"></span></span>' +
+            '<span class="dd-chips"><span class="dd-chip" data-c="save"></span><span class="dd-chip" data-c="ship">' + t(o.free_ship) + '</span></span>' +
+          '</span>' +
+          '<span class="dd-opt__price"><span data-c="price"></span><span class="dd-opt__was" data-c="was"><span class="dd-vh">' + t(o.was) + ' </span><s data-c="ref"></s></span></span>' +
+        '</span></label>';
+    }).join('');
+
+    var offer = '<fieldset class="dd-opts"><legend>' + t(o.legend) + '</legend>' + cards + '</fieldset>' +
+      '<div class="dd-subbox"><label class="dd-toggle"><input type="checkbox" id="dd-sub" data-track="subscribe_toggle" aria-describedby="dd-sub-terms"><span class="dd-switch" aria-hidden="true"></span><span>' + t(b.subscribe.label) + '</span></label>' +
+        '<p class="dd-terms" id="dd-sub-terms" data-f="sub-terms"></p></div>' +
+      '<div class="dd-gift" data-gift><div class="dd-gift__img">' + media(gf.image, 0, 0, false, g.placeholder_tag, true) + '</div>' +
+        '<div><p class="dd-gift__title">' + icon('gift') + '<span>' + t(gf.title) + '</span><span class="dd-chip">' + t(gf.tag) + '</span></p>' +
+        '<ul class="dd-gift__items">' + gf.items.map(function (x) { return '<li>' + t(x) + '</li>'; }).join('') + '</ul>' +
+        '<p class="dd-gift__value">' + t(gf.value) + ' · <span data-f="gift-state"></span></p></div></div>' +
+      (pre ? '<p class="dd-pre">' + t(b.cta.preorder_line) + '</p>' : '') +
+      '<button type="button" class="dd-btn dd-btn--block" id="dd-cta" data-buy="buybox" data-track="cta_click" data-track-location="buybox"><span>' + t(ctaLabel()) + '</span><span class="dd-btn__price" data-f="cta-price"></span></button>' +
+      gline(b.cta.guarantee_line) +
+      (prop65On() ? '<p class="dd-p65link"><a href="#prop65">' + icon('warn') + '<span>' + t(b.cta.prop65_link) + '</span></a></p>' : '');
+
+    var sticky = '<div class="dd-sticky" id="dd-sticky" role="region" aria-label="' + at(ctaLabel()) + '" hidden>' +
+      '<div class="dd-sticky__info"><span class="dd-sticky__opt" data-f="opt-short"></span><b data-f="cta-price-plain"></b></div>' +
+      '<button type="button" class="dd-btn" data-buy="sticky" data-track="cta_click" data-track-location="sticky">' + t(ctaLabel()) + '</button></div>' +
+      '<div class="dd-toast" id="dd-toast" role="status" aria-live="polite"></div>';
+
+    return '<section class="dd-buy" id="buy" aria-labelledby="h-buy"><div class="dd-wrap dd-buy__grid">' +
+      '<div class="dd-buy__head">' + head + '</div>' +
+      '<div class="dd-buy__gal">' + gal + '</div>' +
+      '<div class="dd-buy__offer" id="offer" tabindex="-1">' + offer + '</div>' +
+      '</div></section>' + sticky;
+  };
+
+  R.familiar = function () {
+    var f = C.familiar;
+    return sec('familiar', 'dd-sec--ink', h2('familiar', f.title) +
+      '<ul class="dd-checks">' + f.items.map(function (x) { return '<li>' + icon('checksq') + '<span>' + t(x) + '</span></li>'; }).join('') + '</ul>' +
+      '<p class="dd-closing">' + t(f.closing) + '</p>', true);
+  };
+
+  R.reframe = function () {
+    var r = C.reframe, plus = '<span class="dd-eq__op"><span aria-hidden="true">+</span><span class="dd-vh">plus</span></span>';
+    return sec('reframe', '', h2('reframe', r.title) +
+      '<div class="dd-reasons">' + r.reasons.map(function (x, i) {
+        return '<div class="dd-reason"><span class="dd-num" aria-hidden="true">' + (i + 1) + '</span><div><h3 class="dd-h3">' + t(x.title) + '</h3><p>' + t(x.text) + '</p></div></div>';
+      }).join('') + '</div>' +
+      '<ul class="dd-eqs">' + r.cards.map(function (c) {
+        return '<li class="dd-eq dd-eq--' + esc(c.tone) + '">' + c.parts.map(function (p) { return '<span class="dd-eq__part">' + t(p) + '</span>'; }).join(plus) +
+          '<span class="dd-eq__op" aria-hidden="true">=</span><span class="dd-eq__res" role="img" aria-label="' + at(c.result_label) + '">' + t(c.result) + '</span></li>';
+      }).join('') + '</ul>');
+  };
+
+  R.fix = function () {
+    var f = C.fix;
+    return sec('fix', 'dd-sec--line', h2('fix', f.title, f.eyebrow) +
+      '<ol class="dd-fixes">' + f.items.map(function (x, i) {
+        return '<li class="dd-fix"><span class="dd-fix__n" aria-hidden="true">' + (i + 1) + '</span><span class="dd-eyebrow">' + t(x.label) + '</span><h3 class="dd-h3">' + t(x.title) + '</h3><p>' + t(x.text) + '</p></li>';
+      }).join('') + '</ol>');
+  };
+
+  R.honesty = function () {
+    var h = C.honesty;
+    return '<section class="dd-sec" id="honesty" aria-label="' + at(h.eyebrow) + '" style="padding-top:8px"><div class="dd-wrap"><aside class="dd-note"><span class="dd-eyebrow">' + t(h.eyebrow) + '</span><p>' + t(h.text) + '</p></aside></div></section>';
+  };
+
+  R.timeline = function () {
+    var tl = C.timeline;
+    return sec('timeline', 'dd-sec--accent', h2('timeline', tl.title, tl.eyebrow, true) +
+      '<ol class="dd-tl">' + tl.steps.map(function (s) { return '<li><p class="dd-tl__pill">' + t(s.when) + '</p><p>' + t(s.text) + '</p></li>'; }).join('') + '</ol>' +
+      gline(tl.guarantee_line));
+  };
+
+  R.how = function () {
+    var h = C.how;
+    return sec('how', '', h2('how', h.title, '', true) + (h.intro ? '<p class="dd-lead dd-center">' + t(h.intro) + '</p>' : '') +
+      '<ol class="dd-steps">' + h.steps.map(function (s, i) {
+        return '<li class="dd-step"><span class="dd-step__ic">' + icon(s.icon) + '<span class="dd-step__n">' + (i + 1) + '</span></span><p>' + t(s.text) + '</p></li>';
+      }).join('') + '</ol>' +
+      (FT.water_warning ? '<p class="dd-warn">' + icon('warn') + '<span>' + t(C.water_warning) + '</span></p>' : ''));
+  };
+
+  R.report = function () {
+    var r = C.report, coa = String(cfg.COA_URL || '').trim();
+    var rows = r.rows.map(function (x) { return '<div><dt>' + t(x.k) + '</dt><dd>' + t(x.v) + '</dd></div>'; }).join('') +
+      (coa ? '<div><dt>' + t(r.coa_k) + '</dt><dd><a href="' + esc(coa) + '" target="_blank" rel="noopener">' + t(r.coa_link) + '</a></dd></div>' : '');
+    return '<section class="dd-sec dd-sec--line" id="report" aria-labelledby="h-report"><div class="dd-wrap">' +
+      '<article class="dd-receipt">' + (coa ? '<span class="dd-stamp" aria-hidden="true">' + t(r.stamp) + '</span>' : '') +
+      '<p class="dd-receipt__brand">' + t(r.brand) + '</p><h2 class="dd-receipt__title" id="h-report">' + t(r.title) + '</h2>' +
+      '<p class="dd-receipt__serv">' + t(r.serving) + '</p><dl>' + rows + '</dl>' +
+      (FT.water_warning ? '<p class="dd-foot__warn" style="margin-top:14px;font-size:13px">' + t(C.water_warning) + '</p>' : '') +
+      '</article><p class="dd-receipt-foot">' + t(r.footer) + '</p></div></section>';
+  };
+
+  R.compare = function () {
+    var c = C.compare;
+    function cell(v, us) {
+      var inner = v === '✓' ? icon('check', 'dd-yes') + '<span class="dd-vh">' + t(c.yes) + '</span>' : v === '✗' ? icon('x', 'dd-no') + '<span class="dd-vh">' + t(c.no) + '</span>' : t(v);
+      return '<td' + (us ? ' class="dd-cmp__us"' : '') + '>' + inner + '</td>';
+    }
+    return sec('compare', '', h2('compare', c.title, '', true) +
+      '<div class="dd-cmp"><table><colgroup><col class="dd-cmp__lab"><col><col><col></colgroup>' +
+      '<thead><tr><th scope="col"><span class="dd-vh">' + t(c.feature) + '</span></th>' + c.columns.map(function (h, i) { return '<th scope="col"' + (i === 0 ? ' class="dd-cmp__us"' : '') + '>' + t(h) + '</th>'; }).join('') + '</tr></thead>' +
+      '<tbody>' + c.rows.map(function (r) { return '<tr><th scope="row">' + t(r.label) + '</th>' + r.values.map(function (v, i) { return cell(v, i === 0); }).join('') + '</tr>'; }).join('') + '</tbody></table></div>');
+  };
+
+  R.proof = function () {
+    if (cfg.SHOW_REVIEWS) {
+      var rv = C.proof.reviews;
+      return sec('proof', 'dd-sec--line', h2('proof', rv.title, '', true) + '<div class="dd-center" style="display:flex;justify-content:center;margin-top:10px">' + ratingLine() + '</div>' +
+        '<div class="dd-revs" data-car><div class="dd-revs__track" data-car-track tabindex="0" role="region" aria-label="' + at(rv.title) + '">' +
+        rv.items.map(function (x) {
+          return '<article class="dd-rev" data-objection="' + esc(x.objection) + '"><span class="dd-chip dd-rev__tag">' + t(x.tag) + '</span>' +
+            (typeof x.rating === 'number' ? '<span class="dd-stars" style="--r:' + x.rating + '" role="img" aria-label="' + x.rating + ' out of 5 stars">★★★★★</span>' : '') +
+            '<h3 class="dd-rev__title">' + t(x.title) + '</h3><p>' + t(x.text) + '</p><p class="dd-rev__name">' + t(x.name) + '</p></article>';
+        }).join('') + '</div><div class="dd-nav"><button type="button" data-car-prev aria-label="' + at(rv.prev) + '">' + icon('left') + '</button><button type="button" data-car-next aria-label="' + at(rv.next) + '">' + icon('right') + '</button></div></div>');
+    }
+    var f = C.proof.founder;
+    return sec('proof', 'dd-sec--line', '<div class="dd-founder">' + h2('proof', f.title, f.eyebrow) + '<div class="dd-founder__body"><p>' + t(f.body) + '</p></div><p class="dd-founder__sign">— ' + t(f.signoff) + '</p></div>');
+  };
+
+  R.guarantee = function () {
+    var g = C.guarantee;
+    return '<section class="dd-sec" id="guarantee" aria-labelledby="h-guarantee"><div class="dd-wrap"><div class="dd-gcard">' +
+      '<div class="dd-gcard__seal" aria-hidden="true"><span><span class="dd-gcard__big">' + t(g.big) + '</span><span class="dd-gcard__unit">' + t(g.unit) + '</span></span></div>' +
+      '<h2 class="dd-h2" id="h-guarantee">' + t(g.title) + '</h2><p>' + t(g.text) + '</p>' +
+      '<a class="dd-btn" href="#offer" data-goto="offer" data-track="cta_click" data-track-location="guarantee">' + t(g.cta) + '</a></div></div></section>';
+  };
+
+  R.faq = function () {
+    var f = C.faq;
+    return sec('faq', 'dd-sec--line', h2('faq', f.title, '', true) + '<div class="dd-accs">' + f.items.map(function (x, i) {
+      var extra = FT.water_warning && x.psyllium_extra ? '<p>' + t(x.psyllium_extra) + '</p>' : '';
+      return '<details class="dd-acc" data-acc data-track="faq_open" data-track-index="' + (i + 1) + '"><summary><span>' + t(x.q) + '</span><span class="dd-acc__icon">' + icon('plus') + '</span></summary>' +
+        '<div class="dd-acc__grid"><div class="dd-acc__body"><div class="dd-acc__inner"><p>' + t(x.a) + '</p>' + extra + '</div></div></div></details>';
+    }).join('') + '</div>');
+  };
+
+  R.email = function () {
+    var e = C.email, kid = String(cfg.KLAVIYO_FORM_ID || '').trim();
+    var body = kid ? '<div class="klaviyo-form-' + esc(kid) + '"></div>' :
+      '<form novalidate data-track="email_submit"><label for="dd-email">' + t(e.label) + '</label>' +
+      '<input id="dd-email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="' + at(e.input_placeholder) + '">' +
+      '<button type="submit" class="dd-btn">' + t(e.button) + '</button><p class="dd-mail__msg" data-mail-msg role="status" aria-live="polite"></p></form>' +
+      '<p class="dd-klaviyo">' + t(e.klaviyo_placeholder) + '</p>';
+    return '<section class="dd-sec" id="email" aria-labelledby="h-email" style="padding-top:0"><div class="dd-wrap"><div class="dd-mail"><h2 class="dd-h2" id="h-email">' + t(e.title) + '</h2>' + body + '</div></div></section>';
+  };
+
+  R.final = function () {
+    var f = C.final, o = C.buybox.offer;
+    return sec('final', 'dd-sec--line', '<div class="dd-final">' + h2('final', f.title, '', true) +
+      '<fieldset class="dd-mini"><legend class="dd-vh">' + t(o.legend) + '</legend>' + o.options.map(function (op) {
+        return '<label><input type="radio" name="dd-boxes-final" value="' + op.boxes + '" data-track="offer_select" data-track-location="final"><span>' + t(op.short) + '<b data-mini="' + op.boxes + '"></b></span></label>';
+      }).join('') + '</fieldset>' +
+      '<button type="button" class="dd-btn dd-btn--block" id="dd-cta-final" data-buy="final" data-track="cta_click" data-track-location="final"><span>' + t(cfg.PREORDER_MODE ? C.buybox.cta.preorder_label : f.cta) + '</span><span class="dd-btn__price" data-f="cta-price"></span></button>' +
+      '<p class="dd-final__mode"><span data-f="final-mode"></span> <a href="#offer" data-goto="offer">' + t(f.change) + '</a></p>' + gline(f.guarantee_line) + '</div>');
+  };
+
+  R.footer = function () {
+    var f = C.footer, email = String(cfg.SUPPORT_EMAIL || '').trim();
+    var links = f.links.map(function (l) {
+      var href = String(l.href || '').trim();
+      if (!href && /contact/i.test(l.label) && email) href = 'mailto:' + email;
+      return href ? '<a href="' + esc(href) + '">' + t(l.label) + '</a>' : '<span>' + t(l.label) + ' ' + t(f.link_placeholder) + '</span>';
+    }).join('');
+    return '<footer class="dd-foot"><div class="dd-wrap dd-foot__cols"><div><p class="dd-foot__brand">' + t(f.brand) + '</p><nav class="dd-foot__links" aria-label="' + at(f.brand) + '">' + links + '</nav><p class="dd-foot__copy">' + t(f.copyright) + '</p></div>' +
+      '<div><p class="dd-fda">' + t(f.fda) + '</p>' +
+      (FT.water_warning ? '<p class="dd-foot__warn">' + t(C.water_warning) + '</p>' : '') +
+      (prop65On() ? '<p class="dd-p65" id="prop65">' + icon('warn') + '<span><strong>' + t(f.prop65_title) + '</strong> ' + t(f.prop65_text) + '</span></p>' : '') +
+      '</div></div></footer>';
+  };
+
+  /* ---------- painting state into the DOM ---------- */
+  function setC(card, key, html, show) {
+    var el = $('[data-c="' + key + '"]', card);
+    if (!el) return;
+    if (html != null) el.innerHTML = html;
+    el.hidden = show === false;
+  }
+  function paint() {
+    var o = C.buybox.offer, cur = priced(S.boxes, S.sub), subCur = priced(S.boxes, true);
+    $$('[data-opt]').forEach(function (card) {
+      var b = Number(card.getAttribute('data-opt')), p = priced(b, S.sub), saves = p.save > 0.004;
+      setC(card, 'price', esc(money(p.price)));
+      setC(card, 'ref', esc(money(p.ref)), saves);
+      setC(card, 'was', null, saves);
+      setC(card, 'perbox', t(o.per_box, { X: money(p.perBox) }), b > 1);
+      setC(card, 'perday', t(o.per_day, { X: money(p.perDay) }));
+      setC(card, 'save', t(o.save, { X: moneyShort(p.save) }), saves);
+      setC(card, 'ship', null, p.ship);
+    });
+    $$('input[name="dd-boxes"],input[name="dd-boxes-final"]').forEach(function (r) { r.checked = Number(r.value) === S.boxes; });
+    $$('[data-mini]').forEach(function (el) { el.textContent = money(priced(Number(el.getAttribute('data-mini')), S.sub).price); });
+    var sub = $('#dd-sub'); if (sub) sub.checked = S.sub;
+    var x = { SUB_PRICE: money(subCur.subPrice), SUB_DAYS: subCur.days, OPTION_UNITS: plain(opt(S.boxes).units) };
+    $$('[data-f="sub-terms"]').forEach(function (el) { el.innerHTML = t(C.buybox.subscribe.terms, x); });
+    $$('[data-f="final-mode"]').forEach(function (el) { el.innerHTML = t(S.sub ? C.buybox.subscribe.final_on : C.buybox.subscribe.final_off, x); });
+    $$('[data-f="cta-price"],[data-f="cta-price-plain"]').forEach(function (el) { el.textContent = money(cur.price); });
+    $$('[data-f="opt-short"]').forEach(function (el) { el.textContent = optShort(); });
+    var gift = $('[data-gift]'), inc = !!opt(S.boxes).gift;
+    if (gift) { gift.setAttribute('data-included', String(inc)); $('[data-f="gift-state"]', gift).innerHTML = t(inc ? C.buybox.gift.included : C.buybox.gift.upsell); }
+  }
+
+  /* ---------- behaviour ---------- */
+  function initCarousel(root, onIndex) {
+    var track = $('[data-car-track]', root), prev = $('[data-car-prev]', root), next = $('[data-car-next]', root);
+    if (!track) return null;
+    function step() { var c = track.children; return c.length > 1 ? c[1].offsetLeft - c[0].offsetLeft : track.clientWidth; }
+    function index() { return Math.round(track.scrollLeft / Math.max(1, step())); }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      if (max <= 1) root.setAttribute('data-car-static', ''); else root.removeAttribute('data-car-static');
+      if (prev) prev.disabled = track.scrollLeft <= 1;
+      if (next) next.disabled = track.scrollLeft >= max - 1;
+      if (onIndex) onIndex(Math.min(track.children.length - 1, index()));
+    }
+    function go(i) { track.scrollTo({ left: i * step(), behavior: reduced() ? 'auto' : 'smooth' }); }
+    if (prev) prev.addEventListener('click', function () { go(index() - 1); });
+    if (next) next.addEventListener('click', function () { go(index() + 1); });
+    var ticking = false;
+    track.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; update(); }); } }, { passive: true });
+    W.addEventListener('resize', update);
+    update();
+    return { go: go };
+  }
+
+  function initGallery() {
+    var gal = $('[data-gal]'); if (!gal) return;
+    var count = $('[data-gal-i]', gal), thumbs = $$('[data-gal-thumb]', gal);
+    var car = initCarousel(gal, function (i) {
+      if (count) count.textContent = i + 1;
+      thumbs.forEach(function (b, j) { b.setAttribute('aria-current', String(i === j)); });
+    });
+    thumbs.forEach(function (b) { b.addEventListener('click', function () { car.go(Number(b.getAttribute('data-gal-thumb'))); }); });
+  }
+
+  /* Accordion on native <details> (Auniva skeleton): grid rows 0fr -> 1fr, open 220 ms, close 150 ms. */
+  function initAccordion(det) {
+    var sum = $('summary', det), grid = $('.dd-acc__grid', det), timer;
+    det.setAttribute('data-anim', '');
+    function open() {
+      clearTimeout(timer); det.open = true;
+      requestAnimationFrame(function () { requestAnimationFrame(function () { if (det.open) det.setAttribute('data-open', ''); }); });
+      track('faq_open', { index: Number(det.getAttribute('data-track-index')), question: plain($('summary span', det).textContent) }, det);
+    }
+    function close() {
+      clearTimeout(timer); det.removeAttribute('data-open');
+      timer = setTimeout(function () { if (!det.hasAttribute('data-open')) det.open = false; }, reduced() ? 10 : 160);
+    }
+    sum.addEventListener('click', function (e) { e.preventDefault(); if (det.hasAttribute('data-open')) close(); else open(); });
+    det.addEventListener('toggle', function () { if (det.open && !det.hasAttribute('data-open')) det.setAttribute('data-open', ''); if (!det.open) det.removeAttribute('data-open'); });
+  }
+
+  function toast(msg) {
+    var el = $('#dd-toast'); if (!el) return;
+    el.textContent = msg; el.classList.add('is-on');
+    clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove('is-on'); }, 3600);
+  }
+
+  function buy(loc, el) {
+    var p = priced(S.boxes, S.sub), urls = (S.sub ? cfg.CTA_URLS_SUBSCRIBE : cfg.CTA_URLS) || {}, url = String(urls[S.boxes] || '').trim();
+    var d = { location: loc, boxes: S.boxes, subscribe: S.sub, price: p.price, option: optShort(), preorder: !!cfg.PREORDER_MODE };
+    track('cta_click', d, el);
+    if (url) { W.location.href = url; return; }
+    console.log('[Doo Diligence] selected option', d);
+    toast(plain(C.buybox.cta.prototype_toast, { OPTION: optShort() + ', ' + money(p.price) }));
+  }
+
+  function goOffer() {
+    var t0 = $('#offer'); if (!t0) return;
+    t0.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+    try { t0.focus({ preventScroll: true }); } catch (e) {}
+  }
+
+  function initSticky() {
+    var bar = $('#dd-sticky'), cta = $('#dd-cta'), fin = $('#final'), foot = $('.dd-foot');
+    if (!bar || !cta || !('IntersectionObserver' in W)) return;
+    var past = false, blocked = {}, hideT;
+    function upd() {
+      var show = past && !blocked.final && !blocked.foot;
+      clearTimeout(hideT);
+      if (show) { bar.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { bar.classList.add('is-on'); }); }); }
+      else { bar.classList.remove('is-on'); hideT = setTimeout(function () { if (!bar.classList.contains('is-on')) bar.hidden = true; }, 260); }
+    }
+    new IntersectionObserver(function (en) { var e = en[en.length - 1]; past = !e.isIntersecting && e.boundingClientRect.top < 0; upd(); }).observe(cta);
+    [['final', fin && $('.dd-final', fin)], ['foot', foot]].forEach(function (p) {
+      if (p[1]) new IntersectionObserver(function (en) { blocked[p[0]] = en[en.length - 1].isIntersecting; upd(); }).observe(p[1]);
+    });
+  }
+
+  function initEmail() {
+    var form = $('#email form'); if (!form) return;
+    var msg = $('[data-mail-msg]', form), input = $('#dd-email', form);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ok = input.value && input.checkValidity();
+      msg.setAttribute('data-state', ok ? 'ok' : 'error');
+      msg.textContent = ok ? plain(C.email.prototype_msg) : plain(C.email.invalid);
+      input.setAttribute('aria-invalid', String(!ok));
+      if (!ok) { input.focus(); return; }
+      track('email_submit', { location: 'email', email_domain: input.value.split('@')[1] || '' }, form);
+    });
+  }
+
+  function wire() {
+    D.addEventListener('change', function (e) {
+      var el = e.target;
+      if (el.name === 'dd-boxes' || el.name === 'dd-boxes-final') {
+        S.boxes = Number(el.value); paint();
+        track('offer_select', { location: el.getAttribute('data-track-location'), boxes: S.boxes, subscribe: S.sub }, el);
+      } else if (el.id === 'dd-sub') {
+        S.sub = el.checked; paint();
+        track('subscribe_toggle', { on: S.sub, boxes: S.boxes }, el);
+      }
+    });
+    D.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-buy]');
+      if (b) { buy(b.getAttribute('data-buy'), b); return; }
+      var g = e.target.closest && e.target.closest('[data-goto="offer"]');
+      if (g) {
+        e.preventDefault();
+        if (g.hasAttribute('data-track')) track('cta_click', { location: g.getAttribute('data-track-location'), action: 'scroll_to_offer' }, g);
+        goOffer();
+      }
+    });
+    initGallery();
+    $$('[data-car]').forEach(function (c) { initCarousel(c); });
+    $$('[data-acc]').forEach(initAccordion);
+    initEmail();
+    initSticky();
+  }
+
+  function boot(data) {
+    C = data; cfg = C.config;
+    FT = C.fiber_types[cfg.FIBER_TYPE] || C.fiber_types.acacia;
+    var qh = /[?&]h=([abc])\b/i.exec(W.location.search);
+    HV = (qh ? qh[1] : cfg.HEADLINE_VARIANT || 'A').toUpperCase();
+    if (!C.buybox.headlines[HV]) HV = 'A';
+    S.boxes = opt(Number(cfg.DEFAULT_BOXES)) ? Number(cfg.DEFAULT_BOXES) : C.buybox.offer.options[0].boxes;
+    buildVars();
+    D.title = plain(C.meta.title);
+    var md = D.createElement('meta'); md.name = 'description'; md.content = plain(C.meta.description).replace(PH_RE, '').replace(/\s+/g, ' ').trim(); D.head.appendChild(md);
+    D.documentElement.setAttribute('data-headline', HV);
+    D.documentElement.setAttribute('data-fiber', cfg.FIBER_TYPE);
+    var html = '<a class="dd-skip" href="#offer" data-goto="offer">' + t(C.header.skip) + '</a>';
+    (C.sections || []).forEach(function (s) { if (R[s]) html += s === 'buybox' ? '<main id="main">' + R[s]() : R[s](); if (s === 'final') html += '</main>'; });
+    if (html.indexOf('</main>') < 0 && html.indexOf('<main') > -1) html += '</main>';
+    app.innerHTML = html;
+    paint();
+    wire();
+    var ph = $$('mark.dd-ph').length;
+    if (ph) console.warn('[Doo Diligence] ' + ph + ' placeholders still on this page (yellow). See PLACEHOLDERS.md.');
+    track('page_view', { placeholders: ph }, D);
+  }
+
+  function fail(err) {
+    console.error(err);
+    app.innerHTML = '<div class="dd-fail"><p><strong>The page content could not be loaded.</strong></p><p style="margin-top:10px">content.json is fetched at runtime, so open the page over http, not from the file system: run <code>npx serve pdp-burned-by-fiber</code> or deploy the folder to Netlify. Also check that content.json is valid JSON.</p></div>';
+  }
+
+  fetch('content.json', { credentials: 'same-origin' })
+    .then(function (r) { if (!r.ok) throw new Error('content.json: HTTP ' + r.status); return r.json(); })
+    .then(boot).catch(fail);
+})();
+</script>
+</body>
+</html>

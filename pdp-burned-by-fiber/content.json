@@ -1,0 +1,337 @@
+{
+  "_note": "All copy and numbers for the 'Burned by fiber' PDP. Edit this file, not index.html. {TOKENS} are filled in from config and fiber_types. [[PLACEHOLDER: ...]] renders with a yellow background and must be replaced before launch. *text* = accent highlight, **text** = bold.",
+
+  "config": {
+    "FIBER_TYPE": "acacia",
+    "FILL_G": "[[PLACEHOLDER: grams of powder per stick]]",
+    "FIBER_G": "[[PLACEHOLDER: grams of fiber per stick, target ≥5]]",
+    "STICKS_PER_BOX": 30,
+    "PRICE_1": 35.00,
+    "PRICE_2": 59.00,
+    "PRICE_3": 84.00,
+    "SUB_DISCOUNT": 0.15,
+    "SUB_DAYS_PER_BOX": 30,
+    "GUARANTEE_DAYS": 60,
+    "FREE_SHIP_MIN_QTY": 2,
+    "MADE_IN": "[[PLACEHOLDER: where it is made]]",
+    "SUPPORT_EMAIL": "",
+    "COA_URL": "",
+    "PREORDER_MODE": false,
+    "PREORDER_SHIP_DATE": "",
+    "SALE_MODE": false,
+    "SALE_END_DATE": "",
+    "SHOW_REVIEWS": false,
+    "PROP65_WARNING": "auto",
+    "HEADLINE_VARIANT": "A",
+    "DEFAULT_BOXES": 2,
+    "KLAVIYO_FORM_ID": "",
+    "CTA_URLS": { "1": "", "2": "", "3": "" },
+    "CTA_URLS_SUBSCRIBE": { "1": "", "2": "", "3": "" },
+    "_help": {
+      "FIBER_TYPE": "acacia | psyllium | PHGG. Switches the texture, fermentation and water-warning copy (see fiber_types).",
+      "SUPPORT_EMAIL": "When set, every 'email us' becomes a mailto link and the footer Contact link falls back to it.",
+      "COA_URL": "Empty hides the lab-report link and the VERIFIED stamp.",
+      "PREORDER_MODE": "true + a real PREORDER_SHIP_DATE (YYYY-MM-DD) turns the button into 'Pre-order now' and shows the ship date.",
+      "SALE_MODE": "true + a real SALE_END_DATE (YYYY-MM-DD) shows announcement.sale_text. It hides itself after that date. Set the sale prices in PRICE_1..3.",
+      "SHOW_REVIEWS": "Keep false until there are real reviews. false shows the founder note instead; true shows the rating line and review cards.",
+      "PROP65_WARNING": "auto = on for psyllium, off otherwise. true / false forces it.",
+      "HEADLINE_VARIANT": "A | B | C. A URL parameter ?h=B overrides it for ad tests.",
+      "CTA_URLS": "Optional link per box count (for example a Shopify cart permalink). Empty = prototype mode: the click is logged and a note is shown."
+    }
+  },
+
+  "fiber_types": {
+    "acacia": {
+      "name": "acacia",
+      "name_cap": "Acacia",
+      "label_name": "Acacia fiber",
+      "ferment": "ferments slowly",
+      "texture_line": "Dissolves clear, no taste, no sludge.",
+      "texture_short": "clear",
+      "mix_step": "**Mix** into 8+ oz of water, or coffee, juice, smoothie. It dissolves clear.",
+      "water_warning": false,
+      "prop65_default": false
+    },
+    "PHGG": {
+      "name": "PHGG",
+      "name_cap": "PHGG",
+      "label_name": "PHGG (partially hydrolyzed guar gum)",
+      "ferment": "ferments slowly",
+      "texture_line": "Dissolves clear, no taste, no sludge.",
+      "texture_short": "clear",
+      "mix_step": "**Mix** into 8+ oz of water, or coffee, juice, smoothie. It dissolves clear.",
+      "water_warning": false,
+      "prop65_default": false
+    },
+    "psyllium": {
+      "name": "psyllium",
+      "name_cap": "Psyllium",
+      "label_name": "Psyllium fiber",
+      "ferment": "barely ferments",
+      "texture_line": "Stir, drink, done in 30 seconds.",
+      "texture_short": "stir & go",
+      "mix_step": "**Mix** into a full glass (8+ oz) of water.",
+      "water_warning": true,
+      "prop65_default": true
+    }
+  },
+
+  "water_warning": "**Take with at least 8 oz (a full glass) of water or other fluid.** Taking this product without enough liquid may cause choking. Do not take if you have difficulty swallowing.",
+
+  "meta": {
+    "title": "Doo Diligence | Low-ferment fiber with a 7-day Slow Start",
+    "description": "Fiber left you bloated? Low-ferment {FIBER_TYPE} fiber stick packs with a 7-day Slow Start, and a {GUARANTEE_DAYS}-day money-back Doo-Over."
+  },
+
+  "sections": ["announcement", "header", "buybox", "familiar", "reframe", "fix", "honesty", "timeline", "how", "report", "compare", "proof", "guarantee", "faq", "email", "final", "footer"],
+
+  "announcement": {
+    "text": "Free US shipping on {FREE_SHIP_MIN_QTY}+ boxes · {GUARANTEE_DAYS}-day Doo-Over guarantee",
+    "sale_text": "[[PLACEHOLDER: the real sale, e.g. launch price]] · Ends {SALE_END_DATE}"
+  },
+
+  "header": {
+    "brand": "Doo Diligence",
+    "skip": "Skip to the offer"
+  },
+
+  "buybox": {
+    "headlines": {
+      "A": "Fiber left you bloated? You didn't fail fiber. You got *the wrong kind, too fast.*",
+      "B": "The fiber for people *fiber already burned.*",
+      "C": "Go easily every day, *without the bloat.* Even if fiber backfired on you before."
+    },
+    "sub": "{FIBER_G} g of low-ferment {FIBER_TYPE} fiber per stick, plus a 7-day Slow Start that lets your gut catch up. No inulin. No chicory root.",
+    "outcomes": [
+      { "icon": "sun", "text": "Supports easy, regular mornings†" },
+      { "icon": "balloon", "text": "Without the 3 pm balloon belly" },
+      { "icon": "stick", "text": "One stick, 30 seconds, fits in your pocket" }
+    ],
+    "gallery": {
+      "label": "Product photos",
+      "ratio": "4 / 3",
+      "ratio_mobile": "3 / 2",
+      "placeholder_tag": "Placeholder image",
+      "prev": "Previous photo",
+      "next": "Next photo",
+      "thumb": "Show photo",
+      "items": [
+        { "src": "", "width": 1200, "height": 900, "alt": "A box of Doo Diligence with a few stick packs on a bathroom counter", "shot": "Box + a few sticks on a bathroom counter (hero)" },
+        { "src": "", "width": 1200, "height": 900, "alt": "A Doo Diligence stick being poured into a glass of water", "shot": "A stick being poured into a glass (shows the texture)" },
+        { "src": "", "width": 1200, "height": 900, "alt": "The 7-day Slow Start card", "shot": "The 7-day Slow Start card / timeline" },
+        { "src": "", "width": 1200, "height": 900, "alt": "Close-up of the Doo Diligence Report on the label", "shot": "The Doo Diligence Report label close-up" },
+        { "src": "", "width": 1200, "height": 900, "alt": "A stick pack sticking out of a jeans pocket", "shot": "Stick in a jeans pocket / travel bag (portability)" },
+        { "src": "", "width": 1200, "height": 900, "alt": "Everything in the box, including the Slow-Start Kit", "shot": "What's in the box, incl. the Slow-Start Kit" }
+      ]
+    },
+    "offer": {
+      "legend": "Choose your supply",
+      "options": [
+        { "boxes": 1, "name": "1 box ({STICKS_PER_BOX} sticks)", "short": "1 box", "units": "1 box", "badge": "", "gift": false },
+        { "boxes": 2, "name": "2 boxes + free {GIFT_NAME}", "short": "2 boxes + kit", "units": "2 boxes", "badge": "Most popular", "gift": true },
+        { "boxes": 3, "name": "3 boxes + free {GIFT_NAME}", "short": "3 boxes + kit", "units": "3 boxes", "badge": "", "gift": true }
+      ],
+      "per_day": "{X}/day",
+      "per_box": "{X}/box",
+      "save": "Save {X}",
+      "free_ship": "Free shipping",
+      "was": "Regular price"
+    },
+    "subscribe": {
+      "label": "Subscribe & save {SUB_PCT}%",
+      "terms": "{SUB_PRICE} per delivery, one delivery every {SUB_DAYS} days ({OPTION_UNITS} each time). Renews automatically until you cancel. Skip, pause or cancel anytime.",
+      "final_on": "Subscription: {SUB_PRICE} every {SUB_DAYS} days. Skip, pause or cancel anytime.",
+      "final_off": "One-time purchase."
+    },
+    "gift": {
+      "name": "Slow-Start Kit",
+      "title": "Free {GIFT_NAME}",
+      "tag": "Digital download",
+      "items": ["The 7-day ramp-up plan (PDF)", "A printable 30-day \"Doo Diary\" tracker"],
+      "value": "$[[PLACEHOLDER: value]] value",
+      "included": "Included with this order",
+      "upsell": "Free with {GIFT_MIN} or more boxes",
+      "image": { "src": "", "width": 400, "height": 400, "alt": "The Slow-Start Kit", "shot": "Slow-Start Kit" }
+    },
+    "cta": {
+      "label": "Add to cart",
+      "preorder_label": "Pre-order now",
+      "preorder_line": "Pre-order: ships by {PREORDER_SHIP_DATE}",
+      "guarantee_line": "{GUARANTEE_DAYS}-day Doo-Over: try it through the full ramp-up, or your money back.",
+      "prop65_link": "WARNING: California Prop 65",
+      "prototype_toast": "Prototype, no cart yet. Logged: {OPTION}."
+    },
+    "sticky_sub": "Subscription"
+  },
+
+  "familiar": {
+    "title": "Sound familiar?",
+    "items": [
+      "You tried a fiber gummy and spent the afternoon bloated.",
+      "Someone told you to \"just take fiber,\" and it made things worse.",
+      "Your fiber drink had the texture of wet sand, so you quit.",
+      "Now you're a little scared to try fiber again.",
+      "You still don't go as easily as you'd like."
+    ],
+    "closing": "If you nodded at two or more, *it wasn't you.* Here's what actually happened."
+  },
+
+  "reframe": {
+    "title": "Why fiber backfired (it wasn't your gut's fault)",
+    "reasons": [
+      { "title": "Reason 1: the kind.", "text": "Many fiber gummies and \"prebiotic\" blends use inulin or chicory root. Your gut bacteria ferment it fast, and fast fermentation means gas." },
+      { "title": "Reason 2: the jump.", "text": "You went from almost no fiber to a full dose overnight. Any fiber change takes your gut a couple of weeks to adjust to. The label just said \"take daily.\"" }
+    ],
+    "cards": [
+      { "tone": "bad", "parts": ["Fast-ferment fiber", "Full dose on day 1"], "result": "🎈", "result_label": "Result: a balloon belly" },
+      { "tone": "good", "parts": ["Low-ferment fiber", "Slow start"], "result": "🚽✓", "result_label": "Result: an easy trip to the bathroom" }
+    ]
+  },
+
+  "fix": {
+    "eyebrow": "The Slow-Start System",
+    "title": "So we fixed both.",
+    "items": [
+      { "label": "Fixes reason 1: the kind", "title": "Low-ferment fiber.", "text": "{FIBER_TYPE_CAP} {FERMENT_LINE}. No inulin, no chicory root, no sugar alcohols [[PLACEHOLDER: confirm against the final spec sheet]]." },
+      { "label": "Fixes reason 2: the jump", "title": "The 7-day Slow Start.", "text": "Half a stick for the first 3 days, then a full stick. Printed on every box. Your gut adjusts before you hit the full dose." }
+    ]
+  },
+
+  "honesty": {
+    "eyebrow": "A note from us",
+    "text": "**Real talk:** some people still notice a little extra gas in the first week. That's normal with any fiber change, and it's exactly why we ramp. If it lasts past week 2, drop back to half a stick and {EMAIL_US}. We'll help you sort it out."
+  },
+
+  "timeline": {
+    "eyebrow": "The 7-day Slow Start",
+    "title": "What to expect, week by week",
+    "steps": [
+      { "when": "Days 1–3", "text": "Half a stick, big glass of water." },
+      { "when": "Days 4–7", "text": "Full stick if you feel fine. Stay at half if not, no rush." },
+      { "when": "Weeks 2–3", "text": "Full stick daily. Give it this long before you judge it." },
+      { "when": "Months 2–3", "text": "It's just a habit now. Most of the benefit of fiber builds with consistency." }
+    ],
+    "guarantee_line": "{GUARANTEE_DAYS}-day Doo-Over: try it through the full ramp-up, or your money back."
+  },
+
+  "how": {
+    "title": "How it works",
+    "intro": "{TEXTURE_LINE}",
+    "steps": [
+      { "icon": "tear", "text": "**Tear** one stick." },
+      { "icon": "glass", "text": "{MIX_STEP}" },
+      { "icon": "go", "text": "**Go about your day.** No measuring scoops, no tub on the counter." }
+    ]
+  },
+
+  "report": {
+    "brand": "Doo Diligence",
+    "title": "The Doo Diligence Report",
+    "serving": "Serving: 1 stick · {STICKS_PER_BOX} sticks per box",
+    "rows": [
+      { "k": "Per stick", "v": "{FIBER_TYPE_LABEL} {FILL_G} g → **{FIBER_G} g fiber**" },
+      { "k": "Other ingredients", "v": "[[PLACEHOLDER: other ingredients]]" },
+      { "k": "Not in here", "v": "inulin · chicory root · senna or stimulant laxatives · [[PLACEHOLDER: sweeteners/sugar alcohols, confirm]]" },
+      { "k": "Made in", "v": "{MADE_IN}" }
+    ],
+    "coa_k": "Batch test",
+    "coa_link": "View the lab report (COA)",
+    "stamp": "Verified",
+    "footer": "We did the doo diligence so you don't have to."
+  },
+
+  "compare": {
+    "title": "Not all fiber is the same fiber.",
+    "columns": ["Doo Diligence", "Typical fiber gummy", "Classic fiber powder"],
+    "rows": [
+      { "label": "Fiber per serving", "values": ["{FIBER_G} g", "[[PLACEHOLDER: verify]]", "[[PLACEHOLDER: verify]]"] },
+      { "label": "Fiber type", "values": ["low-ferment {FIBER_TYPE}", "[[PLACEHOLDER: often inulin/chicory, verify]]", "[[PLACEHOLDER: verify]]"] },
+      { "label": "Slow-start plan included", "values": ["✓", "✗", "✗"] },
+      { "label": "Texture", "values": ["{TEXTURE_SHORT}", "candy", "[[PLACEHOLDER: verify]]"] },
+      { "label": "Added sugar per serving", "values": ["[[PLACEHOLDER: added sugar per stick]]", "[[PLACEHOLDER: verify]]", "[[PLACEHOLDER: verify]]"] }
+    ],
+    "yes": "Yes",
+    "no": "No",
+    "feature": "Feature"
+  },
+
+  "proof": {
+    "reviews": {
+      "title": "What customers say",
+      "rating": null,
+      "count": null,
+      "rating_placeholder": "[[PLACEHOLDER: average rating and review count from real reviews]]",
+      "count_label": "{N} reviews",
+      "prev": "Previous review",
+      "next": "Next review",
+      "items": [
+        { "objection": "gas", "tag": "On gas", "rating": null, "title": "[[PLACEHOLDER: real review title]]", "text": "[[PLACEHOLDER: real review that answers 'will I get gas?']]", "name": "[[PLACEHOLDER: real reviewer name]]" },
+        { "objection": "taste", "tag": "On taste", "rating": null, "title": "[[PLACEHOLDER: real review title]]", "text": "[[PLACEHOLDER: real review about taste / texture]]", "name": "[[PLACEHOLDER: real reviewer name]]" },
+        { "objection": "never_worked", "tag": "Fiber never worked for me", "rating": null, "title": "[[PLACEHOLDER: real review title]]", "text": "[[PLACEHOLDER: real review from someone fiber burned before]]", "name": "[[PLACEHOLDER: real reviewer name]]" },
+        { "objection": "timeline", "tag": "How long it took", "rating": null, "title": "[[PLACEHOLDER: real review title]]", "text": "[[PLACEHOLDER: real review about the results timeline]]", "name": "[[PLACEHOLDER: real reviewer name]]" }
+      ]
+    },
+    "founder": {
+      "eyebrow": "A note from the founder",
+      "title": "Why we made this",
+      "body": "[[PLACEHOLDER: Viktor writes this, real story only]]",
+      "signoff": "[[PLACEHOLDER: name and role]]"
+    }
+  },
+
+  "guarantee": {
+    "big": "{GUARANTEE_DAYS}",
+    "unit": "days",
+    "title": "The {GUARANTEE_DAYS}-Day Doo-Over",
+    "text": "Take it through the full Slow Start and then some. If it's not for you, {EMAIL_US} and get your money back. Even if the box is empty.",
+    "cta": "Start my Slow Start"
+  },
+
+  "faq": {
+    "title": "Questions, answered straight",
+    "items": [
+      { "q": "Doesn't fiber make it worse?", "a": "The wrong fiber, too fast, can. Fast-fermenting fibers like inulin plus a full dose on day 1 is the classic bloat recipe. Doo Diligence uses low-ferment {FIBER_TYPE} and a 7-day Slow Start. And drink your water: fiber needs it to do its job." },
+      { "q": "Will I get gas?", "a": "You might notice a little in week 1. That's normal when you add any fiber, and it's why we start at half a stick. If it hangs around past week 2, drop back to half and {EMAIL_US}." },
+      { "q": "How long until it works?", "a": "Give it 2–3 weeks of daily use before you judge it. Fiber works through consistency, not overnight." },
+      { "q": "Is this a laxative?", "a": "No. It's fiber, with no senna or stimulant laxatives." },
+      { "q": "Why {FIBER_TYPE}?", "a": "[[PLACEHOLDER: short, factual paragraph once the formula is final]]" },
+      { "q": "How much water?", "a": "At least 8 oz per stick. More is better.", "psyllium_extra": "{WATER_WARNING}" },
+      { "q": "I take medication / I'm on a GLP-1 / I'm pregnant.", "a": "Talk to your doctor or pharmacist before starting. Take fiber at least 2 hours apart from other medications." },
+      { "q": "How does the subscription work?", "a": "One delivery every {SUB_DAYS_PER_BOX} days per box. Skip, pause or cancel anytime from your account." },
+      { "q": "What if it doesn't work for me?", "a": "{GUARANTEE_DAYS}-day Doo-Over, money back, even on an empty box." },
+      { "q": "Where is it made?", "a": "{MADE_IN}. [[PLACEHOLDER: add facility details, e.g. FDA-registered or GMP, only if true]]" }
+    ]
+  },
+
+  "email": {
+    "title": "Not ready yet? Get the free 7-Day Slow-Start plan.",
+    "label": "Email address",
+    "input_placeholder": "you@example.com",
+    "button": "Send me the plan",
+    "klaviyo_placeholder": "[[PLACEHOLDER: Klaviyo form ID]]",
+    "prototype_msg": "Thanks! Prototype note: nothing was sent, Klaviyo isn't connected yet.",
+    "invalid": "Please enter a valid email address."
+  },
+
+  "final": {
+    "title": "You did the research. We did the doo diligence.",
+    "change": "Change",
+    "cta": "Add to cart",
+    "guarantee_line": "{GUARANTEE_DAYS}-day Doo-Over: try it through the full ramp-up, or your money back."
+  },
+
+  "footer": {
+    "brand": "Doo Diligence",
+    "fda": "†These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+    "prop65_title": "WARNING:",
+    "prop65_text": "[[PLACEHOLDER: exact California Prop 65 warning text for the final formula, from the lab results and counsel]]",
+    "links": [
+      { "label": "Shipping", "href": "" },
+      { "label": "Returns", "href": "" },
+      { "label": "Subscription terms", "href": "" },
+      { "label": "Contact", "href": "" }
+    ],
+    "link_placeholder": "[[PLACEHOLDER: link]]",
+    "copyright": "© {YEAR} Doo Diligence"
+  }
+}
